@@ -533,7 +533,7 @@ export default function TestPage() {
       )}
 
       {/* Main Body Layout */}
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6 md:py-8 flex flex-col md:flex-row gap-6 items-stretch overflow-hidden">
+      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6 md:py-8 flex flex-col md:flex-row gap-6 items-stretch md:items-start">
         {/* Left Side: Question area */}
         <div className="flex-1 flex flex-col">
           <QuestionCard

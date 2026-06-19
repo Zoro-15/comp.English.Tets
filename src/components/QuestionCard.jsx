@@ -16,7 +16,7 @@ export default function QuestionCard({ question, selectedAnswer, onSelectAnswer 
   };
 
   return (
-    <div className="bg-white border border-slate-100 rounded-2xl p-6 sm:p-8 shadow-sm flex-1 flex flex-col justify-between">
+    <div className="bg-white border border-slate-100 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col gap-6">
       <div>
         {/* Question Header */}
         <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
