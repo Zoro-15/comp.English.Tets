@@ -4,11 +4,16 @@ export default function QuestionCard({ question, selectedAnswer, onSelectAnswer 
   if (!question) return null;
 
   const options = [
-    { key: 'a', val: question.option_a },
-    { key: 'b', val: question.option_b },
-    { key: 'c', val: question.option_c },
-    { key: 'd', val: question.option_d },
+    { key: '0', val: question.Option_0 },
+    { key: '1', val: question.Option_1 },
+    { key: '2', val: question.Option_2 },
+    { key: '3', val: question.Option_3 },
   ];
+
+  const getOptionLetter = (key) => {
+    const mapping = { '0': 'A', '1': 'B', '2': 'C', '3': 'D' };
+    return mapping[key] || key;
+  };
 
   return (
     <div className="bg-white border border-slate-100 rounded-2xl p-6 sm:p-8 shadow-sm flex-1 flex flex-col justify-between">
@@ -22,14 +27,15 @@ export default function QuestionCard({ question, selectedAnswer, onSelectAnswer 
 
         {/* Question Stem */}
         <h3 className="text-lg sm:text-xl font-bold text-slate-800 leading-relaxed mb-8">
-          {question.question}
+          {question.Question}
         </h3>
       </div>
 
       {/* Selectable Options */}
       <div className="space-y-4">
         {options.map(({ key, val }) => {
-          const isSelected = selectedAnswer === key;
+          // Compare as strings to prevent strict type mismatch issues (e.g. number vs string)
+          const isSelected = selectedAnswer !== undefined && String(selectedAnswer) === String(key);
 
           return (
             <button
@@ -50,7 +56,7 @@ export default function QuestionCard({ question, selectedAnswer, onSelectAnswer 
                       : 'bg-white border-slate-200 text-slate-400 group-hover:border-indigo-400 group-hover:text-indigo-600'
                   }`}
                 >
-                  {key}
+                  {getOptionLetter(key)}
                 </span>
                 <span className="text-sm sm:text-base leading-snug">{val}</span>
               </div>

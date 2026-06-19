@@ -7,10 +7,10 @@ export default function ResultPage({ questions, selectedAnswers, onRestart }) {
   let unansweredCount = 0;
 
   questions.forEach((q) => {
-    const selected = selectedAnswers[q.id];
+    const selected = selectedAnswers[q.Question_ID];
     if (selected === undefined || selected === null) {
       unansweredCount++;
-    } else if (String(selected).trim().toLowerCase() === String(q.correct_answer).trim().toLowerCase()) {
+    } else if (String(selected).trim() === String(q.Correct_Answer).trim()) {
       correctCount++;
     } else {
       wrongCount++;
@@ -31,6 +31,11 @@ export default function ResultPage({ questions, selectedAnswers, onRestart }) {
     feedbackMessage = "Good job! You have a solid grasp.";
     feedbackColor = "text-indigo-500";
   }
+
+  const getOptionLetter = (key) => {
+    const mapping = { '0': 'A', '1': 'B', '2': 'C', '3': 'D' };
+    return mapping[key] || key;
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 animate-fade-in">
@@ -131,13 +136,13 @@ export default function ResultPage({ questions, selectedAnswers, onRestart }) {
 
         <div className="space-y-6">
           {questions.map((q, idx) => {
-            const selected = selectedAnswers[q.id];
-            const isCorrect = selected && String(selected).trim().toLowerCase() === String(q.correct_answer).trim().toLowerCase();
+            const selected = selectedAnswers[q.Question_ID];
+            const isCorrect = selected !== undefined && String(selected).trim() === String(q.Correct_Answer).trim();
             const wasSkipped = selected === undefined || selected === null;
 
             return (
               <div
-                key={q.id}
+                key={q.Question_ID}
                 className={`bg-white border rounded-2xl p-6 shadow-sm transition-all hover:shadow-md ${
                   wasSkipped
                     ? 'border-amber-200 bg-amber-50/10'
@@ -171,20 +176,18 @@ export default function ResultPage({ questions, selectedAnswers, onRestart }) {
                 </div>
 
                 {/* Question Stem */}
-                <p className="text-slate-800 font-medium text-base mb-4 leading-relaxed">
-                  {q.question}
-                </p>
+                <p className="text-slate-800 font-medium text-base mb-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: q.Question }} />
 
                 {/* Options List */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                   {[
-                    { key: 'a', val: q.option_a },
-                    { key: 'b', val: q.option_b },
-                    { key: 'c', val: q.option_c },
-                    { key: 'd', val: q.option_d },
+                    { key: '0', val: q.Option_0 },
+                    { key: '1', val: q.Option_1 },
+                    { key: '2', val: q.Option_2 },
+                    { key: '3', val: q.Option_3 },
                   ].map(({ key, val }) => {
-                    const isKeySelected = selected && String(selected).trim().toLowerCase() === key;
-                    const isKeyCorrect = String(q.correct_answer).trim().toLowerCase() === key;
+                    const isKeySelected = selected !== undefined && String(selected).trim() === String(key);
+                    const isKeyCorrect = String(q.Correct_Answer).trim() === String(key);
 
                     let optionStyle = "border-slate-100 bg-slate-50/50 text-slate-700";
                     
@@ -202,7 +205,7 @@ export default function ResultPage({ questions, selectedAnswers, onRestart }) {
                         className={`flex items-start p-3 border rounded-xl text-sm ${optionStyle}`}
                       >
                         <span className="font-bold uppercase mr-2.5 text-xs px-2 py-0.5 bg-white border border-slate-200 rounded-md">
-                          {key}
+                          {getOptionLetter(key)}
                         </span>
                         <span>{val}</span>
                       </div>
@@ -210,12 +213,11 @@ export default function ResultPage({ questions, selectedAnswers, onRestart }) {
                   })}
                 </div>
 
-                {/* Bottom Result Review Banner */}
-                {!isCorrect && (
-                  <div className="text-xs bg-slate-50 border border-slate-100 rounded-xl p-3 text-slate-600">
-                    <span className="font-bold text-slate-800 mr-2">Explanation/Correct Answer:</span>
-                    Your choice: <span className="font-semibold text-rose-600 uppercase">{selected || 'None'}</span> | 
-                    Correct answer: <span className="font-semibold text-emerald-600 uppercase">{q.correct_answer}</span>
+                {/* Solution Explanation Box */}
+                {q.Solution && (
+                  <div className="text-xs bg-indigo-50/50 border border-indigo-100 rounded-xl p-4 mt-4 text-slate-700">
+                    <span className="font-bold text-indigo-900 block mb-1">Explanation & Solution:</span>
+                    <p className="leading-relaxed" dangerouslySetInnerHTML={{ __html: q.Solution }} />
                   </div>
                 )}
               </div>

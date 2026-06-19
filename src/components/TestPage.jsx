@@ -4,207 +4,207 @@ import QuestionCard from './QuestionCard';
 import QuestionNavigator from './QuestionNavigator';
 import ResultPage from './ResultPage';
 
-// High-quality mock questions covering grammar, syntax, vocabulary, spelling, and comprehension
+// High-quality mock questions updated to match the new CSV headers
 const MOCK_QUESTIONS = [
   {
-    id: 1,
-    question: "Identify the correct sentence structure.",
-    option_a: "Having finished the report, the computer was turned off by Sarah.",
-    option_b: "Sarah turned off the computer having finished the report.",
-    option_c: "Having finished the report, Sarah turned off the computer.",
-    option_d: "The computer Sarah turned off, having finished the report.",
-    correct_answer: "c",
-    topic: "Grammar & Syntax"
+    Question_ID: 26224,
+    Question: "Identify the correct sentence structure.",
+    Option_0: "Having finished the report, the computer was turned off by Sarah.",
+    Option_1: "Sarah turned off the computer having finished the report.",
+    Option_2: "Having finished the report, Sarah turned off the computer.",
+    Option_3: "The computer Sarah turned off, having finished the report.",
+    Correct_Answer: "2",
+    Solution: "The introductory modifying phrase <em>'Having finished the report'</em> must describe the subject that immediately follows it, which is <strong>Sarah</strong>. Options A, B, and D create dangling modifiers."
   },
   {
-    id: 2,
-    question: "Complete the sentence: 'She had hardly stepped out of the house _______ it began to pour.'",
-    option_a: "than",
-    option_b: "then",
-    option_c: "when",
-    option_d: "while",
-    correct_answer: "c",
-    topic: "Conjunctions"
+    Question_ID: 26225,
+    Question: "Complete the sentence: 'She had hardly stepped out of the house _______ it began to pour.'",
+    Option_0: "than",
+    Option_1: "then",
+    Option_2: "when",
+    Option_3: "while",
+    Correct_Answer: "2",
+    Solution: "The grammatical structure <strong>'hardly... when'</strong> is used to show that one event happens immediately after another. 'Hardly' takes 'when' (or 'before'), while 'scarcely' / 'no sooner' takes 'than'."
   },
   {
-    id: 3,
-    question: "Choose the synonym for 'Ephemeral'.",
-    option_a: "Eternal",
-    option_b: "Transitory",
-    option_c: "Spacious",
-    option_d: "Enigmatic",
-    correct_answer: "b",
-    topic: "Vocabulary"
+    Question_ID: 26226,
+    Question: "Choose the synonym for 'Ephemeral'.",
+    Option_0: "Eternal",
+    Option_1: "Transitory",
+    Option_2: "Spacious",
+    Option_3: "Enigmatic",
+    Correct_Answer: "1",
+    Solution: "<strong>Ephemeral</strong> means lasting for a very short time. Therefore, <strong>Transitory</strong> (short-lived) is the correct synonym."
   },
   {
-    id: 4,
-    question: "Which of the following words is spelt correctly?",
-    option_a: "Ocurred",
-    option_b: "Occured",
-    option_c: "Ocurred",
-    option_d: "Occurred",
-    correct_answer: "d",
-    topic: "Spelling"
+    Question_ID: 26227,
+    Question: "Which of the following words is spelt correctly?",
+    Option_0: "Ocurred",
+    Option_1: "Occured",
+    Option_2: "Ocurred",
+    Option_3: "Occurred",
+    Correct_Answer: "3",
+    Solution: "The correct spelling of the past tense of occur is <strong>Occurred</strong>, with double 'c' and double 'r'."
   },
   {
-    id: 5,
-    question: "Fill in the blank with the correct preposition: 'The committee members agreed _______ the proposal without any hesitation.'",
-    option_a: "to",
-    option_b: "with",
-    option_c: "on",
-    option_d: "at",
-    correct_answer: "a",
-    topic: "Prepositions"
+    Question_ID: 26228,
+    Question: "Fill in the blank with the correct preposition: 'The committee members agreed _______ the proposal without any hesitation.'",
+    Option_0: "to",
+    Option_1: "with",
+    Option_2: "on",
+    Option_3: "at",
+    Correct_Answer: "0",
+    Solution: "We agree <strong>to</strong> a proposal, plan, or suggestion. We agree <strong>with</strong> a person, and agree <strong>on</strong> a topic or decision."
   },
   {
-    id: 6,
-    question: "What is the antonym of 'Mitigate'?",
-    option_a: "Alleviate",
-    option_b: "Exacerbate",
-    option_c: "Ameliorate",
-    option_d: "Pacify",
-    correct_answer: "b",
-    topic: "Vocabulary"
+    Question_ID: 26229,
+    Question: "What is the antonym of 'Mitigate'?",
+    Option_0: "Alleviate",
+    Option_1: "Exacerbate",
+    Option_2: "Ameliorate",
+    Option_3: "Pacify",
+    Correct_Answer: "1",
+    Solution: "<strong>Mitigate</strong> means to make less severe or serious. Its opposite is <strong>Exacerbate</strong>, which means to make a problem, bad situation, or negative feeling worse."
   },
   {
-    id: 7,
-    question: "Identify the part of speech of the underlined word: 'The dancer performed gracefully on the stage.'",
-    option_a: "Adjective",
-    option_b: "Adverb",
-    option_c: "Noun",
-    option_d: "Preposition",
-    correct_answer: "b",
-    topic: "Parts of Speech"
+    Question_ID: 26230,
+    Question: "Identify the part of speech of the underlined word: 'The dancer performed <u>gracefully</u> on the stage.'",
+    Option_0: "Adjective",
+    Option_1: "Adverb",
+    Option_2: "Noun",
+    Option_3: "Preposition",
+    Correct_Answer: "1",
+    Solution: "The word <strong>gracefully</strong> describes <em>how</em> the action ('performed') was executed, making it an <strong>adverb</strong>."
   },
   {
-    id: 8,
-    question: "Change to Indirect Speech: He said, 'I will leave tomorrow.'",
-    option_a: "He said that he will leave tomorrow.",
-    option_b: "He said that he would leave the next day.",
-    option_c: "He said that he would leave tomorrow.",
-    option_d: "He told he would leave the next day.",
-    correct_answer: "b",
-    topic: "Indirect Speech"
+    Question_ID: 26231,
+    Question: "Change to Indirect Speech: He said, 'I will leave tomorrow.'",
+    Option_0: "He said that he will leave tomorrow.",
+    Option_1: "He said that he would leave the next day.",
+    Option_2: "He said that he would leave tomorrow.",
+    Option_3: "He told he would leave the next day.",
+    Correct_Answer: "1",
+    Solution: "In indirect speech, the pronoun changes (I &rarr; he), the modal changes (will &rarr; would), and time expressions shift (tomorrow &rarr; the next day / the following day)."
   },
   {
-    id: 9,
-    question: "Choose the correct active voice of: 'The trophy was won by the school team.'",
-    option_a: "The school team won the trophy.",
-    option_b: "The school team had won the trophy.",
-    option_c: "The school team wins the trophy.",
-    option_d: "The school team has won the trophy.",
-    correct_answer: "a",
-    topic: "Active & Passive Voice"
+    Question_ID: 26232,
+    Question: "Choose the correct active voice of: 'The trophy was won by the school team.'",
+    Option_0: "The school team won the trophy.",
+    Option_1: "The school team had won the trophy.",
+    Option_2: "The school team wins the trophy.",
+    Option_3: "The school team has won the trophy.",
+    Correct_Answer: "0",
+    Solution: "The passive voice sentence is in the simple past tense (<em>was won</em>). The active voice counterpart must also use the simple past tense: <strong>won</strong>."
   },
   {
-    id: 10,
-    question: "Identify the figure of speech: 'The wind whispered through the trees.'",
-    option_a: "Simile",
-    option_b: "Metaphor",
-    option_c: "Personification",
-    option_d: "Hyperbole",
-    correct_answer: "c",
-    topic: "Figures of Speech"
+    Question_ID: 26233,
+    Question: "Identify the figure of speech: 'The wind whispered through the trees.'",
+    Option_0: "Simile",
+    Option_1: "Metaphor",
+    Option_2: "Personification",
+    Option_3: "Hyperbole",
+    Correct_Answer: "2",
+    Solution: "Giving human qualities (whispering) to non-human things (wind) is called <strong>Personification</strong>."
   },
   {
-    id: 11,
-    question: "Choose the word closest in meaning to 'Pragmatic'.",
-    option_a: "Practical",
-    option_b: "Theoretical",
-    option_c: "Idealistic",
-    option_d: "Imaginative",
-    correct_answer: "a",
-    topic: "Vocabulary"
+    Question_ID: 26234,
+    Question: "Choose the word closest in meaning to 'Pragmatic'.",
+    Option_0: "Practical",
+    Option_1: "Theoretical",
+    Option_2: "Idealistic",
+    Option_3: "Imaginative",
+    Correct_Answer: "0",
+    Solution: "<strong>Pragmatic</strong> means dealing with things sensibly and realistically in a way that is based on practical rather than theoretical considerations."
   },
   {
-    id: 12,
-    question: "Select the sentence that has a subject-verb agreement issue.",
-    option_a: "The group of students is going on a field trip.",
-    option_b: "Neither the teacher nor the students are attending.",
-    option_c: "Bread and butter is my favorite breakfast.",
-    option_d: "Every one of the books were damaged in the rain.",
-    correct_answer: "d",
-    topic: "Subject-Verb Agreement"
+    Question_ID: 26235,
+    Question: "Select the sentence that has a subject-verb agreement issue.",
+    Option_0: "The group of students is going on a field trip.",
+    Option_1: "Neither the teacher nor the students are attending.",
+    Option_2: "Bread and butter is my favorite breakfast.",
+    Option_3: "Every one of the books were damaged in the rain.",
+    Correct_Answer: "3",
+    Solution: "The subject 'Every one' is singular, so it requires the singular verb <strong>'was'</strong> instead of the plural 'were'."
   },
   {
-    id: 13,
-    question: "Choose the correct word to fill in: 'The manager _______ the staff of their security clearances.'",
-    option_a: "assured",
-    option_b: "insured",
-    option_c: "ensured",
-    option_d: "secured",
-    correct_answer: "a",
-    topic: "Homophones & Word Choice"
+    Question_ID: 26236,
+    Question: "Choose the correct word to fill in: 'The manager _______ the staff of their security clearances.'",
+    Option_0: "assured",
+    Option_1: "insured",
+    Option_2: "ensured",
+    Option_3: "secured",
+    Correct_Answer: "0",
+    Solution: "To <strong>assure</strong> is to tell someone something positively to dispel any doubts. To <em>ensure</em> means to make certain, and to <em>insure</em> is related to insurance policies."
   },
   {
-    id: 14,
-    question: "Identify the idiom's meaning: 'To burn the midnight oil'",
-    option_a: "To waste resources inefficently",
-    option_b: "To study or work late into the night",
-    option_c: "To create an unnecessary light source",
-    option_d: "To start a fire by mistake",
-    correct_answer: "b",
-    topic: "Idioms & Phrases"
+    Question_ID: 26237,
+    Question: "Identify the idiom's meaning: 'To burn the midnight oil'",
+    Option_0: "To waste resources inefficiently",
+    Option_1: "To study or work late into the night",
+    Option_2: "To create an unnecessary light source",
+    Option_3: "To start a fire by mistake",
+    Correct_Answer: "1",
+    Solution: "The historical idiom <strong>'to burn the midnight oil'</strong> means to stay up late working or studying by the light of an oil lamp."
   },
   {
-    id: 15,
-    question: "Which word means 'characterized by a desire to do run-of-the-mill or standard work'?",
-    option_a: "Exemplary",
-    option_b: "Mediocre",
-    option_c: "Peculiar",
-    option_d: "Splendid",
-    correct_answer: "b",
-    topic: "Vocabulary"
+    Question_ID: 26238,
+    Question: "Which word means 'characterized by a desire to do run-of-the-mill or standard work'?",
+    Option_0: "Exemplary",
+    Option_1: "Mediocre",
+    Option_2: "Peculiar",
+    Option_3: "Splendid",
+    Correct_Answer: "1",
+    Solution: "<strong>Mediocre</strong> means of only moderate quality or average; run-of-the-mill."
   },
   {
-    id: 16,
-    question: "Fill in the blank: 'If he _______ harder, he would have passed the exam.'",
-    option_a: "studied",
-    option_b: "had studied",
-    option_c: "studies",
-    option_d: "would study",
-    correct_answer: "b",
-    topic: "Conditionals"
+    Question_ID: 26239,
+    Question: "Fill in the blank: 'If he _______ harder, he would have passed the exam.'",
+    Option_0: "studied",
+    Option_1: "had studied",
+    Option_2: "studies",
+    Option_3: "would study",
+    Correct_Answer: "1",
+    Solution: "This is a **third conditional** sentence representing a hypothetical past action. The structure is: <em>If + past perfect (had studied), ... would have + past participle (passed)</em>."
   },
   {
-    id: 17,
-    question: "Find the odd one out.",
-    option_a: "Meticulous",
-    option_b: "Scrupulous",
-    option_c: "Fastidious",
-    option_d: "Negligent",
-    correct_answer: "d",
-    topic: "Odd One Out"
+    Question_ID: 26240,
+    Question: "Find the odd one out.",
+    Option_0: "Meticulous",
+    Option_1: "Scrupulous",
+    Option_2: "Fastidious",
+    Option_3: "Negligent",
+    Correct_Answer: "3",
+    Solution: "Meticulous, scrupulous, and fastidious are synonyms referring to paying close attention to details. <strong>Negligent</strong> (careless) is the antonym."
   },
   {
-    id: 18,
-    question: "Complete the sentence: 'The price of groceries has risen, _______ making it difficult for many families.'",
-    option_a: "thereby",
-    option_b: "therefore",
-    option_c: "nevertheless",
-    option_d: "whereas",
-    correct_answer: "a",
-    topic: "Transitions"
+    Question_ID: 26241,
+    Question: "Complete the sentence: 'The price of groceries has risen, _______ making it difficult for many families.'",
+    Option_0: "thereby",
+    Option_1: "therefore",
+    Option_2: "nevertheless",
+    Option_3: "whereas",
+    Correct_Answer: "0",
+    Solution: "<strong>Thereby</strong> means 'by that means' or 'as a result of that' which perfectly links the cause and effect clauses."
   },
   {
-    id: 19,
-    question: "Choose the correct spelling:",
-    option_a: "Accomodate",
-    option_b: "Accommodate",
-    option_c: "Acomodate",
-    option_d: "Acommodate",
-    correct_answer: "b",
-    topic: "Spelling"
+    Question_ID: 26242,
+    Question: "Choose the correct spelling:",
+    Option_0: "Accomodate",
+    Option_1: "Accommodate",
+    Option_2: "Acomodate",
+    Option_3: "Acommodate",
+    Correct_Answer: "1",
+    Solution: "The correct spelling of this word contains double 'c' and double 'm': <strong>Accommodate</strong>."
   },
   {
-    id: 20,
-    question: "What does the root word 'chrono' mean?",
-    option_a: "Color",
-    option_b: "Shape",
-    option_c: "Sound",
-    option_d: "Time",
-    correct_answer: "d",
-    topic: "Word Roots"
+    Question_ID: 26243,
+    Question: "What does the root word 'chrono' mean?",
+    Option_0: "Color",
+    Option_1: "Shape",
+    Option_2: "Sound",
+    Option_3: "Time",
+    Correct_Answer: "3",
+    Solution: "The prefix <strong>chrono-</strong> is derived from the Greek word for <strong>time</strong> (e.g. chronology, chronometer)."
   }
 ];
 
@@ -232,19 +232,19 @@ export default function TestPage() {
       if (!isSupabaseConfigured) {
         console.warn('Supabase is not configured. Falling back to local mock questions.');
         setIsDemoMode(true);
-        // Shuffle and slice mock questions
-        const shuffled = [...MOCK_QUESTIONS].sort(() => 0.5 - Math.random());
-        setQuestions(shuffled.slice(0, 20));
+        // Sort mock questions by Question_ID
+        const sortedMock = [...MOCK_QUESTIONS].sort((a, b) => a.Question_ID - b.Question_ID);
+        setQuestions(sortedMock.slice(0, 20));
         setLoading(false);
         return;
       }
 
       try {
-        // Fetch questions ordered by ID (ascending), up to 20 questions
+        // Fetch questions ordered by Question_ID (ascending), up to 20 questions
         const { data, error: tableError } = await supabase
           .from('questions')
           .select('*')
-          .order('id', { ascending: true })
+          .order('Question_ID', { ascending: true })
           .limit(20);
 
         if (tableError) throw tableError;
@@ -258,8 +258,7 @@ export default function TestPage() {
         console.error('Supabase fetch error, using fallback mock data:', err);
         setError(err.message || 'Failed to fetch from database');
         setIsDemoMode(true);
-        // Fallback: Sort mock questions by ID
-        const sortedMock = [...MOCK_QUESTIONS].sort((a, b) => a.id - b.id);
+        const sortedMock = [...MOCK_QUESTIONS].sort((a, b) => a.Question_ID - b.Question_ID);
         setQuestions(sortedMock.slice(0, 20));
       } finally {
         setLoading(false);
@@ -297,10 +296,12 @@ export default function TestPage() {
   };
 
   const handleSelectAnswer = (optionKey) => {
-    setSelectedAnswers((prev) => ({
-      ...prev,
-      [questions[currentIndex].id]: optionKey,
-    }));
+    if (questions[currentIndex]) {
+      setSelectedAnswers((prev) => ({
+        ...prev,
+        [questions[currentIndex].Question_ID]: optionKey,
+      }));
+    }
   };
 
   const handlePrev = () => {
@@ -336,7 +337,7 @@ export default function TestPage() {
     setTestSubmitted(false);
     // Sort local fallback questions by ID if in demo mode
     if (isDemoMode) {
-      const sortedMock = [...MOCK_QUESTIONS].sort((a, b) => a.id - b.id);
+      const sortedMock = [...MOCK_QUESTIONS].sort((a, b) => a.Question_ID - b.Question_ID);
       setQuestions(sortedMock.slice(0, 20));
     }
   };
@@ -446,7 +447,7 @@ export default function TestPage() {
         <div className="flex-1 flex flex-col">
           <QuestionCard
             question={questions[currentIndex]}
-            selectedAnswer={selectedAnswers[questions[currentIndex]?.id]}
+            selectedAnswer={selectedAnswers[questions[currentIndex]?.Question_ID]}
             onSelectAnswer={handleSelectAnswer}
           />
         </div>
@@ -463,11 +464,11 @@ export default function TestPage() {
             <div className="grid grid-cols-5 gap-2 max-h-72 overflow-y-auto pr-1">
               {questions.map((q, idx) => {
                 const isSelected = currentIndex === idx;
-                const isAnswered = selectedAnswers[q.id] !== undefined;
+                const isAnswered = selectedAnswers[q.Question_ID] !== undefined;
 
                 return (
                   <button
-                    key={q.id}
+                    key={q.Question_ID}
                     onClick={() => setCurrentIndex(idx)}
                     className={`h-9 w-9 flex items-center justify-center rounded-lg text-xs font-bold transition duration-150 border ${
                       isSelected
@@ -495,7 +496,7 @@ export default function TestPage() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-3.5 h-3.5 rounded bg-slate-50 border border-slate-200"></span>
-                <span className="text-slate-500">Unanswered</span>
+                <span className="text-slate-505 hover:text-slate-600">Unanswered</span>
               </div>
             </div>
           </div>
@@ -543,11 +544,11 @@ export default function TestPage() {
                 <div className="grid grid-cols-5 gap-2 max-h-[60vh] overflow-y-auto">
                   {questions.map((q, idx) => {
                     const isSelected = currentIndex === idx;
-                    const isAnswered = selectedAnswers[q.id] !== undefined;
+                    const isAnswered = selectedAnswers[q.Question_ID] !== undefined;
 
                     return (
                       <button
-                        key={q.id}
+                        key={q.Question_ID}
                         onClick={() => {
                           setCurrentIndex(idx);
                           setIsSidebarOpen(false);
@@ -557,7 +558,7 @@ export default function TestPage() {
                             ? 'bg-indigo-600 border-indigo-600 text-white ring-2 ring-indigo-500/30'
                             : isAnswered
                             ? 'bg-emerald-50 border-emerald-200 text-emerald-700 font-semibold'
-                            : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300'
+                            : 'bg-slate-50 border-slate-200 text-slate-505 hover:border-slate-300'
                         }`}
                       >
                         {idx + 1}
@@ -578,7 +579,7 @@ export default function TestPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-3.5 h-3.5 rounded bg-slate-50 border border-slate-200"></span>
-                    <span className="text-slate-500">Unanswered</span>
+                    <span className="text-slate-505">Unanswered</span>
                   </div>
                 </div>
               </div>
