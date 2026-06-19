@@ -15,11 +15,11 @@ const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || SUPABASE_ANON_KEY;
 
 // Check if keys are actually configured and not placeholders
-export const isSupabaseConfigured = 
-  supabaseUrl && 
-  supabaseUrl !== 'YOUR_SUPABASE_URL_HERE' && 
+export const isSupabaseConfigured =
+  supabaseUrl &&
+  supabaseUrl !== 'YOUR_SUPABASE_URL_HERE' &&
   supabaseUrl.trim() !== '' &&
-  supabaseAnonKey && 
+  supabaseAnonKey &&
   supabaseAnonKey !== 'YOUR_SUPABASE_ANON_KEY_HERE' &&
   supabaseAnonKey.trim() !== '';
 
