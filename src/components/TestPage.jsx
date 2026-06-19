@@ -217,6 +217,7 @@ export default function TestPage() {
   const [isDemoMode, setIsDemoMode] = useState(false);
   const [testSubmitted, setTestSubmitted] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [view, setView] = useState('home'); // 'home' | 'testing'
   
   // Timer state (20 minutes = 1200 seconds)
   const [timeLeft, setTimeLeft] = useState(1200);
@@ -270,7 +271,7 @@ export default function TestPage() {
 
   // Timer interval setup
   useEffect(() => {
-    if (!loading && !testSubmitted && questions.length > 0) {
+    if (!loading && !testSubmitted && view === 'testing' && questions.length > 0) {
       timerRef.current = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
@@ -286,7 +287,7 @@ export default function TestPage() {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [loading, testSubmitted, questions]);
+  }, [loading, testSubmitted, view, questions]);
 
   // Format time (seconds -> MM:SS)
   const formatTime = (secs) => {
@@ -335,6 +336,7 @@ export default function TestPage() {
     setCurrentIndex(0);
     setTimeLeft(1200);
     setTestSubmitted(false);
+    setView('home'); // Go back to landing home view
     // Sort local fallback questions by ID if in demo mode
     if (isDemoMode) {
       const sortedMock = [...MOCK_QUESTIONS].sort((a, b) => a.Question_ID - b.Question_ID);
@@ -390,6 +392,95 @@ export default function TestPage() {
     );
   }
 
+  // Render Home/Landing View
+  if (view === 'home') {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col justify-between select-none">
+        {/* Header */}
+        <header className="bg-white border-b border-slate-100 px-4 py-4 shadow-xs">
+          <div className="max-w-4xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-extrabold text-lg">
+                E
+              </div>
+              <h1 className="text-lg font-extrabold text-slate-800 tracking-tight sm:text-xl uppercase">
+                ENGLISH MOCK TESTS
+              </h1>
+            </div>
+          </div>
+        </header>
+
+        {/* Demo Warning Banner */}
+        {isDemoMode && (
+          <div className="bg-amber-500/10 border-b border-amber-500/20 text-amber-800 px-4 py-2 text-xs font-semibold text-center flex items-center justify-center gap-1.5">
+            <svg className="w-4 h-4 shrink-0 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            Running in offline preview mode (Supabase unconfigured or connection error). Interactive test is fully playable.
+          </div>
+        )}
+
+        {/* Home Main Content */}
+        <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-12 flex flex-col items-center justify-center text-center">
+          <div className="w-20 h-20 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-8 border border-indigo-100 shadow-sm animate-bounce-slow">
+            <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+
+          <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight sm:text-5xl mb-4">
+            ENGLISH MOCK TESTS
+          </h2>
+          <p className="text-lg text-slate-600 mb-10 max-w-xl leading-relaxed">
+            Test your proficiency and grammar skills with our interactive, timed simulation. Access detailed explanations for every question upon completion.
+          </p>
+
+          {/* Test Specs Cards */}
+          <div className="grid grid-cols-3 gap-4 w-full mb-10 text-left">
+            <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Questions</span>
+              <span className="text-xl font-bold text-slate-800">{questions.length} Questions</span>
+            </div>
+            <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Duration</span>
+              <span className="text-xl font-bold text-slate-800">20 Minutes</span>
+            </div>
+            <div className="bg-white border border-slate-100 p-5 rounded-2xl shadow-xs">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Format</span>
+              <span className="text-xl font-bold text-slate-800">Multiple Choice</span>
+            </div>
+          </div>
+
+          {/* Instructions Box */}
+          <div className="bg-white border border-slate-100 rounded-2xl p-6 text-left w-full shadow-xs mb-10">
+            <h3 className="text-base font-bold text-slate-800 mb-3 uppercase tracking-wider">Test Instructions</h3>
+            <ul className="space-y-2 text-sm text-slate-600 list-disc pl-5 leading-relaxed">
+              <li>Each question has <strong>four options</strong> with only <strong>one correct answer</strong>.</li>
+              <li>You can navigate back and forth between questions using the bottom panel or the side grid.</li>
+              <li>The test timer will run continuously. If time runs out, your progress will be <strong>submitted automatically</strong>.</li>
+              <li>Detailed solutions and report statistics will be presented instantly after clicking <strong>Submit</strong>.</li>
+            </ul>
+          </div>
+
+          <button
+            onClick={() => setView('testing')}
+            className="w-full sm:w-64 py-4 px-6 bg-linear-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 active:from-indigo-800 active:to-violet-800 text-white font-extrabold rounded-xl transition duration-150 shadow-md shadow-indigo-200/50 hover:shadow-lg flex items-center justify-center gap-2 text-base cursor-pointer"
+          >
+            Start Mock Test
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+            </svg>
+          </button>
+        </main>
+
+        {/* Footer */}
+        <footer className="py-6 border-t border-slate-100 text-center text-xs font-medium text-slate-400">
+          ENGLISH MOCK TESTS &copy; {new Date().getFullYear()} &bull; Practice & Excel
+        </footer>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between select-none">
       {/* Header Banner */}
@@ -399,8 +490,8 @@ export default function TestPage() {
             <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-extrabold text-lg">
               E
             </div>
-            <h1 className="text-lg font-extrabold text-slate-800 tracking-tight sm:text-xl">
-              LexiPrep <span className="font-medium text-slate-400">Mock Test</span>
+            <h1 className="text-lg font-extrabold text-slate-800 tracking-tight sm:text-xl uppercase">
+              ENGLISH MOCK TESTS
             </h1>
           </div>
 
@@ -496,7 +587,7 @@ export default function TestPage() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-3.5 h-3.5 rounded bg-slate-50 border border-slate-200"></span>
-                <span className="text-slate-505 hover:text-slate-600">Unanswered</span>
+                <span className="text-slate-500">Unanswered</span>
               </div>
             </div>
           </div>
@@ -558,7 +649,7 @@ export default function TestPage() {
                             ? 'bg-indigo-600 border-indigo-600 text-white ring-2 ring-indigo-500/30'
                             : isAnswered
                             ? 'bg-emerald-50 border-emerald-200 text-emerald-700 font-semibold'
-                            : 'bg-slate-50 border-slate-200 text-slate-505 hover:border-slate-300'
+                            : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300'
                         }`}
                       >
                         {idx + 1}
@@ -579,7 +670,7 @@ export default function TestPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-3.5 h-3.5 rounded bg-slate-50 border border-slate-200"></span>
-                    <span className="text-slate-505">Unanswered</span>
+                    <span className="text-slate-500">Unanswered</span>
                   </div>
                 </div>
               </div>
