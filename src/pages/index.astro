@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+import TestPage from '../components/TestPage';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO Meta Tags -->
+    <title>LexiPrep English Mock Test | Advanced Competitive Exam Practice</title>
+    <meta 
+      name="description" 
+      content="Prepare for TOEFL, GRE, IELTS, and other competitive English exams with our interactive mock tests. Instant scoring, detailed breakdowns, and time-tracking features." 
+    />
+    <meta name="keywords" content="English Mock Test, IELTS Prep, TOEFL Practice, GRE Vocabulary, Grammar Quiz, Competitive Exams" />
+    <meta name="author" content="LexiPrep" />
+    
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased font-sans">
+    <!-- Hydrate the React Main Page on the client side -->
+    <TestPage client:load />
+  </body>
+</html>
