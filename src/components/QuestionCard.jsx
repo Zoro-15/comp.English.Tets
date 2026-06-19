@@ -26,9 +26,7 @@ export default function QuestionCard({ question, selectedAnswer, onSelectAnswer 
         </div>
 
         {/* Question Stem */}
-        <h3 className="text-lg sm:text-xl font-bold text-slate-800 leading-relaxed mb-8">
-          {question.Question}
-        </h3>
+        <h3 className="text-lg sm:text-xl font-bold text-slate-800 leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: question.Question }} />
       </div>
 
       {/* Selectable Options */}
@@ -58,7 +56,7 @@ export default function QuestionCard({ question, selectedAnswer, onSelectAnswer 
                 >
                   {getOptionLetter(key)}
                 </span>
-                <span className="text-sm sm:text-base leading-snug">{val}</span>
+                <span className="text-sm sm:text-base leading-snug" dangerouslySetInnerHTML={{ __html: val }} />
               </div>
 
               {/* Radio Indicator */}

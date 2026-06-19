@@ -207,7 +207,7 @@ export default function ResultPage({ questions, selectedAnswers, onRestart }) {
                         <span className="font-bold uppercase mr-2.5 text-xs px-2 py-0.5 bg-white border border-slate-200 rounded-md">
                           {getOptionLetter(key)}
                         </span>
-                        <span>{val}</span>
+                        <span dangerouslySetInnerHTML={{ __html: val }} />
                       </div>
                     );
                   })}
