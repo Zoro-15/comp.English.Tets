@@ -10,7 +10,7 @@ export default function ResultPage({ questions, selectedAnswers, onRestart }) {
     const selected = selectedAnswers[q.Question_ID];
     if (selected === undefined || selected === null) {
       unansweredCount++;
-    } else if (String(selected).trim() === String(q.Correct_Answer).trim()) {
+    } else if (String(selected).trim() === String(q.Correct_Answer_Index).trim()) {
       correctCount++;
     } else {
       wrongCount++;
@@ -137,7 +137,7 @@ export default function ResultPage({ questions, selectedAnswers, onRestart }) {
         <div className="space-y-6">
           {questions.map((q, idx) => {
             const selected = selectedAnswers[q.Question_ID];
-            const isCorrect = selected !== undefined && String(selected).trim() === String(q.Correct_Answer).trim();
+            const isCorrect = selected !== undefined && String(selected).trim() === String(q.Correct_Answer_Index).trim();
             const wasSkipped = selected === undefined || selected === null;
 
             return (
@@ -187,7 +187,7 @@ export default function ResultPage({ questions, selectedAnswers, onRestart }) {
                     { key: '3', val: q.Option_3 },
                   ].map(({ key, val }) => {
                     const isKeySelected = selected !== undefined && String(selected).trim() === String(key);
-                    const isKeyCorrect = String(q.Correct_Answer).trim() === String(key);
+                    const isKeyCorrect = String(q.Correct_Answer_Index).trim() === String(key);
 
                     let optionStyle = "border-slate-100 bg-slate-50/50 text-slate-700";
                     

@@ -13,7 +13,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Sarah turned off the computer having finished the report.",
     Option_2: "Having finished the report, Sarah turned off the computer.",
     Option_3: "The computer Sarah turned off, having finished the report.",
-    Correct_Answer: "2",
+    Correct_Answer_Index: "2",
     Solution: "The introductory modifying phrase <em>'Having finished the report'</em> must describe the subject that immediately follows it, which is <strong>Sarah</strong>. Options A, B, and D create dangling modifiers."
   },
   {
@@ -23,7 +23,7 @@ const MOCK_QUESTIONS = [
     Option_1: "then",
     Option_2: "when",
     Option_3: "while",
-    Correct_Answer: "2",
+    Correct_Answer_Index: "2",
     Solution: "The grammatical structure <strong>'hardly... when'</strong> is used to show that one event happens immediately after another. 'Hardly' takes 'when' (or 'before'), while 'scarcely' / 'no sooner' takes 'than'."
   },
   {
@@ -33,7 +33,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Transitory",
     Option_2: "Spacious",
     Option_3: "Enigmatic",
-    Correct_Answer: "1",
+    Correct_Answer_Index: "1",
     Solution: "<strong>Ephemeral</strong> means lasting for a very short time. Therefore, <strong>Transitory</strong> (short-lived) is the correct synonym."
   },
   {
@@ -43,7 +43,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Occured",
     Option_2: "Ocurred",
     Option_3: "Occurred",
-    Correct_Answer: "3",
+    Correct_Answer_Index: "3",
     Solution: "The correct spelling of the past tense of occur is <strong>Occurred</strong>, with double 'c' and double 'r'."
   },
   {
@@ -53,7 +53,7 @@ const MOCK_QUESTIONS = [
     Option_1: "with",
     Option_2: "on",
     Option_3: "at",
-    Correct_Answer: "0",
+    Correct_Answer_Index: "0",
     Solution: "We agree <strong>to</strong> a proposal, plan, or suggestion. We agree <strong>with</strong> a person, and agree <strong>on</strong> a topic or decision."
   },
   {
@@ -63,7 +63,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Exacerbate",
     Option_2: "Ameliorate",
     Option_3: "Pacify",
-    Correct_Answer: "1",
+    Correct_Answer_Index: "1",
     Solution: "<strong>Mitigate</strong> means to make less severe or serious. Its opposite is <strong>Exacerbate</strong>, which means to make a problem, bad situation, or negative feeling worse."
   },
   {
@@ -73,7 +73,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Adverb",
     Option_2: "Noun",
     Option_3: "Preposition",
-    Correct_Answer: "1",
+    Correct_Answer_Index: "1",
     Solution: "The word <strong>gracefully</strong> describes <em>how</em> the action ('performed') was executed, making it an <strong>adverb</strong>."
   },
   {
@@ -83,7 +83,7 @@ const MOCK_QUESTIONS = [
     Option_1: "He said that he would leave the next day.",
     Option_2: "He said that he would leave tomorrow.",
     Option_3: "He told he would leave the next day.",
-    Correct_Answer: "1",
+    Correct_Answer_Index: "1",
     Solution: "In indirect speech, the pronoun changes (I &rarr; he), the modal changes (will &rarr; would), and time expressions shift (tomorrow &rarr; the next day / the following day)."
   },
   {
@@ -93,7 +93,7 @@ const MOCK_QUESTIONS = [
     Option_1: "The school team had won the trophy.",
     Option_2: "The school team wins the trophy.",
     Option_3: "The school team has won the trophy.",
-    Correct_Answer: "0",
+    Correct_Answer_Index: "0",
     Solution: "The passive voice sentence is in the simple past tense (<em>was won</em>). The active voice counterpart must also use the simple past tense: <strong>won</strong>."
   },
   {
@@ -103,7 +103,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Metaphor",
     Option_2: "Personification",
     Option_3: "Hyperbole",
-    Correct_Answer: "2",
+    Correct_Answer_Index: "2",
     Solution: "Giving human qualities (whispering) to non-human things (wind) is called <strong>Personification</strong>."
   },
   {
@@ -113,7 +113,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Theoretical",
     Option_2: "Idealistic",
     Option_3: "Imaginative",
-    Correct_Answer: "0",
+    Correct_Answer_Index: "0",
     Solution: "<strong>Pragmatic</strong> means dealing with things sensibly and realistically in a way that is based on practical rather than theoretical considerations."
   },
   {
@@ -123,7 +123,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Neither the teacher nor the students are attending.",
     Option_2: "Bread and butter is my favorite breakfast.",
     Option_3: "Every one of the books were damaged in the rain.",
-    Correct_Answer: "3",
+    Correct_Answer_Index: "3",
     Solution: "The subject 'Every one' is singular, so it requires the singular verb <strong>'was'</strong> instead of the plural 'were'."
   },
   {
@@ -133,7 +133,7 @@ const MOCK_QUESTIONS = [
     Option_1: "insured",
     Option_2: "ensured",
     Option_3: "secured",
-    Correct_Answer: "0",
+    Correct_Answer_Index: "0",
     Solution: "To <strong>assure</strong> is to tell someone something positively to dispel any doubts. To <em>ensure</em> means to make certain, and to <em>insure</em> is related to insurance policies."
   },
   {
@@ -143,7 +143,7 @@ const MOCK_QUESTIONS = [
     Option_1: "To study or work late into the night",
     Option_2: "To create an unnecessary light source",
     Option_3: "To start a fire by mistake",
-    Correct_Answer: "1",
+    Correct_Answer_Index: "1",
     Solution: "The historical idiom <strong>'to burn the midnight oil'</strong> means to stay up late working or studying by the light of an oil lamp."
   },
   {
@@ -153,7 +153,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Mediocre",
     Option_2: "Peculiar",
     Option_3: "Splendid",
-    Correct_Answer: "1",
+    Correct_Answer_Index: "1",
     Solution: "<strong>Mediocre</strong> means of only moderate quality or average; run-of-the-mill."
   },
   {
@@ -163,7 +163,7 @@ const MOCK_QUESTIONS = [
     Option_1: "had studied",
     Option_2: "studies",
     Option_3: "would study",
-    Correct_Answer: "1",
+    Correct_Answer_Index: "1",
     Solution: "This is a **third conditional** sentence representing a hypothetical past action. The structure is: <em>If + past perfect (had studied), ... would have + past participle (passed)</em>."
   },
   {
@@ -173,7 +173,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Scrupulous",
     Option_2: "Fastidious",
     Option_3: "Negligent",
-    Correct_Answer: "3",
+    Correct_Answer_Index: "3",
     Solution: "Meticulous, scrupulous, and fastidious are synonyms referring to paying close attention to details. <strong>Negligent</strong> (careless) is the antonym."
   },
   {
@@ -183,7 +183,7 @@ const MOCK_QUESTIONS = [
     Option_1: "therefore",
     Option_2: "nevertheless",
     Option_3: "whereas",
-    Correct_Answer: "0",
+    Correct_Answer_Index: "0",
     Solution: "<strong>Thereby</strong> means 'by that means' or 'as a result of that' which perfectly links the cause and effect clauses."
   },
   {
@@ -193,7 +193,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Accommodate",
     Option_2: "Acomodate",
     Option_3: "Acommodate",
-    Correct_Answer: "1",
+    Correct_Answer_Index: "1",
     Solution: "The correct spelling of this word contains double 'c' and double 'm': <strong>Accommodate</strong>."
   },
   {
@@ -203,7 +203,7 @@ const MOCK_QUESTIONS = [
     Option_1: "Shape",
     Option_2: "Sound",
     Option_3: "Time",
-    Correct_Answer: "3",
+    Correct_Answer_Index: "3",
     Solution: "The prefix <strong>chrono-</strong> is derived from the Greek word for <strong>time</strong> (e.g. chronology, chronometer)."
   }
 ];
