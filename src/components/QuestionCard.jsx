@@ -18,11 +18,6 @@ export default function QuestionCard({ question, selectedAnswer, onSelectAnswer 
           <span className="text-xs font-extrabold uppercase tracking-widest text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">
             English Mock Test
           </span>
-          {question.topic && (
-            <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">
-              Topic: {question.topic}
-            </span>
-          )}
         </div>
 
         {/* Question Stem */}

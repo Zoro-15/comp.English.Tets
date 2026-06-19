@@ -152,11 +152,6 @@ export default function ResultPage({ questions, selectedAnswers, onRestart }) {
                     <span className="font-bold text-slate-800 text-sm">
                       Question {idx + 1}
                     </span>
-                    {q.topic && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700">
-                        {q.topic}
-                      </span>
-                    )}
                   </div>
                   
                   {/* Status Indicator */}
