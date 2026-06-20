@@ -3,11 +3,11 @@
 :root {
   --color-brand-bg: #1c1c1f;
   /* Medium slate grey dark background */
-  --color-brand-card: #22262c;
+  --color-brand-card: #1c1c1f;
   /* Slate card containers */
   --color-brand-border: #b3c8e7;
   /* Slate borders */
-  --color-brand-primary: #255ec7;
+  --color-brand-primary: #28509b;
   /* Navy blue primary action */
   --color-brand-secondary: #FFFFFF;
   /* White overlay text/badge background */
@@ -20,7 +20,7 @@
   /* Forest green custom */
   --color-brand-error: #9E3B36;
   /* Brick red custom */
-  --color-brand-neutral: #2b3747;
+  --color-brand-neutral: #4a525c;
   /* Medium slate grey */
   --color-brand-tile: #212222;
   /* Nested inner background */
@@ -29,7 +29,7 @@
 :root[data-theme="light"] {
   --color-brand-bg: #c6cbd6;
   /* Medium slate grey light background */
-  --color-brand-card: #c1cee4;
+  --color-brand-card: #c6cbd6;
   /* Pure white card containers */
   --color-brand-border: #9ea3bb;
   /* Soft grey borders */
