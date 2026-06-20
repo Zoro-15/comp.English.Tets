@@ -1,5 +1,14 @@
 import React from 'react';
 
+interface QuestionNavigatorProps {
+  currentIndex: number;
+  totalQuestions: number;
+  onPrev: () => void;
+  onNext: () => void;
+  onSubmit: () => void;
+  answeredCount: number;
+}
+
 export default function QuestionNavigator({
   currentIndex,
   totalQuestions,
@@ -7,8 +16,8 @@ export default function QuestionNavigator({
   onNext,
   onSubmit,
   answeredCount
-}) {
-  const percentComplete = Math.round(((currentIndex + 1) / totalQuestions) * 100);
+}: QuestionNavigatorProps) {
+  const percentComplete = totalQuestions > 0 ? Math.round(((currentIndex + 1) / totalQuestions) * 100) : 0;
 
   return (
     <div className="bg-white border-t border-slate-100 p-4 sm:p-5">
@@ -33,7 +42,7 @@ export default function QuestionNavigator({
           <button
             onClick={onPrev}
             disabled={currentIndex === 0}
-            className={`px-5 py-2.5 rounded-xl text-sm font-semibold border transition duration-150 flex items-center gap-1.5 shadow-xs ${
+            className={`px-5 py-2.5 rounded-xl text-sm font-semibold border transition duration-150 flex items-center gap-1.5 shadow-xs cursor-pointer ${
               currentIndex === 0
                 ? 'bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed'
                 : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300 active:bg-slate-100'
@@ -54,7 +63,7 @@ export default function QuestionNavigator({
           {currentIndex === totalQuestions - 1 ? (
             <button
               onClick={onSubmit}
-              className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold rounded-xl text-sm transition duration-150 shadow-sm shadow-emerald-200/50 flex items-center gap-1.5"
+              className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold rounded-xl text-sm transition duration-150 shadow-sm shadow-emerald-200/50 flex items-center gap-1.5 cursor-pointer"
             >
               Submit Test
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -64,7 +73,7 @@ export default function QuestionNavigator({
           ) : (
             <button
               onClick={onNext}
-              className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-semibold rounded-xl text-sm transition duration-150 shadow-sm shadow-indigo-200/50 flex items-center gap-1.5"
+              className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-semibold rounded-xl text-sm transition duration-150 shadow-sm shadow-indigo-200/50 flex items-center gap-1.5 cursor-pointer"
             >
               Next
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

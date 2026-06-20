@@ -1,6 +1,13 @@
 import React from 'react';
+import type { Question } from '../types';
 
-export default function QuestionCard({ question, selectedAnswer, onSelectAnswer }) {
+interface QuestionCardProps {
+  question: Question | undefined;
+  selectedAnswer: string | number | undefined;
+  onSelectAnswer: (key: string) => void;
+}
+
+export default function QuestionCard({ question, selectedAnswer, onSelectAnswer }: QuestionCardProps) {
   if (!question) return null;
 
   const options = [
@@ -10,8 +17,8 @@ export default function QuestionCard({ question, selectedAnswer, onSelectAnswer 
     { key: '3', val: question.Option_3 },
   ];
 
-  const getOptionLetter = (key) => {
-    const mapping = { '0': 'A', '1': 'B', '2': 'C', '3': 'D' };
+  const getOptionLetter = (key: string) => {
+    const mapping: Record<string, string> = { '0': 'A', '1': 'B', '2': 'C', '3': 'D' };
     return mapping[key] || key;
   };
 
@@ -39,7 +46,7 @@ export default function QuestionCard({ question, selectedAnswer, onSelectAnswer 
             <button
               key={key}
               onClick={() => onSelectAnswer(key)}
-              className={`w-full text-left p-4 rounded-xl border transition-all duration-150 flex items-center justify-between group outline-hidden ${
+              className={`w-full text-left p-4 rounded-xl border transition-all duration-150 flex items-center justify-between group outline-hidden cursor-pointer ${
                 isSelected
                   ? 'border-indigo-600 bg-indigo-50/50 text-indigo-900 ring-2 ring-indigo-500/25 font-semibold'
                   : 'border-slate-200 hover:border-indigo-300 hover:bg-slate-50 text-slate-700'
