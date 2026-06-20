@@ -27,9 +27,9 @@
 }
 
 :root[data-theme="light"] {
-  --color-brand-bg: #8f99b1;
+  --color-brand-bg: #aeb1b8;
   /* Medium slate grey light background */
-  --color-brand-card: #8693aa;
+  --color-brand-card: #8f98a7;
   /* Pure white card containers */
   --color-brand-border: #7b819e;
   /* Soft grey borders */
