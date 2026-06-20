@@ -226,12 +226,12 @@ const formatTime = (secs: number) => {
 // Recycle base questions dynamically for testId > 1 in offline mode
 const getMockQuestionsForTest = (testId: number): Question[] => {
   const baseQuestions = [...MOCK_QUESTIONS].sort((a, b) => a.Question_ID - b.Question_ID);
-  
+
   if (testId === 1) return baseQuestions.slice(0, 20);
-  
+
   return baseQuestions.map((q) => {
     let modifiedQuestion = q.Question;
-    
+
     if (testId % 2 === 0) {
       modifiedQuestion = modifiedQuestion
         .replace("Sarah", "Alex")
@@ -242,7 +242,7 @@ const getMockQuestionsForTest = (testId: number): Question[] => {
         .replace("Sarah", "Emily")
         .replace("whispered through", "danced through");
     }
-    
+
     return {
       ...q,
       Question_ID: q.Question_ID + (testId - 1) * 100,
@@ -267,14 +267,14 @@ const calculateStreakFromAttempts = (attemptsList: TestAttempt[]): UserStreak =>
   if (uniqueDates.length === 0) return { currentStreak: 0, longestStreak: 0 };
 
   const todayStr = getLocalDateString(new Date());
-  
+
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   const yesterdayStr = getLocalDateString(yesterday);
 
   let currentStreak = 0;
   let longestStreak = 0;
-  
+
   // Calculate current streak
   if (uniqueDates[0] === todayStr || uniqueDates[0] === yesterdayStr) {
     currentStreak = 1;
@@ -283,7 +283,7 @@ const calculateStreakFromAttempts = (attemptsList: TestAttempt[]): UserStreak =>
       const expectedPrev = new Date(prevDateStr);
       expectedPrev.setDate(expectedPrev.getDate() - 1);
       const expectedPrevStr = getLocalDateString(expectedPrev);
-      
+
       if (uniqueDates[i] === expectedPrevStr) {
         currentStreak++;
         prevDateStr = uniqueDates[i];
@@ -297,7 +297,7 @@ const calculateStreakFromAttempts = (attemptsList: TestAttempt[]): UserStreak =>
   let tempStreak = 0;
   let prevDateStr = "";
   const sortedOldest = [...uniqueDates].reverse();
-  
+
   sortedOldest.forEach((dateStr, idx) => {
     if (idx === 0) {
       tempStreak = 1;
@@ -305,7 +305,7 @@ const calculateStreakFromAttempts = (attemptsList: TestAttempt[]): UserStreak =>
       const expectedPrev = new Date(dateStr);
       expectedPrev.setDate(expectedPrev.getDate() - 1);
       const expectedPrevStr = getLocalDateString(expectedPrev);
-      
+
       if (prevDateStr === expectedPrevStr) {
         tempStreak++;
       } else {
@@ -335,7 +335,7 @@ const generateMockLeaderboard = (currentCode: string, userAttempts: TestAttempt[
     const bestScore = Math.max(...userAttempts.map(item => item.score));
 
     const filteredCompetitors = mockCompetitors.filter(c => c.student_code !== currentCode);
-    
+
     filteredCompetitors.push({
       student_code: currentCode,
       tests_taken: totalTests,
@@ -369,7 +369,7 @@ export default function TestPage() {
   const [testSubmitted, setTestSubmitted] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [view, setView] = useState<'home' | 'testing'>('home');
-  
+
   // Multi-user Authenticated Profile state
   const [studentCode, setStudentCode] = useState<string | null>(null);
   const [deviceToken, setDeviceToken] = useState<string | null>(null);
@@ -409,7 +409,7 @@ export default function TestPage() {
   useEffect(() => {
     const cachedCode = localStorage.getItem('english_mock_student_code');
     const cachedToken = localStorage.getItem('english_mock_device_token');
-    
+
     if (cachedCode) {
       setStudentCode(cachedCode);
       if (cachedToken) {
@@ -614,7 +614,7 @@ export default function TestPage() {
 
     setStudentCode(code);
     localStorage.setItem('english_mock_student_code', code);
-    
+
     await loadAttemptsAndUser(code);
     setIsLoggingIn(false);
   };
@@ -653,13 +653,13 @@ export default function TestPage() {
   const handleSubmitTest = (auto = false) => {
     if (!auto) {
       const answeredCount = Object.keys(selectedAnswers).length;
-      const confirmMessage = answeredCount === questions.length 
-        ? "Are you sure you want to submit your mock test?" 
+      const confirmMessage = answeredCount === questions.length
+        ? "Are you sure you want to submit your mock test?"
         : `You have only answered ${answeredCount} of ${questions.length} questions. Submit anyway?`;
-      
+
       if (!window.confirm(confirmMessage)) return;
     }
-    
+
     if (timerRef.current) clearInterval(timerRef.current);
 
     // Negative Marking Score calculations
@@ -762,9 +762,9 @@ export default function TestPage() {
   const handleSelectTestNum = (num: number) => {
     const testAttempts = attempts.filter((a) => a.test_id === num);
     setTestId(num);
-    
+
     if (testAttempts.length > 0) {
-      // If completed, view results directly
+      // If completed, view results directly gghd
       setSelectedAnswers({});
       // Pull questions for the viewed test to show the report
       setView('testing');
@@ -815,11 +815,11 @@ export default function TestPage() {
 
   // Dashboard Stats derived from attempts
   const totalTests = attempts.length;
-  const avgAccuracy = totalTests > 0 
-    ? Math.round(attempts.reduce((sum, item) => sum + item.accuracy, 0) / totalTests) 
+  const avgAccuracy = totalTests > 0
+    ? Math.round(attempts.reduce((sum, item) => sum + item.accuracy, 0) / totalTests)
     : 0;
-  const bestScore = totalTests > 0 
-    ? Math.max(...attempts.map(item => item.score)) 
+  const bestScore = totalTests > 0
+    ? Math.max(...attempts.map(item => item.score))
     : 0;
 
   // Loading indicator for testing view questions fetch
@@ -964,7 +964,7 @@ export default function TestPage() {
 
         {/* Home Main Content */}
         <main className="flex-1 max-w-[1024px] mx-auto w-full px-6 py-12 space-y-12">
-          
+
           {/* Welcome Area & Stats Split Grid */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-12 items-center mb-12">
             {/* Left side: Welcome Area (Component B) */}
@@ -1074,58 +1074,96 @@ export default function TestPage() {
               <div className="text-center py-10 border border-dashed border-brand-border rounded-2xl">
                 <p className="text-xs text-brand-text uppercase font-semibold tracking-wider">No leaderboard data available.</p>
               </div>
-            ) : (
-              <div className="bg-brand-card border border-brand-border rounded-2xl overflow-hidden">
-                <div className="overflow-x-auto font-inter">
-                  <table className="w-full text-left text-xs border-collapse" style={{ borderCollapse: 'collapse' }}>
-                    <thead>
-                      <tr className="border-b border-brand-border bg-brand-tile text-brand-title font-extrabold uppercase tracking-wider">
-                        <th className="py-3.5 px-6 font-extrabold text-center w-16">Rank</th>
-                        <th className="py-3.5 px-6 font-extrabold">Student Code</th>
-                        <th className="py-3.5 px-6 font-extrabold text-center">Tests Taken</th>
-                        <th className="py-3.5 px-6 font-extrabold text-center">Avg. Accuracy</th>
-                        <th className="py-3.5 px-6 font-extrabold text-center font-mono">Avg. Time</th>
-                        <th className="py-3.5 px-6 font-extrabold text-center">Best Score</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-brand-border text-brand-text font-normal">
-                      {leaderboard.map((entry, idx) => {
-                        const isCurrentUser = entry.student_code === studentCode;
-                        return (
-                          <tr 
-                            key={entry.student_code} 
-                            className={`transition-none ${
-                              isCurrentUser 
-                                ? 'bg-brand-primary/10 hover:bg-brand-primary/15 font-semibold text-brand-title' 
-                                : 'hover:bg-brand-border/10'
-                            }`}
-                          >
-                            <td className="py-3.5 px-6 text-center text-brand-title font-black">
-                              #{idx + 1}
-                            </td>
-                            <td className="py-3.5 px-6 text-brand-title font-medium">
-                              {entry.student_code} {isCurrentUser && <span className="ml-2 text-[10px] bg-brand-primary text-brand-secondary px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">YOU</span>}
-                            </td>
-                            <td className="py-3.5 px-6 text-center">
-                              {entry.tests_taken}
-                            </td>
-                            <td className="py-3.5 px-6 text-center font-bold">
-                              {entry.avg_accuracy}%
-                            </td>
-                            <td className="py-3.5 px-6 text-center font-mono">
-                              {formatTime(entry.avg_time_taken)}
-                            </td>
-                            <td className="py-3.5 px-6 text-center text-brand-title">
-                              {Number(entry.best_score) % 1 === 0 ? Number(entry.best_score).toFixed(0) : Number(entry.best_score).toFixed(1)} / 80
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+            ) : (() => {
+              const top15 = leaderboard.slice(0, 15);
+              const userIndex = leaderboard.findIndex(entry => entry.student_code === studentCode);
+              const showUserRowSeparately = userIndex !== -1 && userIndex >= 15;
+              const userEntry = showUserRowSeparately ? leaderboard[userIndex] : null;
+
+              return (
+                <div className="bg-brand-card border border-brand-border rounded-2xl overflow-hidden">
+                  <div className="overflow-x-auto font-inter">
+                    <table className="w-full text-left text-xs border-collapse" style={{ borderCollapse: 'collapse' }}>
+                      <thead>
+                        <tr className="border-b border-brand-border bg-brand-tile text-brand-title font-extrabold uppercase tracking-wider">
+                          <th className="py-3.5 px-6 font-extrabold text-center w-16">Rank</th>
+                          <th className="py-3.5 px-6 font-extrabold">Student Code</th>
+                          <th className="py-3.5 px-6 font-extrabold text-center">Tests Taken</th>
+                          <th className="py-3.5 px-6 font-extrabold text-center">Avg. Accuracy</th>
+                          <th className="py-3.5 px-6 font-extrabold text-center font-mono">Avg. Time</th>
+                          <th className="py-3.5 px-6 font-extrabold text-center">Best Score</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-brand-border text-brand-text font-normal">
+                        {top15.map((entry, idx) => {
+                          const isCurrentUser = entry.student_code === studentCode;
+                          return (
+                            <tr
+                              key={entry.student_code}
+                              className={`transition-none ${isCurrentUser
+                                  ? 'bg-brand-primary/10 hover:bg-brand-primary/15 font-semibold text-brand-title'
+                                  : 'hover:bg-brand-border/10'
+                                }`}
+                            >
+                              <td className="py-3.5 px-6 text-center text-brand-title font-black">
+                                #{idx + 1}
+                              </td>
+                              <td className="py-3.5 px-6 text-brand-title font-medium">
+                                {entry.student_code} {isCurrentUser && <span className="ml-2 text-[10px] bg-brand-primary text-brand-secondary px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">YOU</span>}
+                              </td>
+                              <td className="py-3.5 px-6 text-center">
+                                {entry.tests_taken}
+                              </td>
+                              <td className="py-3.5 px-6 text-center font-bold">
+                                {entry.avg_accuracy}%
+                              </td>
+                              <td className="py-3.5 px-6 text-center font-mono">
+                                {formatTime(entry.avg_time_taken)}
+                              </td>
+                              <td className="py-3.5 px-6 text-center text-brand-title">
+                                {Number(entry.best_score) % 1 === 0 ? Number(entry.best_score).toFixed(0) : Number(entry.best_score).toFixed(1)} / 80
+                              </td>
+                            </tr>
+                          );
+                        })}
+
+                        {showUserRowSeparately && userEntry && (
+                          <>
+                            {/* Separator row */}
+                            <tr className="bg-brand-tile/50 select-none">
+                              <td colSpan={6} className="py-2 px-6 text-center text-[10px] font-black tracking-widest text-brand-text/50">
+                                &bull; &bull; &bull;
+                              </td>
+                            </tr>
+                            {/* User's row */}
+                            <tr className="bg-brand-primary/10 hover:bg-brand-primary/15 font-semibold text-brand-title transition-none">
+                              <td className="py-3.5 px-6 text-center text-brand-title font-black">
+                                #{userIndex + 1}
+                              </td>
+                              <td className="py-3.5 px-6 text-brand-title font-medium">
+                                {userEntry.student_code} <span className="ml-2 text-[10px] bg-brand-primary text-brand-secondary px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">YOU</span>
+                              </td>
+                              <td className="py-3.5 px-6 text-center">
+                                {userEntry.tests_taken}
+                              </td>
+                              <td className="py-3.5 px-6 text-center font-bold">
+                                {userEntry.avg_accuracy}%
+                              </td>
+                              <td className="py-3.5 px-6 text-center font-mono">
+                                {formatTime(userEntry.avg_time_taken)}
+                              </td>
+                              <td className="py-3.5 px-6 text-center text-brand-title">
+                                {Number(userEntry.best_score) % 1 === 0 ? Number(userEntry.best_score).toFixed(0) : Number(userEntry.best_score).toFixed(1)} / 80
+                              </td>
+                            </tr>
+                          </>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
           </div>
 
           {/* Attempts History */}
@@ -1298,13 +1336,12 @@ export default function TestPage() {
                   <button
                     key={q.Question_ID}
                     onClick={() => setCurrentIndex(idx)}
-                    className={`h-8 w-8 flex items-center justify-center rounded-lg text-xs font-bold transition-none border cursor-pointer outline-none ${
-                      isSelected
+                    className={`h-8 w-8 flex items-center justify-center rounded-lg text-xs font-bold transition-none border cursor-pointer outline-none ${isSelected
                         ? 'bg-brand-primary border-brand-primary text-brand-secondary font-bold'
                         : isAnswered
-                        ? 'bg-brand-tile border-brand-primary text-brand-title font-bold'
-                        : 'bg-brand-tile border-brand-border text-brand-text hover:border-brand-primary hover:text-brand-title'
-                    }`}
+                          ? 'bg-brand-tile border-brand-primary text-brand-title font-bold'
+                          : 'bg-brand-tile border-brand-border text-brand-text hover:border-brand-primary hover:text-brand-title'
+                      }`}
                   >
                     {idx + 1}
                   </button>
@@ -1344,11 +1381,11 @@ export default function TestPage() {
         {isSidebarOpen && (
           <div className="fixed inset-0 z-50 md:hidden animate-fade-in animate-duration-200">
             {/* Backdrop overlay */}
-            <div 
+            <div
               className="absolute inset-0 bg-slate-950/45"
               onClick={() => setIsSidebarOpen(false)}
             ></div>
-            
+
             {/* Drawer sheet content */}
             <div className="absolute right-0 top-0 bottom-0 w-72 bg-brand-card p-6 flex flex-col justify-between z-10 animate-slide-in-right animate-duration-200 border-l border-brand-border rounded-l-2xl">
               <div>
@@ -1356,7 +1393,7 @@ export default function TestPage() {
                   <h4 className="text-xs font-bold text-brand-text uppercase tracking-wider flex items-center gap-1.5">
                     Navigator
                   </h4>
-                  <button 
+                  <button
                     onClick={() => setIsSidebarOpen(false)}
                     className="p-1 text-slate-400 hover:bg-brand-border cursor-pointer outline-none bg-transparent border-none"
                   >
@@ -1378,13 +1415,12 @@ export default function TestPage() {
                           setCurrentIndex(idx);
                           setIsSidebarOpen(false);
                         }}
-                        className={`h-8 w-8 flex items-center justify-center rounded-lg text-xs font-bold transition-none border cursor-pointer outline-none ${
-                          isSelected
+                        className={`h-8 w-8 flex items-center justify-center rounded-lg text-xs font-bold transition-none border cursor-pointer outline-none ${isSelected
                             ? 'bg-brand-primary border-brand-primary text-brand-secondary font-bold'
                             : isAnswered
-                            ? 'bg-brand-tile border-brand-primary text-brand-title font-bold'
-                            : 'bg-brand-tile border-brand-border text-brand-text hover:border-brand-primary hover:text-brand-title'
-                        }`}
+                              ? 'bg-brand-tile border-brand-primary text-brand-title font-bold'
+                              : 'bg-brand-tile border-brand-border text-brand-text hover:border-brand-primary hover:text-brand-title'
+                          }`}
                       >
                         {idx + 1}
                       </button>
