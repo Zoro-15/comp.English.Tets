@@ -87,7 +87,19 @@ export default function LoginScreen({
 
   return (
     <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-center p-6 select-none font-inter text-brand-text relative">
-      <div className="w-full max-w-sm bg-brand-card border border-brand-border p-8 rounded-none space-y-8">
+      {/* Theme Toggle Button absolute at top-right */}
+      <div className="absolute top-4 right-4 z-50">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="text-[11px] uppercase font-bold tracking-widest text-brand-text hover:text-brand-primary cursor-pointer transition-none bg-transparent border-none outline-none"
+          title="Toggle Theme"
+        >
+          {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+        </button>
+      </div>
+
+      <div className="w-full max-w-sm bg-brand-card border border-brand-border p-8 rounded-2xl space-y-8">
 
         {/* Branding header */}
         <div className="text-center space-y-2">
@@ -121,7 +133,7 @@ export default function LoginScreen({
                   onPaste={index === 0 ? handlePaste : undefined}
                   disabled={isLoading}
                   autoComplete="off"
-                  className="w-12 h-14 text-center text-xl font-bold bg-brand-bg border border-brand-border rounded-none text-brand-title outline-none transition-none focus:border-black focus:ring-0"
+                  className="w-12 h-14 text-center text-xl font-bold bg-brand-bg border border-brand-border rounded-xl text-brand-title outline-none transition-none focus:border-brand-primary focus:ring-0"
                 />
               ))}
             </div>
@@ -129,23 +141,22 @@ export default function LoginScreen({
 
           {/* Error Message */}
           {displayError && (
-            <div className="border border-black text-black text-xs font-semibold p-3 text-center flex items-center justify-center gap-1.5 rounded-none">
-              <svg className="w-3.5 h-3.5 shrink-0 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <div className="border border-brand-primary text-brand-primary text-xs font-semibold p-3 text-center flex items-center justify-center gap-1.5 rounded-xl">
+              <svg className="w-3.5 h-3.5 shrink-0 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               {displayError}
             </div>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={isLoading || digits.some(d => d === '')}
-            className="w-full py-3 bg-black text-white hover:bg-black/90 disabled:opacity-20 font-bold uppercase tracking-wider text-xs transition-none flex items-center justify-center gap-1.5 cursor-pointer disabled:cursor-not-allowed rounded-none"
+            className="w-full py-3 bg-white text-black border border-brand-primary hover:opacity-90 disabled:opacity-20 font-bold uppercase tracking-wider text-xs transition-none flex items-center justify-center gap-1.5 cursor-pointer disabled:cursor-not-allowed rounded-xl"
           >
             {isLoading ? (
               <div className="flex items-center gap-2">
-                <div className="w-3.5 h-3.5 rounded-full border-2 border-white border-t-transparent animate-spin"></div>
+                <div className="w-3.5 h-3.5 rounded-full border-2 border-brand-bg border-t-transparent animate-spin"></div>
                 <span>Entering...</span>
               </div>
             ) : (

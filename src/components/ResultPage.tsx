@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import type { Question } from '../types';
 
+const formatQuestionText = (text: string) => {
+  if (!text) return "";
+  return text.replace(/<br\s*\/?>/gi, '<br><span class="block h-3"></span>');
+};
+
 interface ResultPageProps {
   questions: Question[];
   selectedAnswers: Record<number, string | number>;
@@ -76,7 +81,7 @@ export default function ResultPage({
     <div className="max-w-[1024px] mx-auto px-4 py-8 font-inter text-brand-text">
       {/* Top Heading */}
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-black text-black uppercase tracking-tight font-inter">
+        <h2 className="text-3xl font-black text-brand-title uppercase tracking-tight font-inter">
           Test Report Card
         </h2>
         <p className="text-xs text-brand-text mt-1.5 font-bold uppercase tracking-widest">
@@ -85,49 +90,49 @@ export default function ResultPage({
       </div>
 
       {/* Horizontal Summary Row (Component C inspired style) */}
-      <div className="bg-brand-bg border border-brand-border rounded-none p-6 mb-8 font-inter">
+      <div className="bg-brand-card border border-brand-border rounded-2xl p-6 mb-8 font-inter">
         <div className="grid grid-cols-2 sm:grid-cols-6 gap-4 text-center divide-y sm:divide-y-0 sm:divide-x divide-brand-border">
           <div className="pt-2 sm:pt-0">
             <span className="block text-[10px] uppercase tracking-widest text-brand-text font-extrabold mb-1.5">Score</span>
-            <span className="text-xl font-black text-black">{formattedScore} / {maxPossibleScore}</span>
+            <span className="text-xl font-black text-brand-title">{formattedScore} / {maxPossibleScore}</span>
           </div>
           <div className="pt-2 sm:pt-0">
             <span className="block text-[10px] uppercase tracking-widest text-brand-text font-extrabold mb-1.5">Accuracy</span>
-            <span className="text-xl font-black text-black">{accuracy}%</span>
+            <span className="text-xl font-black text-brand-title">{accuracy}%</span>
           </div>
           <div className="pt-2 sm:pt-0">
             <span className="block text-[10px] uppercase tracking-widest text-brand-text font-extrabold mb-1.5">Time Taken</span>
-            <span className="text-xl font-black text-black font-mono">{formatTime(timeTaken)}</span>
+            <span className="text-xl font-black text-brand-title font-mono">{formatTime(timeTaken)}</span>
           </div>
           <div className="pt-2 sm:pt-0">
             <span className="block text-[10px] uppercase tracking-widest text-brand-text font-extrabold mb-1.5">Correct</span>
-            <span className="text-xl font-black text-black">{correctCount}</span>
+            <span className="text-xl font-black text-brand-title">{correctCount}</span>
           </div>
           <div className="pt-2 sm:pt-0">
             <span className="block text-[10px] uppercase tracking-widest text-brand-text font-extrabold mb-1.5">Incorrect</span>
-            <span className="text-xl font-black text-black">{wrongCount}</span>
+            <span className="text-xl font-black text-brand-title">{wrongCount}</span>
           </div>
           <div className="pt-2 sm:pt-0">
             <span className="block text-[10px] uppercase tracking-widest text-brand-text font-extrabold mb-1.5">Skipped</span>
-            <span className="text-xl font-black text-black">{unansweredCount}</span>
+            <span className="text-xl font-black text-brand-title">{unansweredCount}</span>
           </div>
         </div>
 
         {/* Thin progress bar underneath */}
-        <div className="mt-6 w-full bg-brand-bg h-1 rounded-none overflow-hidden border border-brand-border">
-          <div className="bg-black h-full rounded-none transition-all duration-300" style={{ width: `${accuracy}%` }} />
+        <div className="mt-6 w-full bg-brand-bg h-1.5 rounded-full overflow-hidden border border-brand-border">
+          <div className="bg-brand-primary h-full rounded-full transition-all duration-300" style={{ width: `${accuracy}%` }} />
         </div>
       </div>
 
       {/* Performance Insights */}
-      <div className="bg-brand-bg border border-brand-border rounded-none p-6 mb-8 space-y-4 font-inter">
-        <h3 className="text-base font-extrabold text-black uppercase tracking-tight border-b border-brand-border pb-2">
+      <div className="bg-brand-card border border-brand-border rounded-2xl p-6 mb-8 space-y-4 font-inter">
+        <h3 className="text-base font-extrabold text-brand-title uppercase tracking-tight border-b border-brand-border pb-2">
           Performance Insights
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs leading-relaxed">
           <div>
             <span className="block text-[10px] font-extrabold uppercase tracking-widest text-brand-text mb-1">Strong Areas</span>
-            <p className="text-black font-medium">
+            <p className="text-brand-title font-medium">
               {accuracy >= 80 
                 ? "Excellent sentence structure comprehension and vocabulary recognition." 
                 : accuracy >= 50 
@@ -137,7 +142,7 @@ export default function ResultPage({
           </div>
           <div>
             <span className="block text-[10px] font-extrabold uppercase tracking-widest text-brand-text mb-1">Needs Improvement</span>
-            <p className="text-black font-medium">
+            <p className="text-brand-title font-medium">
               {wrongCount > 0 
                 ? "Review introductory modifying phrases, spelling patterns, and preposition choices." 
                 : unansweredCount > 0 
@@ -147,7 +152,7 @@ export default function ResultPage({
           </div>
           <div>
             <span className="block text-[10px] font-extrabold uppercase tracking-widest text-brand-text mb-1">Next Recommended Test</span>
-            <p className="text-black font-black uppercase tracking-tight">
+            <p className="text-brand-title font-black uppercase tracking-tight">
               {accuracy >= 70 
                 ? `Mock Test ${testId + 1}` 
                 : `Mock Test ${testId} (Retake suggested)`}
@@ -157,8 +162,8 @@ export default function ResultPage({
       </div>
 
       {/* Question Review Grid */}
-      <div className="bg-brand-bg border border-brand-border rounded-none p-6 mb-8 font-inter">
-        <h4 className="text-xs font-extrabold text-black uppercase tracking-widest mb-4 flex items-center gap-1.5">
+      <div className="bg-brand-card border border-brand-border rounded-2xl p-6 mb-8 font-inter">
+        <h4 className="text-xs font-extrabold text-brand-title uppercase tracking-widest mb-4 flex items-center gap-1.5">
           Question Review Grid
         </h4>
         
@@ -170,11 +175,11 @@ export default function ResultPage({
 
             let btnStyle = "";
             if (wasSkipped) {
-              btnStyle = "bg-brand-bg border-brand-border text-brand-text hover:border-black hover:text-black";
+              btnStyle = "bg-brand-neutral text-white";
             } else if (isCorrect) {
-              btnStyle = "bg-black border-black text-white font-bold";
+              btnStyle = "bg-brand-success text-white font-bold";
             } else {
-              btnStyle = "bg-brand-bg border-black text-black font-bold";
+              btnStyle = "bg-brand-error text-white font-bold";
             }
 
             return (
@@ -183,7 +188,7 @@ export default function ResultPage({
                 onClick={() => {
                   document.getElementById(`review-q-${idx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }}
-                className={`h-9 w-9 flex flex-col items-center justify-center rounded-none text-xs font-bold transition-none border cursor-pointer outline-none ${btnStyle}`}
+                className={`h-9 w-9 flex flex-col items-center justify-center rounded-lg text-xs font-bold transition-none border-none cursor-pointer outline-none hover:opacity-80 ${btnStyle}`}
               >
                 <span>{idx + 1}</span>
               </button>
@@ -193,49 +198,32 @@ export default function ResultPage({
 
         {/* Legend */}
         <div className="mt-5 pt-4 border-t border-brand-border/60 flex flex-wrap gap-2 text-[10px] font-extrabold uppercase tracking-widest">
-          <div className="px-2.5 py-1.5 rounded-none border border-black bg-black text-white flex items-center gap-1.5">
+          <div className="px-2.5 py-1.5 rounded-lg border-none bg-brand-success text-white flex items-center gap-1.5">
             <span>✓ Correct</span>
           </div>
-          <div className="px-2.5 py-1.5 rounded-none border border-black bg-brand-bg text-black flex items-center gap-1.5">
+          <div className="px-2.5 py-1.5 rounded-lg border-none bg-brand-error text-white flex items-center gap-1.5">
             <span>✗ Wrong</span>
           </div>
-          <div className="px-2.5 py-1.5 rounded-none border border-brand-border bg-brand-bg text-brand-text flex items-center gap-1.5">
+          <div className="px-2.5 py-1.5 rounded-lg border-none bg-brand-neutral text-white flex items-center gap-1.5">
             <span>— Skipped</span>
           </div>
         </div>
       </div>
 
       {/* Action Progression Panel */}
-      <div className="bg-brand-bg border border-brand-border rounded-none p-6 mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between font-inter">
+      <div className="bg-brand-card border border-brand-border rounded-2xl p-6 mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between font-inter">
         <div className="text-center sm:text-left">
-          <h4 className="text-xs font-bold text-black uppercase tracking-wider">Test Progression</h4>
+          <h4 className="text-xs font-bold text-brand-title uppercase tracking-wider">Test Retake</h4>
           <p className="text-[11px] text-brand-text mt-1">
-            You can retake this test for a higher score or advance to the next set.
+            You can retake this mock test to improve your score and mastery of these concepts.
           </p>
         </div>
-        <div className="w-full sm:w-auto flex flex-wrap gap-2.5 justify-center">
-          <button
-            onClick={onBackToHome}
-            className="py-2 px-4 border border-brand-border bg-brand-bg text-brand-text hover:border-black hover:text-black font-bold uppercase tracking-wider rounded-none transition-none flex items-center gap-1.5 cursor-pointer text-xs"
-          >
-            Back to Dashboard
-          </button>
-          
+        <div className="w-full sm:w-auto flex justify-center">
           <button
             onClick={onRestart}
-            className="py-2 px-4 border border-brand-border bg-brand-bg text-brand-text hover:border-black hover:text-black font-bold uppercase tracking-wider rounded-none transition-none flex items-center gap-1.5 cursor-pointer text-xs"
+            className="py-2 px-6 border border-brand-border bg-brand-bg text-brand-text hover:border-brand-primary hover:text-brand-title font-bold uppercase tracking-wider rounded-xl transition-none flex items-center gap-1.5 cursor-pointer text-xs"
           >
             Retake Test {testId}
-          </button>
-          
-          <button
-            onClick={onNextTest}
-            className="py-2.5 px-5 bg-black text-white hover:bg-black/90 font-bold uppercase tracking-wider rounded-full transition-none flex items-center gap-1.5 cursor-pointer text-xs border-none"
-          >
-            Proceed to Test {testId + 1}
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7" />
-            </svg>
           </button>
         </div>
       </div>
@@ -243,38 +231,38 @@ export default function ResultPage({
       {/* Review Analysis */}
       <div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5 pb-3 border-b border-brand-border font-inter">
-          <h3 className="text-base font-extrabold text-black uppercase tracking-tight">
+          <h3 className="text-base font-extrabold text-brand-title uppercase tracking-tight">
             Detailed Question Analysis
           </h3>
 
           {/* Filtering Control */}
-          <div className="inline-flex rounded-none bg-brand-bg p-0.5 border border-brand-border">
+          <div className="inline-flex rounded-xl bg-brand-bg p-0.5 border border-brand-border">
             <button
               onClick={() => setFilter('all')}
-              className={`px-3 py-1 rounded-none text-xs transition-none cursor-pointer uppercase font-bold tracking-wider ${
+              className={`px-3 py-1 rounded-lg text-xs transition-none cursor-pointer uppercase font-bold tracking-wider ${
                 filter === 'all'
-                  ? 'bg-black text-white font-bold'
-                  : 'text-brand-text hover:text-black'
+                  ? 'bg-brand-primary text-brand-secondary font-bold'
+                  : 'text-brand-text hover:text-brand-title'
               }`}
             >
               All ({questions.length})
             </button>
             <button
               onClick={() => setFilter('correct')}
-              className={`px-3 py-1 rounded-none text-xs transition-none cursor-pointer uppercase font-bold tracking-wider ${
+              className={`px-3 py-1 rounded-lg text-xs transition-none cursor-pointer uppercase font-bold tracking-wider ${
                 filter === 'correct'
-                  ? 'bg-black text-white font-bold'
-                  : 'text-brand-text hover:text-black'
+                  ? 'bg-brand-primary text-brand-secondary font-bold'
+                  : 'text-brand-text hover:text-brand-title'
               }`}
             >
               Correct ({correctCount})
             </button>
             <button
               onClick={() => setFilter('incorrect')}
-              className={`px-3 py-1 rounded-none text-xs transition-none cursor-pointer uppercase font-bold tracking-wider ${
+              className={`px-3 py-1 rounded-lg text-xs transition-none cursor-pointer uppercase font-bold tracking-wider ${
                 filter === 'incorrect'
-                  ? 'bg-black text-white font-bold'
-                  : 'text-brand-text hover:text-black'
+                  ? 'bg-brand-primary text-brand-secondary font-bold'
+                  : 'text-brand-text hover:text-brand-title'
               }`}
             >
               Incorrect ({wrongCount + unansweredCount})
@@ -284,7 +272,7 @@ export default function ResultPage({
 
         {/* Empty State */}
         {filteredQuestions.length === 0 ? (
-          <div className="bg-brand-bg border border-brand-border rounded-none p-8 text-center font-inter">
+          <div className="bg-brand-bg border border-brand-border rounded-2xl p-8 text-center font-inter">
             <h5 className="text-brand-text font-bold uppercase tracking-wider text-sm">No questions found matching this filter.</h5>
           </div>
         ) : (
@@ -299,25 +287,25 @@ export default function ResultPage({
                 <div
                   key={q.Question_ID}
                   id={`review-q-${originalIndex}`}
-                  className="bg-brand-bg rounded-none p-5 border border-brand-border scroll-mt-24"
+                  className="bg-brand-card rounded-2xl p-5 border border-brand-border scroll-mt-24"
                 >
                   {/* Badge Header */}
                   <div className="flex items-center justify-between mb-3 text-xs uppercase font-extrabold tracking-wider">
-                    <span className="text-black font-black">
+                    <span className="text-brand-title font-black">
                       Question {originalIndex + 1}
                     </span>
                     
                     {wasSkipped ? (
                       <span className="text-brand-text">Skipped</span>
                     ) : isCorrect ? (
-                      <span className="text-black font-black">Correct</span>
+                      <span className="text-brand-title font-black">Correct</span>
                     ) : (
-                      <span className="text-black underline decoration-2">Incorrect</span>
+                      <span className="text-brand-title underline decoration-2">Incorrect</span>
                     )}
                   </div>
 
                   {/* Question Stem */}
-                  <p className="text-black font-bold text-sm sm:text-base mb-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: q.Question }} />
+                  <p className="text-brand-title font-bold text-sm sm:text-base mb-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: formatQuestionText(q.Question) }} />
 
                   {/* Options List */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -330,27 +318,26 @@ export default function ResultPage({
                       const isKeySelected = selected !== undefined && String(selected).trim() === String(key);
                       const isKeyCorrect = String(q.Correct_Answer_Index).trim() === String(key);
 
-                      let optionStyle = "border-brand-border bg-brand-bg text-brand-text";
+                      let optionStyle = "border-brand-border bg-brand-tile text-brand-text";
+                      let badgeStyle = "bg-brand-card border-brand-border text-brand-text";
                       
                       if (isKeyCorrect) {
-                        optionStyle = "border-black bg-brand-bg text-black font-bold";
+                        optionStyle = "border-brand-border bg-brand-success/20 text-brand-title font-bold";
+                        badgeStyle = "bg-brand-success border-brand-success text-white";
                       } else if (isKeySelected && !isCorrect) {
-                        optionStyle = "border-black bg-brand-bg text-black";
+                        optionStyle = "border-brand-border bg-brand-error/20 text-brand-title font-bold";
+                        badgeStyle = "bg-brand-error border-brand-error text-white";
                       }
 
                       return (
                         <div
                           key={key}
-                          className={`flex items-start p-3 border rounded-none text-xs sm:text-sm ${optionStyle}`}
+                          className={`flex items-start p-3 border rounded-xl text-xs sm:text-sm ${optionStyle}`}
                         >
-                          <span className={`font-extrabold uppercase mr-2 text-[10px] px-1.5 py-0.5 border rounded-none ${
-                            isKeyCorrect 
-                              ? 'bg-black border-black text-white' 
-                              : 'bg-brand-bg border-brand-border text-brand-text'
-                          }`}>
+                          <span className={`font-extrabold uppercase mr-2 text-[10px] px-1.5 py-0.5 border rounded-lg transition-none ${badgeStyle}`}>
                             {getOptionLetter(key)}
                           </span>
-                          <span dangerouslySetInnerHTML={{ __html: val }} />
+                          <span className="text-brand-title" dangerouslySetInnerHTML={{ __html: val }} />
                         </div>
                       );
                     })}
@@ -358,8 +345,8 @@ export default function ResultPage({
 
                   {/* Solution Explanation Box */}
                   {q.Solution && (
-                    <div className="text-xs bg-brand-bg border border-brand-border rounded-none p-4 mt-4 text-brand-text leading-relaxed">
-                      <span className="font-extrabold text-black uppercase tracking-wider block mb-1.5">Explanation</span>
+                    <div className="text-xs bg-brand-tile border border-brand-border rounded-[8px] p-4 mt-4 text-brand-text leading-relaxed">
+                      <span className="font-extrabold text-brand-title uppercase tracking-wider block mb-1.5">Explanation</span>
                       <p dangerouslySetInnerHTML={{ __html: q.Solution }} />
                     </div>
                   )}
@@ -368,6 +355,19 @@ export default function ResultPage({
             })}
           </div>
         )}
+
+        {/* Proceed to Next Test Button (Shifted here to the bottom of the explanations review) */}
+        <div className="mt-8 pt-6 border-t border-brand-border flex justify-center">
+          <button
+            onClick={onNextTest}
+            className="py-3 px-8 bg-brand-primary text-brand-secondary hover:opacity-90 font-bold uppercase tracking-wider rounded-xl transition-none flex items-center gap-1.5 cursor-pointer text-sm border-none shadow-sm"
+          >
+            <span>Proceed to Test {testId + 1}</span>
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -709,11 +709,13 @@ export default function TestPage() {
   };
 
   const getNextUncompletedTestId = () => {
-    for (let num = 1; num <= 10; num++) {
-      const testAttempts = attempts.filter((a) => a.test_id === num);
-      if (testAttempts.length === 0) return num;
+    if (attempts.length === 0) return 1;
+    const completedIds = new Set(attempts.map((a) => a.test_id));
+    let num = 1;
+    while (completedIds.has(num)) {
+      num++;
     }
-    return 1;
+    return num;
   };
 
   // If user not logged in, render login portal
@@ -781,19 +783,33 @@ export default function TestPage() {
       <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-inter text-brand-text">
         {/* Header */}
         <header className="bg-brand-bg border-b border-brand-border px-8 h-16 flex items-center justify-between sticky top-0 z-20">
-          <h1 className="text-base font-extrabold text-black uppercase tracking-tight font-inter">
+          <h1 className="text-base font-extrabold text-brand-title uppercase tracking-tight font-inter">
             ENGLISH MOCK TESTS
           </h1>
 
           {/* Profile info / logout */}
           <div className="flex items-center gap-4 text-sm font-inter">
             <span className="text-brand-text">
-              Student Code: <span className="font-black text-black">{studentCode}</span>
+              Student Code: <span className="font-black text-brand-title">{studentCode}</span>
             </span>
             <span className="text-brand-border">|</span>
             <button
+              onClick={handleBackToHome}
+              className="text-brand-text hover:text-brand-title cursor-pointer uppercase font-bold text-[11px] tracking-wider transition-none outline-none"
+            >
+              Dashboard
+            </button>
+            <span className="text-brand-border">|</span>
+            <button
+              onClick={toggleTheme}
+              className="text-brand-text hover:text-brand-title cursor-pointer uppercase font-bold text-[11px] tracking-wider transition-none outline-none"
+            >
+              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            </button>
+            <span className="text-brand-border">|</span>
+            <button
               onClick={handleLogout}
-              className="text-brand-text hover:text-black cursor-pointer uppercase font-bold text-[11px] tracking-wider transition-none outline-none"
+              className="text-brand-text hover:text-brand-title cursor-pointer uppercase font-bold text-[11px] tracking-wider transition-none outline-none"
             >
               Logout
             </button>
@@ -825,19 +841,26 @@ export default function TestPage() {
       <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-inter text-brand-text animate-fade-in animate-duration-200">
         {/* Header */}
         <header className="bg-brand-bg border-b border-brand-border px-8 h-16 flex items-center justify-between sticky top-0 z-20">
-          <h1 className="text-base font-extrabold text-black uppercase tracking-tight font-inter">
+          <h1 className="text-base font-extrabold text-brand-title uppercase tracking-tight font-inter">
             ENGLISH MOCK TESTS
           </h1>
 
           {/* Profile info / logout */}
           <div className="flex items-center gap-4 text-sm font-inter">
             <span className="text-brand-text">
-              Student Code: <span className="font-black text-black">{studentCode}</span>
+              Student Code: <span className="font-black text-brand-title">{studentCode}</span>
             </span>
             <span className="text-brand-border">|</span>
             <button
+              onClick={toggleTheme}
+              className="text-brand-text hover:text-brand-title cursor-pointer uppercase font-bold text-[11px] tracking-wider transition-none outline-none"
+            >
+              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            </button>
+            <span className="text-brand-border">|</span>
+            <button
               onClick={handleLogout}
-              className="text-brand-text hover:text-black cursor-pointer uppercase font-bold text-[11px] tracking-wider transition-none outline-none"
+              className="text-brand-text hover:text-brand-title cursor-pointer uppercase font-bold text-[11px] tracking-wider transition-none outline-none"
             >
               Logout
             </button>
@@ -846,8 +869,8 @@ export default function TestPage() {
 
         {/* Demo Warning Banner */}
         {isDemoMode && (
-          <div className="border-b border-brand-border text-black px-6 py-2.5 text-xs text-center flex items-center justify-center gap-1.5 font-bold uppercase tracking-wider font-inter">
-            <svg className="w-3.5 h-3.5 shrink-0 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <div className="border-b border-brand-border text-brand-title px-6 py-2.5 text-xs text-center flex items-center justify-center gap-1.5 font-bold uppercase tracking-wider font-inter">
+            <svg className="w-3.5 h-3.5 shrink-0 text-brand-title" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <span>Running in offline preview mode (using local storage mock data). Test is fully functional.</span>
@@ -857,59 +880,66 @@ export default function TestPage() {
         {/* Home Main Content */}
         <main className="flex-1 max-w-[1024px] mx-auto w-full px-6 py-12 space-y-12">
           
-          {/* Welcome Area (Component B) */}
-          <div className="text-center py-6 space-y-4 max-w-xl mx-auto font-inter">
-            <h2 className="text-5xl sm:text-[56px] font-black text-black uppercase tracking-tight leading-[1.1] mb-4">
-              Welcome back.
-            </h2>
-            <p className="text-[15px] text-brand-text leading-[1.6] font-normal mb-8">
-              Continue your preparation with today's mock tests. Timed simulations with detailed reviews will help you refine grammar and structure rules.
-            </p>
-            <div className="pt-2">
-              <button
-                onClick={() => handleSelectTestNum(nextRecommendedId)}
-                className="inline-flex items-center justify-center bg-black text-white font-semibold text-xs tracking-[0.05em] uppercase px-7 py-3.5 rounded-full border-none transition-none cursor-pointer"
-              >
-                Start Mock Test {nextRecommendedId} →
-              </button>
+          {/* Welcome Area & Stats Split Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-12 items-center mb-12">
+            {/* Left side: Welcome Area (Component B) */}
+            <div className="md:col-span-3 text-center md:text-left py-6 space-y-4 font-inter">
+              <h2 className="text-5xl sm:text-[56px] font-black text-brand-title uppercase tracking-tight leading-[1.1] mb-4">
+                Welcome back.
+              </h2>
+              <p className="text-[15px] text-brand-text leading-[1.6] font-normal mb-8">
+                Continue your preparation with today's mock tests. Timed simulations with detailed reviews will help you refine grammar and structure rules.
+              </p>
+              <div className="pt-2">
+                <button
+                  onClick={() => handleSelectTestNum(nextRecommendedId)}
+                  className="inline-flex items-center justify-center bg-brand-primary text-brand-secondary font-semibold text-xs tracking-[0.05em] uppercase px-7 py-3.5 rounded-full border-none transition-none cursor-pointer hover:opacity-90"
+                >
+                  Start Mock Test {nextRecommendedId} →
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Student Statistics (Component C) */}
-          <div className="w-full bg-brand-bg border border-brand-border rounded-none my-12 font-inter">
-            <div className="flex justify-between items-center py-5 px-6 border-b border-brand-border">
-              <span className="font-extrabold text-base uppercase text-black tracking-tight">TESTS TAKEN: {totalTests}</span>
-              <span className="font-extrabold text-base uppercase text-black tracking-tight">AVG. ACCURACY: {avgAccuracy}%</span>
-            </div>
-            <div className="flex justify-between items-center py-5 px-6 border-b border-brand-border">
-              <span className="font-extrabold text-base uppercase text-black tracking-tight">
-                BEST SCORE: {bestScore % 1 === 0 ? bestScore.toFixed(0) : bestScore.toFixed(1)} / 80
-              </span>
-              <span></span>
-            </div>
-            <div className="flex justify-between items-center py-5 px-6">
-              <span className="font-extrabold text-base uppercase text-black tracking-tight">
-                STREAK: {streak.currentStreak} {streak.currentStreak === 1 ? 'DAY' : 'DAYS'}
-              </span>
-              <span></span>
+            {/* Right side: Student Statistics (Component C / USER INFO) */}
+            <div className="md:col-span-2 w-full bg-brand-card border border-brand-border rounded-2xl overflow-hidden font-inter">
+              <div className="flex justify-between items-center py-4 px-6 border-b border-brand-border">
+                <span className="font-bold text-xs uppercase text-brand-text tracking-wider">Tests Taken</span>
+                <span className="font-extrabold text-sm uppercase text-brand-title tracking-tight">{totalTests}</span>
+              </div>
+              <div className="flex justify-between items-center py-4 px-6 border-b border-brand-border">
+                <span className="font-bold text-xs uppercase text-brand-text tracking-wider">Avg. Accuracy</span>
+                <span className="font-extrabold text-sm uppercase text-brand-title tracking-tight">{avgAccuracy}%</span>
+              </div>
+              <div className="flex justify-between items-center py-4 px-6 border-b border-brand-border">
+                <span className="font-bold text-xs uppercase text-brand-text tracking-wider">Best Score</span>
+                <span className="font-extrabold text-sm uppercase text-brand-title tracking-tight">
+                  {bestScore % 1 === 0 ? bestScore.toFixed(0) : bestScore.toFixed(1)} / 80
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-4 px-6">
+                <span className="font-bold text-xs uppercase text-brand-text tracking-wider">Streak</span>
+                <span className="font-extrabold text-sm uppercase text-brand-title tracking-tight">
+                  {streak.currentStreak} {streak.currentStreak === 1 ? 'DAY' : 'DAYS'}
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Available Mock Tests Linear Directory (Component D) */}
           <div className="space-y-6">
-            <h3 className="text-[22px] font-extrabold text-black uppercase tracking-tight text-left font-inter mb-6">
+            <h3 className="text-[22px] font-extrabold text-brand-title uppercase tracking-tight text-left font-inter mb-6">
               Available Mock Tests
             </h3>
-            <div className="flex flex-col border-t border-brand-border">
-              {[1, 2, 3, 4, 5].map((num) => {
+            <div className="bg-brand-card border border-brand-border rounded-2xl overflow-hidden flex flex-col divide-y divide-brand-border">
+              {Array.from({ length: 5 }, (_, i) => nextRecommendedId + i).map((num) => {
                 const testAttempts = attempts.filter((a) => a.test_id === num);
                 const isCompleted = testAttempts.length > 0;
 
                 return (
-                  <div key={num} className="flex justify-between items-center h-[72px] px-2 border-b border-brand-border font-inter">
+                  <div key={num} className="flex justify-between items-center h-[72px] px-6 font-inter hover:bg-brand-border/10 transition-none">
                     {/* Left Group */}
                     <div className="flex flex-col">
-                      <span className="font-extrabold text-sm sm:text-base text-black uppercase tracking-tight">
+                      <span className="font-extrabold text-sm sm:text-base text-brand-title uppercase tracking-tight">
                         TEST {num}: ENGLISH GRAMMAR MCQ
                       </span>
                       <span className="text-[13px] text-brand-text font-normal mt-1">
@@ -920,7 +950,7 @@ export default function TestPage() {
                     {/* Center Tag (Conditional) */}
                     <div className="hidden sm:block">
                       {isCompleted && (
-                        <span className="font-bold text-xs uppercase tracking-widest text-black">
+                        <span className="font-bold text-xs uppercase tracking-widest text-brand-title">
                           COMPLETED
                         </span>
                       )}
@@ -930,7 +960,7 @@ export default function TestPage() {
                     <div>
                       <button
                         onClick={() => handleSelectTestNum(num)}
-                        className="bg-black text-white hover:bg-black/90 font-bold text-xs uppercase px-5 py-2.5 rounded-full border-none transition-none cursor-pointer inline-flex items-center justify-center"
+                        className="bg-brand-primary text-brand-secondary hover:opacity-90 font-bold text-xs uppercase px-5 py-2.5 rounded-full border-none transition-none cursor-pointer inline-flex items-center justify-center"
                       >
                         {isCompleted ? 'VIEW REPORT' : 'START TEST'}
                       </button>
@@ -944,7 +974,7 @@ export default function TestPage() {
           {/* Attempts History */}
           <div className="space-y-6 pt-4 font-inter">
             <div className="flex items-center justify-between border-b border-brand-border pb-2">
-              <h3 className="text-[22px] font-extrabold text-black uppercase tracking-tight font-inter">
+              <h3 className="text-[22px] font-extrabold text-brand-title uppercase tracking-tight font-inter">
                 Attempts History
               </h3>
               <span className="text-[11px] font-bold text-brand-text uppercase tracking-widest">{studentCode}'s Progress</span>
@@ -957,49 +987,51 @@ export default function TestPage() {
                 <div className="h-6 border border-brand-border w-4/6 animate-pulse"></div>
               </div>
             ) : attempts.length === 0 ? (
-              <div className="text-center py-10 border border-dashed border-brand-border rounded-none">
+              <div className="text-center py-10 border border-dashed border-brand-border rounded-2xl">
                 <p className="text-xs text-brand-text uppercase font-semibold tracking-wider">No test attempts logged yet.</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs font-inter border-collapse" style={{ borderCollapse: 'collapse' }}>
-                  <thead>
-                    <tr className="border-b border-brand-border text-black font-extrabold uppercase tracking-wider">
-                      <th className="py-3 px-4 font-extrabold">Date</th>
-                      <th className="py-3 px-4 font-extrabold text-center">Test ID</th>
-                      <th className="py-3 px-4 font-extrabold text-center">Score</th>
-                      <th className="py-3 px-4 font-extrabold text-center">Accuracy</th>
-                      <th className="py-3 px-4 font-extrabold text-center">Time</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-brand-border text-brand-text font-normal">
-                    {attempts.map((attempt) => (
-                      <tr key={attempt.id} className="hover:bg-brand-border/10 transition-none">
-                        <td className="py-3 px-4 text-black font-medium">
-                          {new Date(attempt.completed_at).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </td>
-                        <td className="py-3 px-4 text-center text-black font-medium">
-                          <span>TEST {attempt.test_id}</span>
-                        </td>
-                        <td className="py-3 px-4 text-center font-bold text-black">
-                          {attempt.score % 1 === 0 ? attempt.score.toFixed(0) : attempt.score.toFixed(1)} / 80
-                        </td>
-                        <td className="py-3 px-4 text-center">
-                          <span className={attempt.accuracy >= 70 ? 'text-black font-bold' : ''}>
-                            {attempt.accuracy}%
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 text-center font-mono">{formatTime(attempt.time_taken)}</td>
+              <div className="bg-brand-card border border-brand-border rounded-2xl overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs font-inter border-collapse" style={{ borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr className="border-b border-brand-border bg-brand-tile text-brand-title font-extrabold uppercase tracking-wider">
+                        <th className="py-3.5 px-6 font-extrabold">Date</th>
+                        <th className="py-3.5 px-6 font-extrabold text-center">Test ID</th>
+                        <th className="py-3.5 px-6 font-extrabold text-center">Score</th>
+                        <th className="py-3.5 px-6 font-extrabold text-center">Accuracy</th>
+                        <th className="py-3.5 px-6 font-extrabold text-center font-mono">Time</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-brand-border text-brand-text font-normal">
+                      {attempts.map((attempt) => (
+                        <tr key={attempt.id} className="hover:bg-brand-border/10 transition-none">
+                          <td className="py-3.5 px-6 text-brand-title font-medium">
+                            {new Date(attempt.completed_at).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </td>
+                          <td className="py-3.5 px-6 text-center text-brand-title font-medium">
+                            <span>TEST {attempt.test_id}</span>
+                          </td>
+                          <td className="py-3.5 px-6 text-center font-bold text-brand-title">
+                            {attempt.score % 1 === 0 ? attempt.score.toFixed(0) : attempt.score.toFixed(1)} / 80
+                          </td>
+                          <td className="py-3.5 px-6 text-center">
+                            <span className={attempt.accuracy >= 70 ? 'text-brand-title font-bold' : ''}>
+                              {attempt.accuracy}%
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-6 text-center font-mono">{formatTime(attempt.time_taken)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </div>
@@ -1019,27 +1051,38 @@ export default function TestPage() {
     <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-inter text-brand-text animate-fade-in animate-duration-200">
       {/* Header Banner */}
       <header className="sticky top-0 z-30 bg-brand-bg border-b border-brand-border px-8 h-16 flex items-center justify-between">
-        <h1 className="text-base font-extrabold text-black uppercase tracking-tight font-inter">
+        <h1 className="text-base font-extrabold text-brand-title uppercase tracking-tight font-inter">
           ENGLISH MOCK TESTS
         </h1>
 
         <div className="flex items-center gap-4 text-xs font-inter">
           <span className="text-brand-text hidden sm:inline">
-            Student Code: <span className="font-black text-black">{studentCode}</span> &bull; TEST {testId}
+            Student Code: <span className="font-black text-brand-title">{studentCode}</span> &bull; TEST {testId}
           </span>
+          <span className="text-brand-border hidden sm:inline">|</span>
 
           {/* Countdown Timer */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 border border-brand-border font-mono font-bold text-xs bg-brand-bg text-black rounded-none">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 border border-brand-border font-mono font-bold text-xs bg-brand-tile text-brand-title rounded-lg">
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span>{formatTime(timeLeft)}</span>
           </div>
+          <span className="text-brand-border">|</span>
+
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="text-brand-text hover:text-brand-title cursor-pointer uppercase font-bold text-[11px] tracking-wider transition-none outline-none"
+          >
+            {theme === 'dark' ? 'Light' : 'Dark'}
+          </button>
+          <span className="text-brand-border">|</span>
 
           {/* Quit Button */}
           <button
             onClick={handleQuitTest}
-            className="text-xs font-bold uppercase tracking-wider text-black border border-black hover:bg-black hover:text-white transition-none px-3 py-1.5 flex items-center gap-1.5 cursor-pointer outline-none rounded-none"
+            className="text-brand-text hover:text-brand-title cursor-pointer uppercase font-bold text-[11px] tracking-wider transition-none outline-none"
             title="Quit Test & Discard Progress"
           >
             <span>Quit</span>
@@ -1048,7 +1091,7 @@ export default function TestPage() {
           {/* Mobile Sidebar Toggle Button */}
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="md:hidden p-2 bg-brand-card border border-brand-border text-brand-text cursor-pointer rounded-none"
+            className="md:hidden p-2 bg-brand-card border border-brand-border text-brand-text cursor-pointer rounded-lg"
             title="Open Navigation"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -1060,8 +1103,8 @@ export default function TestPage() {
 
       {/* Demo Warning Header Banner */}
       {isDemoMode && (
-        <div className="border-b border-brand-border text-black px-6 py-2 text-xs text-center flex items-center justify-center gap-1.5 font-bold uppercase tracking-wider">
-          <svg className="w-3.5 h-3.5 shrink-0 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <div className="border-b border-brand-border text-brand-title px-6 py-2 text-xs text-center flex items-center justify-center gap-1.5 font-bold uppercase tracking-wider">
+          <svg className="w-3.5 h-3.5 shrink-0 text-brand-title" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
           <span>Running in offline preview mode (mock database).</span>
@@ -1081,9 +1124,9 @@ export default function TestPage() {
         </div>
 
         {/* Right Side / Sidebar: Desktop layout (visible md+) */}
-        <aside className="hidden md:flex md:w-72 flex-col bg-brand-card border border-brand-border rounded-none p-5 gap-6">
+        <aside className="hidden md:flex md:w-72 flex-col bg-brand-card border border-brand-border rounded-2xl p-5 gap-6">
           <div>
-            <h4 className="text-xs font-extrabold text-black uppercase tracking-wider mb-4 flex items-center gap-1.5">
+            <h4 className="text-xs font-extrabold text-brand-title uppercase tracking-wider mb-4 flex items-center gap-1.5">
               Navigator
             </h4>
             <div className="grid grid-cols-5 gap-2 pr-1">
@@ -1095,12 +1138,12 @@ export default function TestPage() {
                   <button
                     key={q.Question_ID}
                     onClick={() => setCurrentIndex(idx)}
-                    className={`h-8 w-8 flex items-center justify-center rounded-none text-xs font-bold transition-none border cursor-pointer outline-none ${
+                    className={`h-8 w-8 flex items-center justify-center rounded-lg text-xs font-bold transition-none border cursor-pointer outline-none ${
                       isSelected
-                        ? 'bg-black border-black text-white font-bold'
+                        ? 'bg-brand-primary border-brand-primary text-brand-secondary font-bold'
                         : isAnswered
-                        ? 'bg-brand-bg border-black text-black font-bold'
-                        : 'bg-brand-bg border-brand-border text-brand-text hover:border-black hover:text-black'
+                        ? 'bg-brand-tile border-brand-primary text-brand-title font-bold'
+                        : 'bg-brand-tile border-brand-border text-brand-text hover:border-brand-primary hover:text-brand-title'
                     }`}
                   >
                     {idx + 1}
@@ -1112,15 +1155,15 @@ export default function TestPage() {
             {/* Legend indicators */}
             <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-none bg-black border border-black"></span>
+                <span className="w-3 h-3 rounded-[4px] bg-brand-primary border border-brand-primary"></span>
                 <span>Current Question</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-none bg-brand-bg border border-black"></span>
+                <span className="w-3 h-3 rounded-[4px] bg-brand-tile border border-brand-primary"></span>
                 <span>Answered</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-none bg-brand-bg border border-brand-border"></span>
+                <span className="w-3 h-3 rounded-[4px] bg-brand-tile border border-brand-border"></span>
                 <span>Unanswered</span>
               </div>
             </div>
@@ -1128,7 +1171,7 @@ export default function TestPage() {
 
           <button
             onClick={() => handleSubmitTest(false)}
-            className="w-full py-3 bg-black text-white font-bold rounded-none transition-none flex items-center justify-center gap-1.5 cursor-pointer text-xs uppercase border-none"
+            className="w-full py-3 bg-brand-primary text-brand-secondary font-bold rounded-xl transition-none flex items-center justify-center gap-1.5 cursor-pointer text-xs uppercase border-none hover:opacity-90"
           >
             <span>Submit Test</span>
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -1147,7 +1190,7 @@ export default function TestPage() {
             ></div>
             
             {/* Drawer sheet content */}
-            <div className="absolute right-0 top-0 bottom-0 w-72 bg-brand-card p-6 flex flex-col justify-between z-10 animate-slide-in-right animate-duration-200 border-l border-brand-border rounded-none">
+            <div className="absolute right-0 top-0 bottom-0 w-72 bg-brand-card p-6 flex flex-col justify-between z-10 animate-slide-in-right animate-duration-200 border-l border-brand-border rounded-l-2xl">
               <div>
                 <div className="flex items-center justify-between mb-6 pb-2 border-b border-brand-border">
                   <h4 className="text-xs font-bold text-brand-text uppercase tracking-wider flex items-center gap-1.5">
@@ -1175,12 +1218,12 @@ export default function TestPage() {
                           setCurrentIndex(idx);
                           setIsSidebarOpen(false);
                         }}
-                        className={`h-8 w-8 flex items-center justify-center rounded-none text-xs font-bold transition-none border cursor-pointer outline-none ${
+                        className={`h-8 w-8 flex items-center justify-center rounded-lg text-xs font-bold transition-none border cursor-pointer outline-none ${
                           isSelected
-                            ? 'bg-black border-black text-white font-bold'
+                            ? 'bg-brand-primary border-brand-primary text-brand-secondary font-bold'
                             : isAnswered
-                            ? 'bg-brand-bg border-black text-black font-bold'
-                            : 'bg-brand-bg border-brand-border text-brand-text hover:border-black hover:text-black'
+                            ? 'bg-brand-tile border-brand-primary text-brand-title font-bold'
+                            : 'bg-brand-tile border-brand-border text-brand-text hover:border-brand-primary hover:text-brand-title'
                         }`}
                       >
                         {idx + 1}
@@ -1192,15 +1235,15 @@ export default function TestPage() {
                 {/* Legend indicators */}
                 <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text">
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-none bg-black border border-black"></span>
+                    <span className="w-3 h-3 rounded-[4px] bg-brand-primary border border-brand-primary"></span>
                     <span>Current Question</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-none bg-brand-bg border border-black"></span>
+                    <span className="w-3 h-3 rounded-[4px] bg-brand-tile border border-brand-primary"></span>
                     <span>Answered</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-none bg-brand-bg border border-brand-border"></span>
+                    <span className="w-3 h-3 rounded-[4px] bg-brand-tile border border-brand-border"></span>
                     <span>Unanswered</span>
                   </div>
                 </div>
@@ -1211,7 +1254,7 @@ export default function TestPage() {
                   setIsSidebarOpen(false);
                   handleSubmitTest(false);
                 }}
-                className="w-full py-3.5 bg-black text-white font-bold rounded-none transition-none flex items-center justify-center gap-1.5 cursor-pointer text-xs uppercase border-none"
+                className="w-full py-3.5 bg-brand-primary text-brand-secondary font-bold rounded-xl transition-none flex items-center justify-center gap-1.5 cursor-pointer text-xs uppercase border-none hover:opacity-90"
               >
                 <span>Submit Test</span>
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">

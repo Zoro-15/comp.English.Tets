@@ -1,23 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --color-brand-bg: #FFFFFF;
-  --color-brand-card: #FFFFFF;
-  --color-brand-border: #E5E5E5;
-  --color-brand-primary: #000000;
-  --color-brand-secondary: #FFFFFF;
-  --color-brand-text: #555555;
-  --color-brand-title: #000000;
+  --color-brand-bg: #0F172A;       /* Deep slate night canvas */
+  --color-brand-card: #1E293B;     /* Slate card containers */
+  --color-brand-border: #334155;   /* Slate borders */
+  --color-brand-primary: #818CF8;  /* Radiant indigo primary action */
+  --color-brand-secondary: #0F172A;/* Slate night secondary background contrast */
+  --color-brand-text: #94A3B8;     /* Muted slate-400 body copy */
+  --color-brand-title: #F8FAFC;    /* Off-white headings */
+  
+  --color-brand-success: #32802D;  /* Forest green custom */
+  --color-brand-error: #9E3B36;    /* Brick red custom */
+  --color-brand-neutral: #475569;  /* Medium slate grey */
+  --color-brand-tile: #0F172A;     /* Nested inner background */
 }
 
 :root[data-theme="light"] {
-  --color-brand-bg: #FFFFFF;
-  --color-brand-card: #FFFFFF;
-  --color-brand-border: #E5E5E5;
-  --color-brand-primary: #000000;
-  --color-brand-secondary: #FFFFFF;
-  --color-brand-text: #555555;
-  --color-brand-title: #000000;
+  --color-brand-bg: #F0F2F9;       /* Soft lavendar-grey canvas */
+  --color-brand-card: #FFFFFF;     /* Pure white card containers */
+  --color-brand-border: #E2E5F2;   /* Soft grey borders */
+  --color-brand-primary: #4F46E5;  /* Deep indigo primary action */
+  --color-brand-secondary: #FFFFFF;/* White secondary background contrast */
+  --color-brand-text: #475569;     /* Slate-600 body copy */
+  --color-brand-title: #1E1B4B;    /* Rich midnight indigo headings */
+
+  --color-brand-success: #32802D;  /* Forest green custom */
+  --color-brand-error: #9E3B36;    /* Brick red custom */
+  --color-brand-neutral: #94A3B8;  /* Slate-400 neutral */
+  --color-brand-tile: #F1F5F9;     /* Slate-100 inner background */
 }
 
 @theme {
@@ -28,6 +38,11 @@
   --color-brand-secondary: var(--color-brand-secondary);
   --color-brand-text: var(--color-brand-text);
   --color-brand-title: var(--color-brand-title);
+
+  --color-brand-success: var(--color-brand-success);
+  --color-brand-error: var(--color-brand-error);
+  --color-brand-neutral: var(--color-brand-neutral);
+  --color-brand-tile: var(--color-brand-tile);
 
   --font-inter: "Inter", sans-serif;
   --font-lora: "Inter", sans-serif;
@@ -52,7 +67,7 @@
     font-family: "Inter", system-ui, -apple-system, sans-serif;
   }
 
-  /* Global removal of outlines and shadows to fit minimal organic style */
+  /* Global removal of outlines and shadows */
   *:focus,
   button:focus,
   input:focus,
@@ -62,14 +77,13 @@
     box-shadow: none !important;
   }
 
-  /* Plain focus indicators if needed for accessibility, otherwise kept completely clean */
   *:focus-visible {
-    outline: 1px solid #000000 !important;
+    outline: 2px solid var(--color-brand-primary) !important;
     outline-offset: 2px;
   }
 }
 
-/* Custom premium scrollbar for sidebar navigation using organic colors */
+/* Custom premium scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -80,10 +94,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ECECEC;
+  background: #CBD5E1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #E7EFE9;
+  background: #94A3B8;
 }
