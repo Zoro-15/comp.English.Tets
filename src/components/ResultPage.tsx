@@ -9,6 +9,7 @@ interface ResultPageProps {
   testId: number;
   onRestart: () => void;
   onNextTest: () => void;
+  onBackToHome: () => void;
 }
 
 export default function ResultPage({
@@ -18,7 +19,8 @@ export default function ResultPage({
   currentStreak,
   testId,
   onRestart,
-  onNextTest
+  onNextTest,
+  onBackToHome
 }: ResultPageProps) {
   const [filter, setFilter] = useState<'all' | 'correct' | 'incorrect'>('all');
 
@@ -170,6 +172,16 @@ export default function ResultPage({
           </p>
         </div>
         <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-3">
+          <button
+            onClick={onBackToHome}
+            className="w-full sm:w-auto py-3 px-5 border border-slate-205 hover:bg-slate-50 text-slate-700 font-bold rounded-xl transition duration-150 flex items-center justify-center gap-2 cursor-pointer text-sm"
+          >
+            <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            Back to Dashboard
+          </button>
+          
           <button
             onClick={onRestart}
             className="w-full sm:w-auto py-3 px-5 border border-slate-205 hover:bg-slate-50 text-slate-700 font-bold rounded-xl transition duration-150 flex items-center justify-center gap-2 cursor-pointer text-sm"

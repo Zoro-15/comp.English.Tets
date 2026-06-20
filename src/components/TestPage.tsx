@@ -639,7 +639,25 @@ export default function TestPage() {
     setCurrentIndex(0);
     setTimeLeft(1200);
     setTestSubmitted(false);
+    setView('testing');
+  };
+
+  const handleBackToHome = () => {
+    setSelectedAnswers({});
+    setCurrentIndex(0);
+    setTimeLeft(1200);
+    setTestSubmitted(false);
     setView('home');
+  };
+
+  const handleQuitTest = () => {
+    if (window.confirm("Are you sure you want to quit the test? Your current progress will be deleted.")) {
+      if (timerRef.current) clearInterval(timerRef.current);
+      setSelectedAnswers({});
+      setCurrentIndex(0);
+      setTimeLeft(1200);
+      setView('home');
+    }
   };
 
   const handleNextTest = () => {
@@ -729,16 +747,48 @@ export default function TestPage() {
   if (testSubmitted) {
     const finalSpentTime = 1200 - timeLeft;
     return (
-      <div className="min-h-screen bg-slate-50 animate-fade-in animate-duration-300">
-        <ResultPage
-          questions={questions}
-          selectedAnswers={selectedAnswers}
-          timeTaken={finalSpentTime}
-          currentStreak={streak.currentStreak}
-          testId={testId}
-          onRestart={handleRestart}
-          onNextTest={handleNextTest}
-        />
+      <div className="min-h-screen bg-slate-50 flex flex-col justify-between select-none animate-fade-in animate-duration-300">
+        {/* Header */}
+        <header className="bg-white border-b border-slate-100 px-4 py-4 shadow-xs sticky top-0 z-20">
+          <div className="max-w-4xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-extrabold text-lg">
+                E
+              </div>
+              <h1 className="text-base font-black text-slate-800 tracking-tight sm:text-lg uppercase">
+                ENGLISH MOCK TESTS
+              </h1>
+            </div>
+
+            {/* Profile badge / logout */}
+            <div className="flex items-center gap-3">
+              <div className="bg-slate-100 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 flex items-center gap-1.5 shadow-2xs">
+                <span>Code:</span>
+                <span className="text-indigo-655 font-black">{studentCode}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="text-xs font-bold text-slate-450 hover:text-rose-500 cursor-pointer transition-colors"
+                title="Switch Student Code"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <main className="flex-1">
+          <ResultPage
+            questions={questions}
+            selectedAnswers={selectedAnswers}
+            timeTaken={finalSpentTime}
+            currentStreak={streak.currentStreak}
+            testId={testId}
+            onRestart={handleRestart}
+            onNextTest={handleNextTest}
+            onBackToHome={handleBackToHome}
+          />
+        </main>
       </div>
     );
   }
@@ -1059,6 +1109,18 @@ export default function TestPage() {
               </svg>
               <span>{formatTime(timeLeft)}</span>
             </div>
+
+            {/* Quit Button */}
+            <button
+              onClick={handleQuitTest}
+              className="text-xs font-bold text-slate-450 hover:text-rose-500 hover:border-rose-200 hover:bg-rose-50/50 cursor-pointer transition-all border border-slate-200 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 shadow-2xs"
+              title="Quit Test & Discard Progress"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <span className="hidden xs:inline">Quit</span>
+            </button>
 
             {/* Mobile Sidebar Toggle Button */}
             <button
