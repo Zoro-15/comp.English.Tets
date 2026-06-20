@@ -31,3 +31,12 @@ export interface Question {
   Correct_Answer_Index: string | number;
   Solution?: string;
 }
+
+export interface LeaderboardEntry {
+  student_code: string;
+  tests_taken: number;
+  avg_accuracy: number;
+  avg_time_taken: number; // in seconds
+  best_score: number;
+}
+

@@ -4,7 +4,7 @@ import QuestionCard from './QuestionCard';
 import QuestionNavigator from './QuestionNavigator';
 import ResultPage from './ResultPage';
 import LoginScreen from './LoginScreen';
-import type { Question, TestAttempt, UserStreak } from '../types';
+import type { Question, TestAttempt, UserStreak, LeaderboardEntry } from '../types';
 
 // High-quality mock questions updated to match the new CSV headers
 const MOCK_QUESTIONS: Question[] = [
@@ -320,6 +320,46 @@ const calculateStreakFromAttempts = (attemptsList: TestAttempt[]): UserStreak =>
   return { currentStreak, longestStreak };
 };
 
+const generateMockLeaderboard = (currentCode: string, userAttempts: TestAttempt[]): LeaderboardEntry[] => {
+  const mockCompetitors: LeaderboardEntry[] = [
+    { student_code: '4315', tests_taken: 8, avg_accuracy: 85, avg_time_taken: 480, best_score: 72.0 },
+    { student_code: '9021', tests_taken: 5, avg_accuracy: 75, avg_time_taken: 620, best_score: 60.0 },
+    { student_code: '1088', tests_taken: 12, avg_accuracy: 90, avg_time_taken: 350, best_score: 78.0 },
+    { student_code: '5678', tests_taken: 3, avg_accuracy: 60, avg_time_taken: 710, best_score: 48.0 },
+  ];
+
+  const totalTests = userAttempts.length;
+  if (totalTests > 0) {
+    const avgAccuracy = Math.round(userAttempts.reduce((sum, item) => sum + item.accuracy, 0) / totalTests);
+    const avgTimeTaken = Math.round(userAttempts.reduce((sum, item) => sum + item.time_taken, 0) / totalTests);
+    const bestScore = Math.max(...userAttempts.map(item => item.score));
+
+    const filteredCompetitors = mockCompetitors.filter(c => c.student_code !== currentCode);
+    
+    filteredCompetitors.push({
+      student_code: currentCode,
+      tests_taken: totalTests,
+      avg_accuracy: avgAccuracy,
+      avg_time_taken: avgTimeTaken,
+      best_score: bestScore
+    });
+
+    return filteredCompetitors.sort((a, b) => {
+      if (b.avg_accuracy !== a.avg_accuracy) {
+        return b.avg_accuracy - a.avg_accuracy;
+      }
+      return a.avg_time_taken - b.avg_time_taken;
+    });
+  }
+
+  return mockCompetitors.sort((a, b) => {
+    if (b.avg_accuracy !== a.avg_accuracy) {
+      return b.avg_accuracy - a.avg_accuracy;
+    }
+    return a.avg_time_taken - b.avg_time_taken;
+  });
+};
+
 export default function TestPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string | number>>({});
@@ -340,6 +380,10 @@ export default function TestPage() {
   const [testId, setTestId] = useState<number>(1);
   const [attempts, setAttempts] = useState<TestAttempt[]>([]);
   const [isDashboardLoading, setIsDashboardLoading] = useState(false);
+
+  // Leaderboard State
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [isLeaderboardLoading, setIsLeaderboardLoading] = useState(false);
 
   // Timer state (20 minutes = 1200 seconds)
   const [timeLeft, setTimeLeft] = useState(1200);
@@ -375,7 +419,37 @@ export default function TestPage() {
     }
   }, []);
 
-  // 2. Load attempts for the logged-in student
+  // 2. Load leaderboard data
+  const loadLeaderboard = async (currentCode: string, userAttempts: TestAttempt[]) => {
+    setIsLeaderboardLoading(true);
+    let loadedLeaderboard: LeaderboardEntry[] = [];
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('leaderboard')
+          .select('*')
+          .order('avg_accuracy', { ascending: false })
+          .order('avg_time_taken', { ascending: true });
+
+        if (!error && data) {
+          loadedLeaderboard = data as LeaderboardEntry[];
+        } else {
+          throw new Error('Leaderboard view unavailable');
+        }
+      } catch (err) {
+        console.warn('Failed to load leaderboard from Supabase, creating local fallback:', err);
+        loadedLeaderboard = generateMockLeaderboard(currentCode, userAttempts);
+      }
+    } else {
+      loadedLeaderboard = generateMockLeaderboard(currentCode, userAttempts);
+    }
+
+    setLeaderboard(loadedLeaderboard);
+    setIsLeaderboardLoading(false);
+  };
+
+  // 3. Load attempts for the logged-in student
   const loadAttemptsAndUser = async (code: string) => {
     setIsDashboardLoading(true);
     let loadedAttempts: TestAttempt[] = [];
@@ -418,6 +492,7 @@ export default function TestPage() {
 
     setAttempts(loadedAttempts);
     setIsDashboardLoading(false);
+    await loadLeaderboard(code, loadedAttempts);
   };
 
   // 3. Questions loading based on view & testId
@@ -547,6 +622,7 @@ export default function TestPage() {
   const handleLogout = () => {
     setStudentCode(null);
     setAttempts([]);
+    setLeaderboard([]);
     setSelectedAnswers({});
     setCurrentIndex(0);
     setTimeLeft(1200);
@@ -653,6 +729,9 @@ export default function TestPage() {
         console.warn('Could not save to Supabase test_attempts table:', err);
       }
     }
+
+    // Reload leaderboard
+    await loadLeaderboard(studentCode, updatedAttempts);
   };
 
   const handleRestart = () => {
@@ -975,6 +1054,78 @@ export default function TestPage() {
                 );
               })}
             </div>
+          </div>
+
+          {/* Universal Leaderboard */}
+          <div className="space-y-6 pt-4 font-inter">
+            <div className="flex items-center justify-between border-b border-brand-border pb-2">
+              <h3 className="text-[22px] font-extrabold text-brand-title uppercase tracking-tight font-inter">
+                Universal Leaderboard
+              </h3>
+              <span className="text-[11px] font-bold text-brand-text uppercase tracking-widest">Global Rankings</span>
+            </div>
+
+            {isLeaderboardLoading ? (
+              <div className="space-y-4">
+                <div className="h-6 border border-brand-border w-full animate-pulse"></div>
+                <div className="h-6 border border-brand-border w-5/6 animate-pulse"></div>
+              </div>
+            ) : leaderboard.length === 0 ? (
+              <div className="text-center py-10 border border-dashed border-brand-border rounded-2xl">
+                <p className="text-xs text-brand-text uppercase font-semibold tracking-wider">No leaderboard data available.</p>
+              </div>
+            ) : (
+              <div className="bg-brand-card border border-brand-border rounded-2xl overflow-hidden">
+                <div className="overflow-x-auto font-inter">
+                  <table className="w-full text-left text-xs border-collapse" style={{ borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr className="border-b border-brand-border bg-brand-tile text-brand-title font-extrabold uppercase tracking-wider">
+                        <th className="py-3.5 px-6 font-extrabold text-center w-16">Rank</th>
+                        <th className="py-3.5 px-6 font-extrabold">Student Code</th>
+                        <th className="py-3.5 px-6 font-extrabold text-center">Tests Taken</th>
+                        <th className="py-3.5 px-6 font-extrabold text-center">Avg. Accuracy</th>
+                        <th className="py-3.5 px-6 font-extrabold text-center font-mono">Avg. Time</th>
+                        <th className="py-3.5 px-6 font-extrabold text-center">Best Score</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-brand-border text-brand-text font-normal">
+                      {leaderboard.map((entry, idx) => {
+                        const isCurrentUser = entry.student_code === studentCode;
+                        return (
+                          <tr 
+                            key={entry.student_code} 
+                            className={`transition-none ${
+                              isCurrentUser 
+                                ? 'bg-brand-primary/10 hover:bg-brand-primary/15 font-semibold text-brand-title' 
+                                : 'hover:bg-brand-border/10'
+                            }`}
+                          >
+                            <td className="py-3.5 px-6 text-center text-brand-title font-black">
+                              #{idx + 1}
+                            </td>
+                            <td className="py-3.5 px-6 text-brand-title font-medium">
+                              {entry.student_code} {isCurrentUser && <span className="ml-2 text-[10px] bg-brand-primary text-brand-secondary px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">YOU</span>}
+                            </td>
+                            <td className="py-3.5 px-6 text-center">
+                              {entry.tests_taken}
+                            </td>
+                            <td className="py-3.5 px-6 text-center font-bold">
+                              {entry.avg_accuracy}%
+                            </td>
+                            <td className="py-3.5 px-6 text-center font-mono">
+                              {formatTime(entry.avg_time_taken)}
+                            </td>
+                            <td className="py-3.5 px-6 text-center text-brand-title">
+                              {Number(entry.best_score) % 1 === 0 ? Number(entry.best_score).toFixed(0) : Number(entry.best_score).toFixed(1)} / 80
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Attempts History */}
