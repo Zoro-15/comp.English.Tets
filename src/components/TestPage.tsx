@@ -783,9 +783,12 @@ export default function TestPage() {
       <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-inter text-brand-text">
         {/* Header */}
         <header className="bg-brand-bg border-b border-brand-border px-8 h-16 flex items-center justify-between sticky top-0 z-20">
-          <h1 className="text-base font-extrabold text-brand-title uppercase tracking-tight font-inter">
-            ENGLISH MOCK TESTS
-          </h1>
+          <div className="flex items-center gap-3">
+            <img src="/logo.svg" className="h-8 w-8 object-contain" alt="Logo" />
+            <h1 className="text-base font-extrabold text-brand-title uppercase tracking-tight font-inter">
+              ENGLISH MOCK TESTS
+            </h1>
+          </div>
 
           {/* Profile info / logout */}
           <div className="flex items-center gap-4 text-sm font-inter">
@@ -841,9 +844,12 @@ export default function TestPage() {
       <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-inter text-brand-text animate-fade-in animate-duration-200">
         {/* Header */}
         <header className="bg-brand-bg border-b border-brand-border px-8 h-16 flex items-center justify-between sticky top-0 z-20">
-          <h1 className="text-base font-extrabold text-brand-title uppercase tracking-tight font-inter">
-            ENGLISH MOCK TESTS
-          </h1>
+          <div className="flex items-center gap-3">
+            <img src="/logo.svg" className="h-8 w-8 object-contain" alt="Logo" />
+            <h1 className="text-base font-extrabold text-brand-title uppercase tracking-tight font-inter">
+              ENGLISH MOCK TESTS
+            </h1>
+          </div>
 
           {/* Profile info / logout */}
           <div className="flex items-center gap-4 text-sm font-inter">
@@ -1051,9 +1057,12 @@ export default function TestPage() {
     <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-inter text-brand-text animate-fade-in animate-duration-200">
       {/* Header Banner */}
       <header className="sticky top-0 z-30 bg-brand-bg border-b border-brand-border px-8 h-16 flex items-center justify-between">
-        <h1 className="text-base font-extrabold text-brand-title uppercase tracking-tight font-inter">
-          ENGLISH MOCK TESTS
-        </h1>
+        <div className="flex items-center gap-3">
+          <img src="/logo.svg" className="h-8 w-8 object-contain" alt="Logo" />
+          <h1 className="text-base font-extrabold text-brand-title uppercase tracking-tight font-inter">
+            ENGLISH MOCK TESTS
+          </h1>
+        </div>
 
         <div className="flex items-center gap-4 text-xs font-inter">
           <span className="text-brand-text hidden sm:inline">

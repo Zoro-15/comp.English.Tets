@@ -102,13 +102,18 @@ export default function LoginScreen({
       <div className="w-full max-w-sm bg-brand-card border border-brand-border p-8 rounded-2xl space-y-8">
 
         {/* Branding header */}
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl font-black text-brand-title uppercase tracking-tight">
-            English Mock Tests
-          </h2>
-          <p className="text-xs text-brand-text font-normal">
-            Enter your 4-digit student code to access practice tests.
-          </p>
+        <div className="text-center space-y-4">
+          <div className="flex justify-center">
+            <img src="/logo.svg" className="h-16 w-16 object-contain" alt="Logo" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-black text-brand-title uppercase tracking-tight">
+              English Mock Tests
+            </h2>
+            <p className="text-xs text-brand-text font-normal">
+              Enter your 4-digit student code to access practice tests.
+            </p>
+          </div>
         </div>
 
         {/* Input Form */}

@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --color-brand-bg: #272729;
+  --color-brand-bg: #1c1c1f;
   /* Medium slate grey dark background */
-  --color-brand-card: #2f343a;
+  --color-brand-card: #22262c;
   /* Slate card containers */
   --color-brand-border: #b3c8e7;
   /* Slate borders */
-  --color-brand-primary: #2a6340;
+  --color-brand-primary: #255ec7;
   /* Navy blue primary action */
   --color-brand-secondary: #FFFFFF;
   /* White overlay text/badge background */
@@ -20,9 +20,9 @@
   /* Forest green custom */
   --color-brand-error: #9E3B36;
   /* Brick red custom */
-  --color-brand-neutral: #3b4c64;
+  --color-brand-neutral: #2b3747;
   /* Medium slate grey */
-  --color-brand-tile: #393f46;
+  --color-brand-tile: #212222;
   /* Nested inner background */
 }
 
@@ -33,7 +33,7 @@
   /* Pure white card containers */
   --color-brand-border: #9ea3bb;
   /* Soft grey borders */
-  --color-brand-primary: #1c3a4f;
+  --color-brand-primary: #2e4657;
   /* Navy blue primary action */
   --color-brand-secondary: #ffffff;
   /* White overlay text/badge background */
@@ -46,7 +46,7 @@
   /* Forest green custom */
   --color-brand-error: #ce271ec2;
   /* Brick red custom */
-  --color-brand-neutral: #314868;
+  --color-brand-neutral: #272e36;
   /* Slate-400 neutral */
   --color-brand-tile: #b6bdcfa4;
   /* Slate-100 inner background */
