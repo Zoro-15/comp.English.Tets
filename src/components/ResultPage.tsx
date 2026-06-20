@@ -7,6 +7,7 @@ interface ResultPageProps {
   timeTaken: number; // in seconds
   currentStreak: number;
   testId: number;
+  theme: 'light' | 'dark';
   onRestart: () => void;
   onNextTest: () => void;
   onBackToHome: () => void;
@@ -17,6 +18,7 @@ export default function ResultPage({
   selectedAnswers,
   timeTaken,
   testId,
+  theme,
   onRestart,
   onNextTest,
   onBackToHome
@@ -168,14 +170,21 @@ export default function ResultPage({
             const selected = selectedAnswers[q.Question_ID];
             const isCorrect = selected !== undefined && String(selected).trim() === String(q.Correct_Answer_Index).trim();
             const wasSkipped = selected === undefined || selected === null;
+            const isDark = theme === 'dark';
 
             let btnStyle = "";
             if (wasSkipped) {
-              btnStyle = "bg-amber-950/20 border-amber-900/30 text-amber-400 hover:border-amber-400";
+              btnStyle = isDark 
+                ? "bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20 hover:border-amber-400"
+                : "bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100 hover:border-amber-400";
             } else if (isCorrect) {
-              btnStyle = "bg-emerald-950/20 border-emerald-800/40 text-emerald-400 hover:border-emerald-400";
+              btnStyle = isDark
+                ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400"
+                : "bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-450";
             } else {
-              btnStyle = "bg-rose-950/25 border-rose-900/40 text-rose-300 hover:border-rose-300";
+              btnStyle = isDark
+                ? "bg-rose-500/10 border-rose-500/30 text-rose-400 hover:bg-rose-500/20 hover:border-rose-455"
+                : "bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100 hover:border-rose-455";
             }
 
             return (
@@ -184,7 +193,7 @@ export default function ResultPage({
                 onClick={() => {
                   document.getElementById(`review-q-${idx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }}
-                className={`h-9 w-9 flex flex-col items-center justify-center rounded-md text-xs font-bold transition duration-150 border cursor-pointer outline-none ${btnStyle}`}
+                className={`h-9 w-9 flex flex-col items-center justify-center rounded-md text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${btnStyle}`}
               >
                 <span>{idx + 1}</span>
               </button>
@@ -193,18 +202,27 @@ export default function ResultPage({
         </div>
 
         {/* Legend */}
-        <div className="mt-4 pt-3 border-t border-brand-border/60 flex flex-wrap gap-4 text-[10px] font-bold uppercase tracking-wider text-brand-text/80">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-sm bg-emerald-950/20 border border-emerald-800/40" />
-            <span>Correct</span>
+        <div className="mt-5 pt-4 border-t border-brand-border/60 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-wider">
+          <div className={`px-2.5 py-1.5 rounded-md border flex items-center gap-1.5 ${
+            theme === 'dark' 
+              ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" 
+              : "bg-emerald-50 border-emerald-200 text-emerald-700"
+          }`}>
+            <span>✓ Correct</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-sm bg-rose-950/25 border border-rose-900/40" />
-            <span>Incorrect</span>
+          <div className={`px-2.5 py-1.5 rounded-md border flex items-center gap-1.5 ${
+            theme === 'dark' 
+              ? "bg-rose-500/10 border-rose-500/20 text-rose-400" 
+              : "bg-rose-50 border-rose-200 text-rose-700"
+          }`}>
+            <span>✗ Wrong</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-sm bg-amber-950/20 border border-amber-900/30" />
-            <span>Skipped</span>
+          <div className={`px-2.5 py-1.5 rounded-md border flex items-center gap-1.5 ${
+            theme === 'dark' 
+              ? "bg-amber-500/10 border-amber-500/20 text-amber-400" 
+              : "bg-amber-50 border-amber-200 text-amber-700"
+          }`}>
+            <span>— Skipped</span>
           </div>
         </div>
       </div>
@@ -340,12 +358,17 @@ export default function ResultPage({
                       const isKeySelected = selected !== undefined && String(selected).trim() === String(key);
                       const isKeyCorrect = String(q.Correct_Answer_Index).trim() === String(key);
 
+                      const isDark = theme === 'dark';
                       let optionStyle = "border-brand-border bg-brand-bg text-brand-text";
                       
                       if (isKeyCorrect) {
-                        optionStyle = "border-emerald-800/65 bg-emerald-950/20 text-emerald-300 font-medium";
+                        optionStyle = isDark
+                          ? "border-emerald-800/65 bg-emerald-950/20 text-emerald-300 font-medium"
+                          : "border-emerald-200 bg-emerald-50 text-emerald-800 font-semibold";
                       } else if (isKeySelected && !isCorrect) {
-                        optionStyle = "border-rose-900/60 bg-rose-950/25 text-rose-300";
+                        optionStyle = isDark
+                          ? "border-rose-900/60 bg-rose-950/25 text-rose-300"
+                          : "border-rose-200 bg-rose-50 text-rose-800";
                       }
 
                       return (

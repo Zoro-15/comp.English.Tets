@@ -824,6 +824,7 @@ export default function TestPage() {
             timeTaken={finalSpentTime}
             currentStreak={streak.currentStreak}
             testId={testId}
+            theme={theme}
             onRestart={handleRestart}
             onNextTest={handleNextTest}
             onBackToHome={handleBackToHome}
