@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-bg: #FAF9F6;
-  --color-brand-primary: #4F6F52;
-  --color-brand-secondary: #E7EFE9;
-  --color-brand-text: #6B6B6B;
-  --color-brand-border: #ECECEC;
-  --color-brand-card: #F4F2EC;
+  --color-brand-bg: #0A0E17;
+  --color-brand-card: #131A26;
+  --color-brand-border: #1F293D;
+  --color-brand-primary: #689F6A;
+  --color-brand-secondary: #1B2E1E;
+  --color-brand-text: #94A3B8;
+  --color-brand-title: #E2E8F0;
 
   --font-inter: "Inter", sans-serif;
   --font-lora: "Lora", serif;
@@ -16,13 +17,13 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    background-color: #FAF9F6;
-    color: #6B6B6B;
+    background-color: var(--color-brand-bg);
+    color: var(--color-brand-text);
   }
   
   body {
-    background-color: #FAF9F6;
-    color: #6B6B6B;
+    background-color: var(--color-brand-bg);
+    color: var(--color-brand-text);
     font-family: "Source Sans 3", system-ui, -apple-system, sans-serif;
   }
 

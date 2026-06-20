@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 import QuestionCard from './QuestionCard';
-import QuestionNavigator from './QuestionNavigator';
 import ResultPage from './ResultPage';
 import LoginScreen from './LoginScreen';
 import type { Question, TestAttempt, UserStreak } from '../types';
@@ -218,7 +217,7 @@ const getLocalDateString = (date: Date) => {
 };
 
 const formatTime = (secs: number) => {
-  const mins = Math.floor(secs / 65); // note: actually 60, let's write 60
+  const mins = Math.floor(secs / 60); // Fixed division bug from 65 to 60
   const remainingSecs = secs % 60;
   return `${mins.toString().padStart(2, '0')}:${remainingSecs.toString().padStart(2, '0')}`;
 };
@@ -246,7 +245,7 @@ const getMockQuestionsForTest = (testId: number): Question[] => {
     return {
       ...q,
       Question_ID: q.Question_ID + (testId - 1) * 100,
-      Question: `<span class="inline-block px-1.5 py-0.5 rounded bg-indigo-50 border border-indigo-100 text-[10px] font-bold text-indigo-650 mr-2 uppercase">Test ${testId}</span> ${modifiedQuestion}`
+      Question: `<span class="inline-block px-1.5 py-0.5 rounded bg-brand-secondary border border-brand-border text-[10px] font-bold text-brand-primary mr-2 uppercase">Test ${testId}</span> ${modifiedQuestion}`
     };
   });
 };
@@ -475,6 +474,38 @@ export default function TestPage() {
     };
   }, [loading, testSubmitted, view, questions]);
 
+  // 5. Scroll-spy tracking of active question
+  useEffect(() => {
+    if (view !== 'testing' || loading || testSubmitted || questions.length === 0) return;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px', // targets the focus area in the viewport
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const idStr = entry.target.id;
+          const idx = parseInt(idStr.replace('q-card-', ''), 10);
+          if (!isNaN(idx)) {
+            setCurrentIndex(idx);
+          }
+        }
+      });
+    }, observerOptions);
+
+    questions.forEach((_, idx) => {
+      const el = document.getElementById(`q-card-${idx}`);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [view, loading, testSubmitted, questions]);
+
   // Login handler
   const handleLogin = async (code: string) => {
     setIsLoggingIn(true);
@@ -539,25 +570,11 @@ export default function TestPage() {
     localStorage.removeItem('english_mock_student_code');
   };
 
-  const handleSelectAnswer = (optionKey: string) => {
-    if (questions[currentIndex]) {
-      setSelectedAnswers((prev) => ({
-        ...prev,
-        [questions[currentIndex].Question_ID]: optionKey,
-      }));
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
-    }
+  const handleSelectAnswerForQuestion = (questionId: number, optionKey: string) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [questionId]: optionKey,
+    }));
   };
 
   const handleSubmitTest = (auto = false) => {
@@ -572,36 +589,43 @@ export default function TestPage() {
     
     if (timerRef.current) clearInterval(timerRef.current);
 
-    // Score calculations
+    // Negative Marking Score calculations
     let correctCount = 0;
+    let wrongCount = 0;
     let attemptedCount = 0;
+
     questions.forEach((q) => {
       const selected = selectedAnswers[q.Question_ID];
       if (selected !== undefined && selected !== null) {
         attemptedCount++;
         if (String(selected).trim() === String(q.Correct_Answer_Index).trim()) {
           correctCount++;
+        } else {
+          wrongCount++;
         }
       }
     });
 
-    const total = questions.length;
+    // Score based on negative marking (+4 correct, -1.3 wrong, 0 skipped)
+    const score = (correctCount * 4) - (wrongCount * 1.3);
     const accuracy = attemptedCount > 0 ? Math.round((correctCount / attemptedCount) * 100) : 0;
     const timeSpent = 1200 - timeLeft;
 
-    handleSaveResult(correctCount, total, accuracy, timeSpent);
+    handleSaveResult(score, correctCount, accuracy, timeSpent);
     setTestSubmitted(true);
   };
 
-  const handleSaveResult = async (score: number, _total: number, accuracy: number, timeTaken: number) => {
+  const handleSaveResult = async (score: number, correctCount: number, accuracy: number, timeTaken: number) => {
     if (!studentCode) return;
+
+    const preciseScore = parseFloat(score.toFixed(1));
 
     const newAttempt: TestAttempt = {
       id: Date.now().toString(),
       student_code: studentCode,
       test_id: testId,
-      score,
-      correct_questions: score,
+      score: preciseScore,
+      correct_questions: correctCount,
       accuracy,
       time_taken: timeTaken,
       completed_at: new Date().toISOString()
@@ -622,8 +646,8 @@ export default function TestPage() {
         await supabase.from('test_attempts').insert([{
           student_code: studentCode,
           test_id: testId,
-          score,
-          correct_questions: score,
+          score: Math.round(score), // Rounded integer to match database score schema constraints
+          correct_questions: correctCount,
           accuracy,
           time_taken: timeTaken,
           completed_at: new Date().toISOString()
@@ -650,16 +674,6 @@ export default function TestPage() {
     setView('home');
   };
 
-  const handleQuitTest = () => {
-    if (window.confirm("Are you sure you want to quit the test? Your current progress will be deleted.")) {
-      if (timerRef.current) clearInterval(timerRef.current);
-      setSelectedAnswers({});
-      setCurrentIndex(0);
-      setTimeLeft(1200);
-      setView('home');
-    }
-  };
-
   const handleNextTest = () => {
     setSelectedAnswers({});
     setCurrentIndex(0);
@@ -670,24 +684,43 @@ export default function TestPage() {
   };
 
   const handleSelectTestNum = (num: number) => {
-    setSelectedAnswers({});
-    setCurrentIndex(0);
-    setTimeLeft(1200);
-    setTestSubmitted(false);
+    const testAttempts = attempts.filter((a) => a.test_id === num);
     setTestId(num);
-    setView('testing');
+    
+    if (testAttempts.length > 0) {
+      // If completed, view results directly
+      setSelectedAnswers({});
+      // Pull questions for the viewed test to show the report
+      setView('testing');
+      setTestSubmitted(true);
+    } else {
+      // Start test
+      setSelectedAnswers({});
+      setView('testing');
+      setTestSubmitted(false);
+    }
+  };
+
+  const handleQuitTest = () => {
+    if (window.confirm("Are you sure you want to quit? This will discard your current mock test progress.")) {
+      setSelectedAnswers({});
+      setCurrentIndex(0);
+      setTimeLeft(1200);
+      setTestSubmitted(false);
+      setView('home');
+    }
   };
 
   const getNextUncompletedTestId = () => {
-    const completedIds = new Set(attempts.map((a) => a.test_id));
-    let id = 1;
-    while (completedIds.has(id)) {
-      id++;
+    for (let num = 1; num <= 10; num++) {
+      const testAttempts = attempts.filter((a) => a.test_id === num);
+      if (testAttempts.length === 0) return num;
     }
-    return id;
+    return 1;
   };
 
-  // Login view filter check
+
+  // If user not logged in, render login portal
   if (!studentCode) {
     return (
       <LoginScreen
@@ -713,27 +746,27 @@ export default function TestPage() {
   // Loading indicator for testing view questions fetch
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-brand-bg flex items-center justify-center p-4">
         <div className="w-full max-w-4xl space-y-6 animate-pulse">
-          <div className="h-8 bg-slate-200 rounded-md w-1/3"></div>
+          <div className="h-8 bg-brand-card rounded-md w-1/3"></div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="md:col-span-3 space-y-4">
-              <div className="bg-white p-8 rounded-2xl border border-slate-100 h-64 flex flex-col justify-between">
+              <div className="bg-brand-card p-8 rounded-2xl border border-brand-border h-64 flex flex-col justify-between">
                 <div className="space-y-3">
-                  <div className="h-4 bg-slate-200 rounded-md w-1/4"></div>
-                  <div className="h-6 bg-slate-200 rounded-md w-5/6"></div>
+                  <div className="h-4 bg-brand-bg rounded-md w-1/4"></div>
+                  <div className="h-6 bg-brand-bg rounded-md w-5/6"></div>
                 </div>
                 <div className="space-y-2">
-                  <div className="h-10 bg-slate-100 rounded-lg w-full"></div>
-                  <div className="h-10 bg-slate-100 rounded-lg w-full"></div>
+                  <div className="h-10 bg-brand-bg rounded-lg w-full"></div>
+                  <div className="h-10 bg-brand-bg rounded-lg w-full"></div>
                 </div>
               </div>
             </div>
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 h-80 space-y-4">
-              <div className="h-6 bg-slate-200 rounded-md w-1/2"></div>
+            <div className="bg-brand-card p-6 rounded-2xl border border-brand-border h-80 space-y-4">
+              <div className="h-6 bg-brand-bg rounded-md w-1/2"></div>
               <div className="grid grid-cols-5 gap-2">
                 {Array.from({ length: 20 }).map((_, i) => (
-                  <div key={i} className="h-8 bg-slate-100 rounded-md"></div>
+                  <div key={i} className="h-8 bg-brand-bg rounded-md"></div>
                 ))}
               </div>
             </div>
@@ -747,22 +780,22 @@ export default function TestPage() {
   if (testSubmitted) {
     const finalSpentTime = 1200 - timeLeft;
     return (
-      <div className="min-h-screen bg-[#FAF9F6] flex flex-col justify-between select-none font-source text-[#6B6B6B]">
+      <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-source text-brand-text">
         {/* Header */}
-        <header className="bg-[#FAF9F6] border-b border-[#ECECEC] px-6 py-4 sticky top-0 z-20">
+        <header className="bg-brand-bg/85 backdrop-blur-md border-b border-brand-border px-6 py-4 sticky top-0 z-20">
           <div className="max-w-[1100px] mx-auto flex items-center justify-between">
-            <h1 className="text-base font-normal text-slate-800 font-lora">
+            <h1 className="text-base font-normal text-brand-title font-lora">
               English Mock Tests
             </h1>
 
             {/* Profile info / logout */}
             <div className="flex items-center gap-4 text-xs">
-              <span className="text-[#6B6B6B]">
-                Student Code: <strong className="font-semibold text-slate-800">{studentCode}</strong>
+              <span className="text-brand-text">
+                Student Code: <strong className="font-semibold text-brand-title">{studentCode}</strong>
               </span>
               <button
                 onClick={handleLogout}
-                className="text-[#6B6B6B] hover:text-rose-650 cursor-pointer transition-colors"
+                className="text-brand-text hover:text-rose-400 cursor-pointer transition-colors"
                 title="Switch Student Code"
               >
                 Logout
@@ -792,22 +825,22 @@ export default function TestPage() {
     const nextRecommendedId = getNextUncompletedTestId();
 
     return (
-      <div className="min-h-screen bg-[#FAF9F6] flex flex-col justify-between select-none font-source text-[#6B6B6B] animate-fade-in animate-duration-200">
+      <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-source text-brand-text animate-fade-in animate-duration-200">
         {/* Header */}
-        <header className="bg-[#FAF9F6] border-b border-[#ECECEC] px-6 py-4 sticky top-0 z-20">
+        <header className="bg-brand-bg/85 backdrop-blur-md border-b border-brand-border px-6 py-4 sticky top-0 z-20">
           <div className="max-w-[1100px] mx-auto flex items-center justify-between">
-            <h1 className="text-base font-normal text-slate-800 font-lora">
+            <h1 className="text-base font-normal text-brand-title font-lora">
               English Mock Tests
             </h1>
 
             {/* Profile info / logout */}
             <div className="flex items-center gap-4 text-xs">
-              <span className="text-[#6B6B6B]">
-                Student Code: <strong className="font-semibold text-slate-800">{studentCode}</strong>
+              <span className="text-brand-text">
+                Student Code: <strong className="font-semibold text-brand-title">{studentCode}</strong>
               </span>
               <button
                 onClick={handleLogout}
-                className="text-[#6B6B6B] hover:text-rose-650 cursor-pointer transition-colors"
+                className="text-brand-text hover:text-rose-450 cursor-pointer transition-colors"
                 title="Switch Student Code"
               >
                 Logout
@@ -818,8 +851,8 @@ export default function TestPage() {
 
         {/* Demo Warning Banner */}
         {isDemoMode && (
-          <div className="bg-[#F4F2EC] border-b border-[#ECECEC] text-[#6B6B6B] px-6 py-2.5 text-xs text-center flex items-center justify-center gap-1.5 font-medium">
-            <svg className="w-3.5 h-3.5 shrink-0 text-[#4F6F52]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <div className="bg-brand-card border-b border-brand-border text-brand-text px-6 py-2.5 text-xs text-center flex items-center justify-center gap-1.5 font-medium">
+            <svg className="w-3.5 h-3.5 shrink-0 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <span>Running in offline preview mode (using local storage mock data). Test is fully functional.</span>
@@ -831,16 +864,16 @@ export default function TestPage() {
           
           {/* Welcome Area */}
           <div className="text-center py-6 space-y-4 max-w-xl mx-auto">
-            <h2 className="text-3xl font-normal text-slate-800 font-lora">
+            <h2 className="text-3xl font-normal text-brand-title font-lora">
               Welcome back.
             </h2>
-            <p className="text-sm text-[#6B6B6B] leading-relaxed">
+            <p className="text-sm text-brand-text leading-relaxed">
               Continue your preparation with today's mock tests. Timed simulations with detailed reviews will help you refine grammar and structure rules.
             </p>
             <div className="pt-2">
               <button
                 onClick={() => handleSelectTestNum(nextRecommendedId)}
-                className="inline-flex py-3 px-6 border border-[#4F6F52] text-[#4F6F52] hover:bg-[#4F6F52] hover:text-white font-semibold rounded-md transition-colors duration-150 text-sm cursor-pointer"
+                className="inline-flex py-3 px-6 border border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-bg font-semibold rounded-md transition-colors duration-150 text-sm cursor-pointer bg-transparent"
               >
                 Start Mock Test {nextRecommendedId} →
               </button>
@@ -849,58 +882,60 @@ export default function TestPage() {
 
           {/* Student Statistics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-[#F4F2EC] border border-[#ECECEC] rounded-lg p-5 flex items-center gap-4">
-              <div className="text-[#4F6F52] shrink-0">
+            <div className="bg-brand-card border border-brand-border rounded-lg p-5 flex items-center gap-4">
+              <div className="text-brand-primary shrink-0">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
               <div>
-                <span className="block text-[10px] uppercase tracking-wider text-[#6B6B6B] font-semibold">Tests Taken</span>
-                <span className="text-lg font-bold text-slate-800 font-lora">{totalTests}</span>
+                <span className="block text-[10px] uppercase tracking-wider text-brand-text font-semibold">Tests Taken</span>
+                <span className="text-lg font-bold text-brand-title font-lora">{totalTests}</span>
               </div>
             </div>
             
-            <div className="bg-[#F4F2EC] border border-[#ECECEC] rounded-lg p-5 flex items-center gap-4">
-              <div className="text-[#4F6F52] shrink-0">
+            <div className="bg-brand-card border border-brand-border rounded-lg p-5 flex items-center gap-4">
+              <div className="text-brand-primary shrink-0">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
               <div>
-                <span className="block text-[10px] uppercase tracking-wider text-[#6B6B6B] font-semibold">Avg Accuracy</span>
-                <span className="text-lg font-bold text-slate-800 font-lora">{avgAccuracy}%</span>
+                <span className="block text-[10px] uppercase tracking-wider text-brand-text font-semibold">Avg Accuracy</span>
+                <span className="text-lg font-bold text-brand-title font-lora">{avgAccuracy}%</span>
               </div>
             </div>
 
-            <div className="bg-[#F4F2EC] border border-[#ECECEC] rounded-lg p-5 flex items-center gap-4">
-              <div className="text-[#4F6F52] shrink-0">
+            <div className="bg-brand-card border border-brand-border rounded-lg p-5 flex items-center gap-4">
+              <div className="text-brand-primary shrink-0">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
               </div>
               <div>
-                <span className="block text-[10px] uppercase tracking-wider text-[#6B6B6B] font-semibold">Best Score</span>
-                <span className="text-lg font-bold text-slate-800 font-lora">{bestScore} / 20</span>
+                <span className="block text-[10px] uppercase tracking-wider text-brand-text font-semibold">Best Score</span>
+                <span className="text-lg font-bold text-brand-title font-lora">
+                  {bestScore % 1 === 0 ? bestScore.toFixed(0) : bestScore.toFixed(1)} / 80
+                </span>
               </div>
             </div>
 
-            <div className="bg-[#F4F2EC] border border-[#ECECEC] rounded-lg p-5 flex items-center gap-4">
-              <div className="text-[#4F6F52] shrink-0">
+            <div className="bg-brand-card border border-brand-border rounded-lg p-5 flex items-center gap-4">
+              <div className="text-brand-primary shrink-0">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 </svg>
               </div>
               <div>
-                <span className="block text-[10px] uppercase tracking-wider text-[#6B6B6B] font-semibold">Streak</span>
-                <span className="text-lg font-bold text-slate-800 font-lora">{streak.currentStreak} {streak.currentStreak === 1 ? 'Day' : 'Days'}</span>
+                <span className="block text-[10px] uppercase tracking-wider text-brand-text font-semibold">Streak</span>
+                <span className="text-lg font-bold text-brand-title font-lora">{streak.currentStreak} {streak.currentStreak === 1 ? 'Day' : 'Days'}</span>
               </div>
             </div>
           </div>
 
           {/* Available practice tests */}
           <div className="space-y-4">
-            <h3 className="text-base font-normal text-slate-800 font-lora border-b border-[#ECECEC] pb-2">
+            <h3 className="text-base font-normal text-brand-title font-lora border-b border-brand-border pb-2">
               Available Mock Tests
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -910,29 +945,31 @@ export default function TestPage() {
                 const maxScore = isCompleted ? Math.max(...testAttempts.map((a) => a.score)) : 0;
 
                 return (
-                  <div key={num} className="border border-[#ECECEC] rounded-lg p-5 bg-[#F4F2EC] flex flex-col justify-between gap-4">
+                  <div key={num} className="border border-brand-border rounded-lg p-5 bg-brand-card flex flex-col justify-between gap-4">
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]">Test {num}</span>
-                        <span className={`text-[10px] font-semibold uppercase tracking-wider ${isCompleted ? 'text-[#4F6F52]' : 'text-slate-400'}`}>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-brand-text">Test {num}</span>
+                        <span className={`text-[10px] font-semibold uppercase tracking-wider ${isCompleted ? 'text-brand-primary' : 'text-slate-500'}`}>
                           {isCompleted ? 'Completed' : 'Not Started'}
                         </span>
                       </div>
-                      <h4 className="text-sm font-semibold text-slate-800">English Grammar MCQ</h4>
-                      <p className="text-[11px] text-[#6B6B6B] mt-0.5">20 Questions &bull; 20 Mins</p>
+                      <h4 className="text-sm font-semibold text-brand-title">English Grammar MCQ</h4>
+                      <p className="text-[11px] text-brand-text mt-0.5">20 Questions &bull; 20 Mins</p>
                     </div>
 
                     {isCompleted && (
-                      <div className="text-[11px] text-[#6B6B6B]">
-                        Best Score: <strong className="text-slate-800 font-semibold">{maxScore} / 20</strong>
+                      <div className="text-[11px] text-brand-text">
+                        Best Score: <strong className="text-brand-title font-semibold">
+                          {maxScore % 1 === 0 ? maxScore.toFixed(0) : maxScore.toFixed(1)} / 80
+                        </strong>
                       </div>
                     )}
 
                     <div className="pt-1">
                       <button
                         onClick={() => handleSelectTestNum(num)}
-                        className={`text-xs font-semibold hover:underline flex items-center gap-1 cursor-pointer transition-colors ${
-                          isCompleted ? 'text-slate-600' : 'text-[#4F6F52] font-bold'
+                        className={`text-xs font-semibold hover:underline flex items-center gap-1 cursor-pointer transition-colors bg-transparent border-none p-0 ${
+                          isCompleted ? 'text-slate-400' : 'text-brand-primary font-bold'
                         }`}
                       >
                         {isCompleted ? 'View Report →' : 'Start Test →'}
@@ -946,28 +983,28 @@ export default function TestPage() {
 
           {/* Attempts History */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-[#ECECEC] pb-2">
-              <h3 className="text-base font-normal text-slate-800 font-lora">
+            <div className="flex items-center justify-between border-b border-brand-border pb-2">
+              <h3 className="text-base font-normal text-brand-title font-lora">
                 Attempts History
               </h3>
-              <span className="text-[10px] font-semibold text-[#6B6B6B] uppercase tracking-wider">{studentCode}'s Progress</span>
+              <span className="text-[10px] font-semibold text-brand-text uppercase tracking-wider">{studentCode}'s Progress</span>
             </div>
 
             {isDashboardLoading ? (
               <div className="space-y-4">
-                <div className="h-6 bg-[#F4F2EC] rounded-md w-full animate-pulse"></div>
-                <div className="h-6 bg-[#F4F2EC] rounded-md w-5/6 animate-pulse"></div>
-                <div className="h-6 bg-[#F4F2EC] rounded-md w-4/6 animate-pulse"></div>
+                <div className="h-6 bg-brand-card rounded-md w-full animate-pulse"></div>
+                <div className="h-6 bg-brand-card rounded-md w-5/6 animate-pulse"></div>
+                <div className="h-6 bg-brand-card rounded-md w-4/6 animate-pulse"></div>
               </div>
             ) : attempts.length === 0 ? (
-              <div className="text-center py-10 border border-dashed border-[#ECECEC] rounded-lg bg-[#F4F2EC]/30">
-                <p className="text-xs text-[#6B6B6B]">No test attempts logged yet.</p>
+              <div className="text-center py-10 border border-dashed border-brand-border rounded-lg bg-brand-card/30">
+                <p className="text-xs text-brand-text">No test attempts logged yet.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs font-source border-collapse" style={{ borderCollapse: 'collapse' }}>
                   <thead>
-                    <tr className="border-b border-[#ECECEC] text-[#6B6B6B] font-bold uppercase tracking-wider">
+                    <tr className="border-b border-brand-border text-brand-text font-bold uppercase tracking-wider">
                       <th className="py-3 px-4 font-semibold">Date</th>
                       <th className="py-3 px-4 font-semibold text-center">Test ID</th>
                       <th className="py-3 px-4 font-semibold text-center">Score</th>
@@ -975,10 +1012,10 @@ export default function TestPage() {
                       <th className="py-3 px-4 font-semibold text-center">Time</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#ECECEC] text-[#6B6B6B]">
+                  <tbody className="divide-y divide-brand-border text-brand-text">
                     {attempts.map((attempt) => (
-                      <tr key={attempt.id} className="hover:bg-[#F4F2EC]/20 transition-colors">
-                        <td className="py-3 px-4">
+                      <tr key={attempt.id} className="hover:bg-brand-card/20 transition-colors">
+                        <td className="py-3 px-4 text-brand-text">
                           {new Date(attempt.completed_at).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
@@ -988,11 +1025,13 @@ export default function TestPage() {
                           })}
                         </td>
                         <td className="py-3 px-4 text-center">
-                          <span className="text-[#6B6B6B]">Test {attempt.test_id}</span>
+                          <span className="text-brand-text">Test {attempt.test_id}</span>
                         </td>
-                        <td className="py-3 px-4 text-center font-semibold text-slate-800">{attempt.score} / 20</td>
+                        <td className="py-3 px-4 text-center font-semibold text-brand-title">
+                          {attempt.score % 1 === 0 ? attempt.score.toFixed(0) : attempt.score.toFixed(1)} / 80
+                        </td>
                         <td className="py-3 px-4 text-center">
-                          <span className={attempt.accuracy >= 70 ? 'text-[#4F6F52] font-semibold' : 'text-[#6B6B6B]'}>
+                          <span className={attempt.accuracy >= 70 ? 'text-brand-primary font-semibold' : 'text-brand-text'}>
                             {attempt.accuracy}%
                           </span>
                         </td>
@@ -1007,34 +1046,33 @@ export default function TestPage() {
         </main>
 
         {/* Footer */}
-        <footer className="py-6 border-t border-[#ECECEC] text-center text-[10px] text-[#6B6B6B]/70">
+        <footer className="py-6 border-t border-brand-border text-center text-[10px] text-brand-text/70">
           English Mock Tests &copy; {new Date().getFullYear()} &bull; Academic Practice Journal
         </footer>
       </div>
     );
   }
 
-  const answeredCount = Object.keys(selectedAnswers).length;
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] flex flex-col justify-between select-none font-source text-[#6B6B6B] animate-fade-in animate-duration-200">
+    <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-source text-brand-text animate-fade-in animate-duration-200">
       {/* Header Banner */}
-      <header className="sticky top-0 z-30 bg-[#FAF9F6] border-b border-[#ECECEC] px-6 py-4">
+      <header className="sticky top-0 z-30 bg-brand-bg/85 backdrop-blur-md border-b border-brand-border px-6 py-4">
         <div className="max-w-[1100px] mx-auto flex items-center justify-between">
-          <h1 className="text-base font-normal text-slate-800 font-lora">
+          <h1 className="text-base font-normal text-brand-title font-lora">
             English Mock Tests
           </h1>
 
           <div className="flex items-center gap-4 text-xs">
-            <span className="text-[#6B6B6B] hidden sm:inline">
-              Student Code: <strong className="font-semibold text-slate-850">{studentCode}</strong> &bull; Test {testId}
+            <span className="text-brand-text hidden sm:inline">
+              Student Code: <strong className="font-semibold text-brand-title">{studentCode}</strong> &bull; Test {testId}
             </span>
 
             {/* Countdown Timer */}
             <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md border font-mono font-bold text-xs transition-colors ${
               timeLeft < 180 
-                ? 'bg-rose-50 border-rose-250 text-rose-700' 
-                : 'bg-[#F4F2EC] border-[#ECECEC] text-[#6B6B6B]'
+                ? 'bg-rose-950/20 border-rose-900/40 text-rose-300' 
+                : 'bg-brand-card border-brand-border text-brand-text'
             }`}>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1045,7 +1083,7 @@ export default function TestPage() {
             {/* Quit Button */}
             <button
               onClick={handleQuitTest}
-              className="text-xs font-semibold text-[#6B6B6B] border border-[#ECECEC] bg-[#F4F2EC] hover:bg-[#FAF9F6] hover:border-[#6B6B6B] hover:text-slate-800 transition-colors rounded-md px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer outline-none"
+              className="text-xs font-semibold text-brand-text border border-brand-border bg-brand-card hover:bg-brand-bg hover:border-brand-text hover:text-brand-title transition-colors rounded-md px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer outline-none"
               title="Quit Test & Discard Progress"
             >
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -1057,7 +1095,7 @@ export default function TestPage() {
             {/* Mobile Sidebar Toggle Button */}
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="md:hidden p-2 rounded-md bg-[#F4F2EC] border border-[#ECECEC] hover:bg-[#FAF9F6] text-[#6B6B6B] cursor-pointer"
+              className="md:hidden p-2 rounded-md bg-brand-card border border-brand-border hover:bg-brand-bg text-brand-text cursor-pointer"
               title="Open Navigation"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -1070,8 +1108,8 @@ export default function TestPage() {
 
       {/* Demo Warning Header Banner */}
       {isDemoMode && (
-        <div className="bg-[#F4F2EC] border-b border-[#ECECEC] text-[#6B6B6B] px-6 py-2 text-xs text-center flex items-center justify-center gap-1.5 font-medium">
-          <svg className="w-3.5 h-3.5 shrink-0 text-[#4F6F52]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <div className="bg-brand-card border-b border-brand-border text-brand-text px-6 py-2 text-xs text-center flex items-center justify-center gap-1.5 font-medium">
+          <svg className="w-3.5 h-3.5 shrink-0 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
           <span>Running in offline preview mode (mock database).</span>
@@ -1080,19 +1118,25 @@ export default function TestPage() {
 
       {/* Main Body Layout */}
       <main className="flex-1 max-w-[1100px] mx-auto w-full px-6 py-8 flex flex-col md:flex-row gap-6 items-stretch md:items-start animate-fade-in">
-        {/* Left Side: Question area */}
-        <div className="flex-1 flex flex-col">
-          <QuestionCard
-            question={questions[currentIndex]}
-            selectedAnswer={selectedAnswers[questions[currentIndex]?.Question_ID]}
-            onSelectAnswer={handleSelectAnswer}
-          />
+        {/* Left Side: Question area stacked vertically */}
+        <div className="flex-1 flex flex-col gap-6">
+          {questions.map((q, idx) => (
+            <div key={q.Question_ID} id={`q-card-${idx}`} className="scroll-mt-24">
+              <QuestionCard
+                question={q}
+                selectedAnswer={selectedAnswers[q.Question_ID]}
+                onSelectAnswer={(key) => handleSelectAnswerForQuestion(q.Question_ID, key)}
+                index={idx}
+                totalQuestions={questions.length}
+              />
+            </div>
+          ))}
         </div>
 
         {/* Right Side / Sidebar: Desktop layout (visible md+) */}
-        <aside className="hidden md:flex md:w-72 flex-col bg-[#F4F2EC] border border-[#ECECEC] rounded-lg p-5 gap-6">
+        <aside className="hidden md:flex md:w-72 flex-col bg-brand-card border border-brand-border rounded-lg p-5 gap-6 sticky top-24">
           <div>
-            <h4 className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mb-4 flex items-center gap-1.5">
+            <h4 className="text-xs font-bold text-brand-text uppercase tracking-wider mb-4 flex items-center gap-1.5">
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
@@ -1106,13 +1150,19 @@ export default function TestPage() {
                 return (
                   <button
                     key={q.Question_ID}
-                    onClick={() => setCurrentIndex(idx)}
+                    onClick={() => {
+                      setCurrentIndex(idx);
+                      const el = document.getElementById(`q-card-${idx}`);
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }
+                    }}
                     className={`h-8 w-8 flex items-center justify-center rounded-full text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
                       isSelected
-                        ? 'bg-white border-[#4F6F52] text-[#4F6F52] font-bold'
+                        ? 'bg-brand-bg border-brand-primary text-brand-primary font-bold ring-1 ring-brand-primary/50'
                         : isAnswered
-                        ? 'bg-[#E7EFE9] border-[#ECECEC] text-[#4F6F52]'
-                        : 'bg-[#FAF9F6] border-[#ECECEC] text-[#6B6B6B]/60 hover:border-[#6B6B6B]'
+                        ? 'bg-brand-secondary border-brand-border text-brand-primary font-medium'
+                        : 'bg-brand-bg border-brand-border text-brand-text/60 hover:border-brand-text hover:text-brand-title'
                     }`}
                   >
                     {idx + 1}
@@ -1122,17 +1172,17 @@ export default function TestPage() {
             </div>
 
             {/* Legend indicators */}
-            <div className="mt-6 space-y-2 border-t border-[#ECECEC] pt-4 text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]/70">
+            <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text/70">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-white border border-[#4F6F52]"></span>
+                <span className="w-3 h-3 rounded-full bg-brand-bg border border-brand-primary"></span>
                 <span>Current Question</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-[#E7EFE9] border border-[#ECECEC]"></span>
+                <span className="w-3 h-3 rounded-full bg-brand-secondary border border-brand-border"></span>
                 <span>Answered</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-[#FAF9F6] border border-[#ECECEC]"></span>
+                <span className="w-3 h-3 rounded-full bg-brand-bg border border-brand-border"></span>
                 <span>Unanswered</span>
               </div>
             </div>
@@ -1140,7 +1190,7 @@ export default function TestPage() {
 
           <button
             onClick={() => handleSubmitTest(false)}
-            className="w-full py-3 bg-[#4F6F52] hover:bg-[#4F6F52]/90 text-white font-bold rounded-md transition-colors duration-150 flex items-center justify-center gap-1.5 cursor-pointer text-xs outline-none"
+            className="w-full py-3 bg-brand-primary hover:bg-brand-primary/95 text-brand-bg font-bold rounded-md transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer text-xs outline-none shadow-sm hover:shadow-brand-primary/20"
           >
             <span>Submit Test</span>
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -1154,15 +1204,15 @@ export default function TestPage() {
           <div className="fixed inset-0 z-50 md:hidden animate-fade-in animate-duration-200">
             {/* Backdrop overlay */}
             <div 
-              className="absolute inset-0 bg-slate-900/10 backdrop-blur-xs"
+              className="absolute inset-0 bg-slate-950/45 backdrop-blur-xs"
               onClick={() => setIsSidebarOpen(false)}
             ></div>
             
             {/* Drawer sheet content */}
-            <div className="absolute right-0 top-0 bottom-0 w-72 bg-[#F4F2EC] p-6 flex flex-col justify-between z-10 animate-slide-in-right animate-duration-200 border-l border-[#ECECEC]">
+            <div className="absolute right-0 top-0 bottom-0 w-72 bg-brand-card p-6 flex flex-col justify-between z-10 animate-slide-in-right animate-duration-200 border-l border-brand-border">
               <div>
-                <div className="flex items-center justify-between mb-6 pb-2 border-b border-[#ECECEC]">
-                  <h4 className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider flex items-center gap-1.5">
+                <div className="flex items-center justify-between mb-6 pb-2 border-b border-brand-border">
+                  <h4 className="text-xs font-bold text-brand-text uppercase tracking-wider flex items-center gap-1.5">
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                     </svg>
@@ -1170,7 +1220,7 @@ export default function TestPage() {
                   </h4>
                   <button 
                     onClick={() => setIsSidebarOpen(false)}
-                    className="p-1 rounded text-slate-450 hover:bg-[#ECECEC] cursor-pointer outline-none"
+                    className="p-1 rounded text-slate-400 hover:bg-brand-border cursor-pointer outline-none bg-transparent border-none"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -1189,13 +1239,17 @@ export default function TestPage() {
                         onClick={() => {
                           setCurrentIndex(idx);
                           setIsSidebarOpen(false);
+                          const el = document.getElementById(`q-card-${idx}`);
+                          if (el) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          }
                         }}
                         className={`h-8 w-8 flex items-center justify-center rounded-full text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
                           isSelected
-                            ? 'bg-white border-[#4F6F52] text-[#4F6F52] font-bold'
+                            ? 'bg-brand-bg border-brand-primary text-brand-primary font-bold ring-1 ring-brand-primary/50'
                             : isAnswered
-                            ? 'bg-[#E7EFE9] border-[#ECECEC] text-[#4F6F52]'
-                            : 'bg-[#FAF9F6] border-[#ECECEC] text-[#6B6B6B]/60 hover:border-[#6B6B6B]'
+                            ? 'bg-brand-secondary border-brand-border text-brand-primary font-medium'
+                            : 'bg-brand-bg border-brand-border text-brand-text/60 hover:border-brand-text hover:text-brand-title'
                         }`}
                       >
                         {idx + 1}
@@ -1205,17 +1259,17 @@ export default function TestPage() {
                 </div>
 
                 {/* Legend indicators */}
-                <div className="mt-6 space-y-2 border-t border-[#ECECEC] pt-4 text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]/70">
+                <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text/70">
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-white border border-[#4F6F52]"></span>
+                    <span className="w-3 h-3 rounded-full bg-brand-bg border border-brand-primary"></span>
                     <span>Current Question</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-[#E7EFE9] border border-[#ECECEC]"></span>
+                    <span className="w-3 h-3 rounded-full bg-brand-secondary border border-brand-border"></span>
                     <span>Answered</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-[#FAF9F6] border border-[#ECECEC]"></span>
+                    <span className="w-3 h-3 rounded-full bg-brand-bg border border-brand-border"></span>
                     <span>Unanswered</span>
                   </div>
                 </div>
@@ -1226,7 +1280,7 @@ export default function TestPage() {
                   setIsSidebarOpen(false);
                   handleSubmitTest(false);
                 }}
-                className="w-full py-3.5 bg-[#4F6F52] hover:bg-[#4F6F52]/90 text-white font-bold rounded-md transition-colors duration-150 flex items-center justify-center gap-1.5 cursor-pointer text-xs outline-none"
+                className="w-full py-3.5 bg-brand-primary hover:bg-brand-primary/95 text-brand-bg font-bold rounded-md transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer text-xs outline-none shadow-sm hover:shadow-brand-primary/20"
               >
                 <span>Submit Test</span>
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -1237,16 +1291,6 @@ export default function TestPage() {
           </div>
         )}
       </main>
-
-      {/* Footer Navigation Bar */}
-      <QuestionNavigator
-        currentIndex={currentIndex}
-        totalQuestions={questions.length}
-        onPrev={handlePrev}
-        onNext={handleNext}
-        onSubmit={() => handleSubmitTest(false)}
-        answeredCount={answeredCount}
-      />
     </div>
   );
 }
