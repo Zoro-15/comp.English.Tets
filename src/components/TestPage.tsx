@@ -747,28 +747,22 @@ export default function TestPage() {
   if (testSubmitted) {
     const finalSpentTime = 1200 - timeLeft;
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col justify-between select-none animate-fade-in animate-duration-300">
+      <div className="min-h-screen bg-[#FAF9F6] flex flex-col justify-between select-none font-source text-[#6B6B6B]">
         {/* Header */}
-        <header className="bg-white border-b border-slate-100 px-4 py-4 shadow-xs sticky top-0 z-20">
-          <div className="max-w-4xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-extrabold text-lg">
-                E
-              </div>
-              <h1 className="text-base font-black text-slate-800 tracking-tight sm:text-lg uppercase">
-                ENGLISH MOCK TESTS
-              </h1>
-            </div>
+        <header className="bg-[#FAF9F6] border-b border-[#ECECEC] px-6 py-4 sticky top-0 z-20">
+          <div className="max-w-[1100px] mx-auto flex items-center justify-between">
+            <h1 className="text-base font-normal text-slate-800 font-lora">
+              English Mock Tests
+            </h1>
 
-            {/* Profile badge / logout */}
-            <div className="flex items-center gap-3">
-              <div className="bg-slate-100 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 flex items-center gap-1.5 shadow-2xs">
-                <span>Code:</span>
-                <span className="text-indigo-655 font-black">{studentCode}</span>
-              </div>
+            {/* Profile info / logout */}
+            <div className="flex items-center gap-4 text-xs">
+              <span className="text-[#6B6B6B]">
+                Student Code: <strong className="font-semibold text-slate-800">{studentCode}</strong>
+              </span>
               <button
                 onClick={handleLogout}
-                className="text-xs font-bold text-slate-450 hover:text-rose-500 cursor-pointer transition-colors"
+                className="text-[#6B6B6B] hover:text-rose-650 cursor-pointer transition-colors"
                 title="Switch Student Code"
               >
                 Logout
@@ -798,28 +792,22 @@ export default function TestPage() {
     const nextRecommendedId = getNextUncompletedTestId();
 
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col justify-between select-none animate-fade-in animate-duration-200">
+      <div className="min-h-screen bg-[#FAF9F6] flex flex-col justify-between select-none font-source text-[#6B6B6B] animate-fade-in animate-duration-200">
         {/* Header */}
-        <header className="bg-white border-b border-slate-100 px-4 py-4 shadow-xs sticky top-0 z-20">
-          <div className="max-w-4xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-extrabold text-lg">
-                E
-              </div>
-              <h1 className="text-base font-black text-slate-800 tracking-tight sm:text-lg uppercase">
-                ENGLISH MOCK TESTS
-              </h1>
-            </div>
+        <header className="bg-[#FAF9F6] border-b border-[#ECECEC] px-6 py-4 sticky top-0 z-20">
+          <div className="max-w-[1100px] mx-auto flex items-center justify-between">
+            <h1 className="text-base font-normal text-slate-800 font-lora">
+              English Mock Tests
+            </h1>
 
-            {/* Profile badge / logout */}
-            <div className="flex items-center gap-3">
-              <div className="bg-slate-100 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 flex items-center gap-1.5 shadow-2xs">
-                <span>Code:</span>
-                <span className="text-indigo-655 font-black">{studentCode}</span>
-              </div>
+            {/* Profile info / logout */}
+            <div className="flex items-center gap-4 text-xs">
+              <span className="text-[#6B6B6B]">
+                Student Code: <strong className="font-semibold text-slate-800">{studentCode}</strong>
+              </span>
               <button
                 onClick={handleLogout}
-                className="text-xs font-bold text-slate-450 hover:text-rose-500 cursor-pointer transition-colors"
+                className="text-[#6B6B6B] hover:text-rose-650 cursor-pointer transition-colors"
                 title="Switch Student Code"
               >
                 Logout
@@ -830,248 +818,197 @@ export default function TestPage() {
 
         {/* Demo Warning Banner */}
         {isDemoMode && (
-          <div className="bg-amber-500/10 border-b border-amber-500/20 text-amber-805 px-4 py-2.5 text-xs font-semibold text-center flex items-center justify-center gap-1.5">
-            <svg className="w-4 h-4 shrink-0 text-amber-600 animate-bounce-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+          <div className="bg-[#F4F2EC] border-b border-[#ECECEC] text-[#6B6B6B] px-6 py-2.5 text-xs text-center flex items-center justify-center gap-1.5 font-medium">
+            <svg className="w-3.5 h-3.5 shrink-0 text-[#4F6F52]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-            Running in offline preview mode (Supabase unconfigured or connection error). Interactive test is fully playable.
+            <span>Running in offline preview mode (using local storage mock data). Test is fully functional.</span>
           </div>
         )}
 
         {/* Home Main Content */}
-        <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-12 space-y-10">
+        <main className="flex-1 max-w-[1100px] mx-auto w-full px-6 py-12 space-y-10">
           
           {/* Welcome Area */}
-          <div className="flex flex-col items-center justify-center text-center">
-            <div className="w-20 h-20 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mb-6 border border-indigo-100 shadow-sm animate-bounce-slow">
-              <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-
-            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight sm:text-5xl mb-4 uppercase">
-              ENGLISH MOCK TESTS
+          <div className="text-center py-6 space-y-4 max-w-xl mx-auto">
+            <h2 className="text-3xl font-normal text-slate-800 font-lora">
+              Welcome back.
             </h2>
-            <p className="text-base sm:text-lg text-slate-600 mb-8 max-w-xl leading-relaxed">
-              Test your proficiency and grammar skills with our interactive, timed simulation. Access detailed explanations for every question upon completion.
+            <p className="text-sm text-[#6B6B6B] leading-relaxed">
+              Continue your preparation with today's mock tests. Timed simulations with detailed reviews will help you refine grammar and structure rules.
             </p>
-
-            {/* CTA button: Starts next recommended uncompleted test */}
-            <button
-              onClick={() => handleSelectTestNum(nextRecommendedId)}
-              className="w-full sm:w-64 py-4 px-6 bg-linear-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 active:from-indigo-800 active:to-violet-800 text-white font-extrabold rounded-xl transition duration-150 shadow-md shadow-indigo-200/50 hover:shadow-lg flex items-center justify-center gap-2 text-base cursor-pointer"
-            >
-              Start Mock Test {nextRecommendedId}
-              <svg className="w-5 h-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-              </svg>
-            </button>
+            <div className="pt-2">
+              <button
+                onClick={() => handleSelectTestNum(nextRecommendedId)}
+                className="inline-flex py-3 px-6 border border-[#4F6F52] text-[#4F6F52] hover:bg-[#4F6F52] hover:text-white font-semibold rounded-md transition-colors duration-150 text-sm cursor-pointer"
+              >
+                Start Mock Test {nextRecommendedId} →
+              </button>
+            </div>
           </div>
 
-          {/* Grid layout for Instructions & Streak */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Left Column: Info Instructions */}
-            <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-xs space-y-4">
-              <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-wider mb-2">Test Format</h3>
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-slate-50 p-4 rounded-xl text-center border border-slate-100/50">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Questions</span>
-                  <span className="text-base font-black text-slate-805">20</span>
-                </div>
-                <div className="bg-slate-50 p-4 rounded-xl text-center border border-slate-100/50">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Duration</span>
-                  <span className="text-base font-black text-slate-805">20 Mins</span>
-                </div>
-                <div className="bg-slate-50 p-4 rounded-xl text-center border border-slate-100/50">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Format</span>
-                  <span className="text-base font-black text-slate-805">MCQ</span>
-                </div>
+          {/* Student Statistics */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-[#F4F2EC] border border-[#ECECEC] rounded-lg p-5 flex items-center gap-4">
+              <div className="text-[#4F6F52] shrink-0">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
               </div>
-              
-              <div className="text-xs text-slate-500 leading-relaxed border-t border-slate-100 pt-4">
-                <strong>How it works:</strong> First 20 questions are Test 1, next 20 are Test 2, and so forth. Completing a test saves your score instantly under your student code profile.
-              </div>
-            </div>
-
-            {/* Right Column: Streak Panel */}
-            <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-xs flex flex-col justify-between">
               <div>
-                <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-wider mb-3">Study Tracker</h3>
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-3xl">
-                    🔥
-                  </div>
-                  <div>
-                    <span className="text-lg sm:text-xl font-extrabold text-slate-850 block">
-                      Current Streak: {streak.currentStreak} {streak.currentStreak === 1 ? 'Day' : 'Days'}
-                    </span>
-                    <span className="text-xs text-slate-500 font-semibold">
-                      Longest Study Streak: {streak.longestStreak} {streak.longestStreak === 1 ? 'day' : 'days'}
-                    </span>
-                  </div>
-                </div>
+                <span className="block text-[10px] uppercase tracking-wider text-[#6B6B6B] font-semibold">Tests Taken</span>
+                <span className="text-lg font-bold text-slate-800 font-lora">{totalTests}</span>
               </div>
-              <p className="text-xs text-slate-400 leading-relaxed mt-4 border-t border-slate-100 pt-3">
-                Grow your consecutive streak by taking a mock test each day. Skipping a day resets your active streak metric.
-              </p>
+            </div>
+            
+            <div className="bg-[#F4F2EC] border border-[#ECECEC] rounded-lg p-5 flex items-center gap-4">
+              <div className="text-[#4F6F52] shrink-0">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <div>
+                <span className="block text-[10px] uppercase tracking-wider text-[#6B6B6B] font-semibold">Avg Accuracy</span>
+                <span className="text-lg font-bold text-slate-800 font-lora">{avgAccuracy}%</span>
+              </div>
+            </div>
+
+            <div className="bg-[#F4F2EC] border border-[#ECECEC] rounded-lg p-5 flex items-center gap-4">
+              <div className="text-[#4F6F52] shrink-0">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+              </div>
+              <div>
+                <span className="block text-[10px] uppercase tracking-wider text-[#6B6B6B] font-semibold">Best Score</span>
+                <span className="text-lg font-bold text-slate-800 font-lora">{bestScore} / 20</span>
+              </div>
+            </div>
+
+            <div className="bg-[#F4F2EC] border border-[#ECECEC] rounded-lg p-5 flex items-center gap-4">
+              <div className="text-[#4F6F52] shrink-0">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                </svg>
+              </div>
+              <div>
+                <span className="block text-[10px] uppercase tracking-wider text-[#6B6B6B] font-semibold">Streak</span>
+                <span className="text-lg font-bold text-slate-800 font-lora">{streak.currentStreak} {streak.currentStreak === 1 ? 'Day' : 'Days'}</span>
+              </div>
             </div>
           </div>
 
-          {/* New Grid feature: Available Tests list */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-xs">
-            <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-wider mb-5 border-b border-slate-100 pb-3">Available practice tests</h3>
+          {/* Available practice tests */}
+          <div className="space-y-4">
+            <h3 className="text-base font-normal text-slate-800 font-lora border-b border-[#ECECEC] pb-2">
+              Available Mock Tests
+            </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {[1, 2, 3, 4, 5].map((num) => {
-                // Find all attempts for this test number
                 const testAttempts = attempts.filter((a) => a.test_id === num);
                 const isCompleted = testAttempts.length > 0;
-                // Find highest score for this test
                 const maxScore = isCompleted ? Math.max(...testAttempts.map((a) => a.score)) : 0;
 
                 return (
-                  <div key={num} className="border border-slate-100 rounded-2xl p-5 bg-slate-50/50 hover:bg-white hover:shadow-xs transition-all flex flex-col justify-between gap-4">
+                  <div key={num} className="border border-[#ECECEC] rounded-lg p-5 bg-[#F4F2EC] flex flex-col justify-between gap-4">
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-black text-indigo-650 bg-indigo-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Test {num}</span>
-                        {isCompleted ? (
-                          <span className="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase">Completed</span>
-                        ) : (
-                          <span className="text-[10px] font-bold text-slate-400 uppercase">Not Started</span>
-                        )}
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]">Test {num}</span>
+                        <span className={`text-[10px] font-semibold uppercase tracking-wider ${isCompleted ? 'text-[#4F6F52]' : 'text-slate-400'}`}>
+                          {isCompleted ? 'Completed' : 'Not Started'}
+                        </span>
                       </div>
-                      <h4 className="text-sm font-bold text-slate-800">English Grammar MCQ</h4>
-                      <span className="text-xs text-slate-500">20 Questions &bull; 20 Mins</span>
+                      <h4 className="text-sm font-semibold text-slate-800">English Grammar MCQ</h4>
+                      <p className="text-[11px] text-[#6B6B6B] mt-0.5">20 Questions &bull; 20 Mins</p>
                     </div>
 
-                    {/* Show performance if completed */}
                     {isCompleted && (
-                      <div className="text-xs bg-white border border-slate-100 rounded-xl p-2.5 text-slate-650 font-medium">
-                        Best Score: <strong className="text-slate-800 font-bold">{maxScore} / 20</strong>
+                      <div className="text-[11px] text-[#6B6B6B]">
+                        Best Score: <strong className="text-slate-800 font-semibold">{maxScore} / 20</strong>
                       </div>
                     )}
 
-                    <button
-                      onClick={() => handleSelectTestNum(num)}
-                      className={`w-full py-2.5 rounded-xl text-xs font-extrabold transition duration-150 cursor-pointer ${
-                        isCompleted
-                          ? 'border border-slate-205 text-slate-700 hover:bg-slate-50'
-                          : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm shadow-indigo-100'
-                      }`}
-                    >
-                      {isCompleted ? `Retake Test ${num}` : `Start Test ${num}`}
-                    </button>
+                    <div className="pt-1">
+                      <button
+                        onClick={() => handleSelectTestNum(num)}
+                        className={`text-xs font-semibold hover:underline flex items-center gap-1 cursor-pointer transition-colors ${
+                          isCompleted ? 'text-slate-600' : 'text-[#4F6F52] font-bold'
+                        }`}
+                      >
+                        {isCompleted ? 'View Report →' : 'Start Test →'}
+                      </button>
+                    </div>
                   </div>
                 );
               })}
             </div>
           </div>
 
-          {/* Attempts Dashboard Section */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-xs">
-            <div className="flex items-center justify-between mb-6 border-b border-slate-100 pb-3">
-              <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-wider">attempts history</h3>
-              <span className="text-xs text-indigo-655 font-extrabold uppercase tracking-wider">{studentCode}'s Progress</span>
+          {/* Attempts History */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between border-b border-[#ECECEC] pb-2">
+              <h3 className="text-base font-normal text-slate-800 font-lora">
+                Attempts History
+              </h3>
+              <span className="text-[10px] font-semibold text-[#6B6B6B] uppercase tracking-wider">{studentCode}'s Progress</span>
             </div>
 
-            {/* Loading State for Dashboard */}
             {isDashboardLoading ? (
               <div className="space-y-4">
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="h-16 bg-slate-100 rounded-xl animate-pulse"></div>
-                  <div className="h-16 bg-slate-100 rounded-xl animate-pulse"></div>
-                  <div className="h-16 bg-slate-100 rounded-xl animate-pulse"></div>
-                </div>
-                <div className="space-y-2 pt-4">
-                  <div className="h-8 bg-slate-50 rounded-lg animate-pulse"></div>
-                  <div className="h-8 bg-slate-50 rounded-lg animate-pulse"></div>
-                  <div className="h-8 bg-slate-50 rounded-lg animate-pulse"></div>
-                </div>
+                <div className="h-6 bg-[#F4F2EC] rounded-md w-full animate-pulse"></div>
+                <div className="h-6 bg-[#F4F2EC] rounded-md w-5/6 animate-pulse"></div>
+                <div className="h-6 bg-[#F4F2EC] rounded-md w-4/6 animate-pulse"></div>
+              </div>
+            ) : attempts.length === 0 ? (
+              <div className="text-center py-10 border border-dashed border-[#ECECEC] rounded-lg bg-[#F4F2EC]/30">
+                <p className="text-xs text-[#6B6B6B]">No test attempts logged yet.</p>
               </div>
             ) : (
-              <div className="space-y-6">
-                {/* Dashboard Stats */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="bg-slate-50 p-4 rounded-xl text-center border border-slate-100/50">
-                    <span className="block text-2xl font-black text-slate-800">{totalTests}</span>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Tests</span>
-                  </div>
-                  <div className="bg-slate-50 p-4 rounded-xl text-center border border-slate-100/50">
-                    <span className="block text-2xl font-black text-slate-850">{avgAccuracy}%</span>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Avg Accuracy</span>
-                  </div>
-                  <div className="bg-slate-50 p-4 rounded-xl text-center border border-slate-100/50">
-                    <span className="block text-2xl font-black text-indigo-650">{bestScore} <span className="text-xs text-slate-400 font-bold">/ 20</span></span>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Best Score</span>
-                  </div>
-                </div>
-
-                {/* Attempts Table */}
-                {attempts.length === 0 ? (
-                  <div className="text-center py-10 border border-dashed border-slate-200 rounded-xl bg-slate-50/50">
-                    <div className="w-12 h-12 bg-white border border-slate-150 rounded-full flex items-center justify-center text-xl text-slate-400 mx-auto mb-3 shadow-2xs">
-                      📊
-                    </div>
-                    <h4 className="text-sm font-bold text-slate-700">No attempts logged yet</h4>
-                    <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto leading-normal">
-                      Complete your first English mock test and submit your answers to start tracking your performance.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="overflow-x-auto rounded-xl border border-slate-100">
-                    <table className="w-full text-left text-sm border-collapse">
-                      <thead>
-                        <tr className="bg-slate-50 text-slate-550 font-bold text-xs uppercase tracking-wider border-b border-slate-100">
-                          <th className="p-4">Date</th>
-                          <th className="p-4 text-center">Test ID</th>
-                          <th className="p-4 text-center">Score</th>
-                          <th className="p-4 text-center">Accuracy</th>
-                          <th className="p-4 text-center">Time</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100 text-slate-705 font-semibold">
-                        {attempts.map((attempt) => (
-                          <tr key={attempt.id} className="hover:bg-slate-50/50 transition-colors">
-                            <td className="p-4 text-xs font-semibold text-slate-500">
-                              {new Date(attempt.completed_at).toLocaleDateString('en-US', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              })}
-                            </td>
-                            <td className="p-4 text-center">
-                              <span className="px-2 py-0.5 bg-slate-100 border border-slate-150 rounded text-xs text-slate-655 font-bold">
-                                Test {attempt.test_id}
-                              </span>
-                            </td>
-                            <td className="p-4 text-center text-slate-800 font-bold">{attempt.score} / 20</td>
-                            <td className="p-4 text-center">
-                              <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${
-                                attempt.accuracy >= 80 
-                                  ? 'bg-emerald-50 text-emerald-700' 
-                                  : attempt.accuracy >= 50 
-                                  ? 'bg-indigo-50 text-indigo-700' 
-                                  : 'bg-rose-50 text-rose-700'
-                              }`}>
-                                {attempt.accuracy}%
-                              </span>
-                            </td>
-                            <td className="p-4 text-center text-xs font-mono text-slate-500">{formatTime(attempt.time_taken)}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs font-source border-collapse" style={{ borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr className="border-b border-[#ECECEC] text-[#6B6B6B] font-bold uppercase tracking-wider">
+                      <th className="py-3 px-4 font-semibold">Date</th>
+                      <th className="py-3 px-4 font-semibold text-center">Test ID</th>
+                      <th className="py-3 px-4 font-semibold text-center">Score</th>
+                      <th className="py-3 px-4 font-semibold text-center">Accuracy</th>
+                      <th className="py-3 px-4 font-semibold text-center">Time</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#ECECEC] text-[#6B6B6B]">
+                    {attempts.map((attempt) => (
+                      <tr key={attempt.id} className="hover:bg-[#F4F2EC]/20 transition-colors">
+                        <td className="py-3 px-4">
+                          {new Date(attempt.completed_at).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          <span className="text-[#6B6B6B]">Test {attempt.test_id}</span>
+                        </td>
+                        <td className="py-3 px-4 text-center font-semibold text-slate-800">{attempt.score} / 20</td>
+                        <td className="py-3 px-4 text-center">
+                          <span className={attempt.accuracy >= 70 ? 'text-[#4F6F52] font-semibold' : 'text-[#6B6B6B]'}>
+                            {attempt.accuracy}%
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-center font-mono">{formatTime(attempt.time_taken)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>
         </main>
 
         {/* Footer */}
-        <footer className="py-6 border-t border-slate-100 text-center text-xs font-medium text-slate-400">
-          ENGLISH MOCK TESTS &copy; {new Date().getFullYear()} &bull; Practice & Excel
+        <footer className="py-6 border-t border-[#ECECEC] text-center text-[10px] text-[#6B6B6B]/70">
+          English Mock Tests &copy; {new Date().getFullYear()} &bull; Academic Practice Journal
         </footer>
       </div>
     );
@@ -1080,31 +1017,26 @@ export default function TestPage() {
   const answeredCount = Object.keys(selectedAnswers).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between select-none animate-fade-in animate-duration-200">
+    <div className="min-h-screen bg-[#FAF9F6] flex flex-col justify-between select-none font-source text-[#6B6B6B] animate-fade-in animate-duration-200">
       {/* Header Banner */}
-      <header className="sticky top-0 z-30 bg-white border-b border-slate-100 px-4 py-3.5 shadow-xs">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-extrabold text-lg">
-              E
-            </div>
-            <h1 className="text-lg font-extrabold text-slate-800 tracking-tight sm:text-xl uppercase">
-              ENGLISH MOCK TESTS
-            </h1>
-          </div>
+      <header className="sticky top-0 z-30 bg-[#FAF9F6] border-b border-[#ECECEC] px-6 py-4">
+        <div className="max-w-[1100px] mx-auto flex items-center justify-between">
+          <h1 className="text-base font-normal text-slate-800 font-lora">
+            English Mock Tests
+          </h1>
 
-          <div className="flex items-center gap-4">
-            <span className="text-xs font-bold text-slate-500 hidden sm:inline">
-              Student: <strong className="text-indigo-600 font-extrabold">{studentCode}</strong> &bull; Test {testId}
+          <div className="flex items-center gap-4 text-xs">
+            <span className="text-[#6B6B6B] hidden sm:inline">
+              Student Code: <strong className="font-semibold text-slate-850">{studentCode}</strong> &bull; Test {testId}
             </span>
 
             {/* Countdown Timer */}
-            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border font-mono font-bold text-sm transition-colors ${
+            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md border font-mono font-bold text-xs transition-colors ${
               timeLeft < 180 
-                ? 'bg-rose-50 border-rose-200 text-rose-600 animate-pulse' 
-                : 'bg-slate-50 border-slate-200 text-slate-700'
+                ? 'bg-rose-50 border-rose-250 text-rose-700' 
+                : 'bg-[#F4F2EC] border-[#ECECEC] text-[#6B6B6B]'
             }`}>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span>{formatTime(timeLeft)}</span>
@@ -1113,22 +1045,22 @@ export default function TestPage() {
             {/* Quit Button */}
             <button
               onClick={handleQuitTest}
-              className="text-xs font-bold text-slate-450 hover:text-rose-500 hover:border-rose-200 hover:bg-rose-50/50 cursor-pointer transition-all border border-slate-200 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 shadow-2xs"
+              className="text-xs font-semibold text-[#6B6B6B] border border-[#ECECEC] bg-[#F4F2EC] hover:bg-[#FAF9F6] hover:border-[#6B6B6B] hover:text-slate-800 transition-colors rounded-md px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer outline-none"
               title="Quit Test & Discard Progress"
             >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
-              <span className="hidden xs:inline">Quit</span>
+              <span>Quit</span>
             </button>
 
             {/* Mobile Sidebar Toggle Button */}
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="md:hidden p-2 rounded-lg bg-slate-100 hover:bg-slate-205 text-slate-600 active:bg-slate-300 cursor-pointer"
+              className="md:hidden p-2 rounded-md bg-[#F4F2EC] border border-[#ECECEC] hover:bg-[#FAF9F6] text-[#6B6B6B] cursor-pointer"
               title="Open Navigation"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
@@ -1138,16 +1070,16 @@ export default function TestPage() {
 
       {/* Demo Warning Header Banner */}
       {isDemoMode && (
-        <div className="bg-amber-500/10 border-b border-amber-500/20 text-amber-805 px-4 py-2 text-xs font-semibold text-center flex items-center justify-center gap-1.5">
-          <svg className="w-4 h-4 shrink-0 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+        <div className="bg-[#F4F2EC] border-b border-[#ECECEC] text-[#6B6B6B] px-6 py-2 text-xs text-center flex items-center justify-center gap-1.5 font-medium">
+          <svg className="w-3.5 h-3.5 shrink-0 text-[#4F6F52]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
-          Running in offline preview mode (Supabase unconfigured or connection error). Interactive test is fully playable.
+          <span>Running in offline preview mode (mock database).</span>
         </div>
       )}
 
       {/* Main Body Layout */}
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6 md:py-8 flex flex-col md:flex-row gap-6 items-stretch md:items-start">
+      <main className="flex-1 max-w-[1100px] mx-auto w-full px-6 py-8 flex flex-col md:flex-row gap-6 items-stretch md:items-start animate-fade-in">
         {/* Left Side: Question area */}
         <div className="flex-1 flex flex-col">
           <QuestionCard
@@ -1158,15 +1090,15 @@ export default function TestPage() {
         </div>
 
         {/* Right Side / Sidebar: Desktop layout (visible md+) */}
-        <aside className="hidden md:flex md:w-80 flex-col bg-white border border-slate-100 rounded-2xl p-6 shadow-sm justify-between gap-6">
+        <aside className="hidden md:flex md:w-72 flex-col bg-[#F4F2EC] border border-[#ECECEC] rounded-lg p-5 gap-6">
           <div>
-            <h2 className="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <svg className="w-4 h-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+            <h4 className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider mb-4 flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
-              Question Grid
-            </h2>
-            <div className="grid grid-cols-5 gap-2 max-h-72 overflow-y-auto pr-1">
+              Navigator
+            </h4>
+            <div className="grid grid-cols-5 gap-2 pr-1">
               {questions.map((q, idx) => {
                 const isSelected = currentIndex === idx;
                 const isAnswered = selectedAnswers[q.Question_ID] !== undefined;
@@ -1175,12 +1107,12 @@ export default function TestPage() {
                   <button
                     key={q.Question_ID}
                     onClick={() => setCurrentIndex(idx)}
-                    className={`h-9 w-9 flex items-center justify-center rounded-lg text-xs font-bold transition duration-150 border cursor-pointer ${
+                    className={`h-8 w-8 flex items-center justify-center rounded-full text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
                       isSelected
-                        ? 'bg-indigo-600 border-indigo-600 text-white ring-2 ring-indigo-500/30'
+                        ? 'bg-white border-[#4F6F52] text-[#4F6F52] font-bold'
                         : isAnswered
-                        ? 'bg-emerald-50 border-emerald-200 text-emerald-700 font-semibold'
-                        : 'bg-slate-50 border-slate-205 text-slate-500 hover:border-slate-300'
+                        ? 'bg-[#E7EFE9] border-[#ECECEC] text-[#4F6F52]'
+                        : 'bg-[#FAF9F6] border-[#ECECEC] text-[#6B6B6B]/60 hover:border-[#6B6B6B]'
                     }`}
                   >
                     {idx + 1}
@@ -1190,28 +1122,28 @@ export default function TestPage() {
             </div>
 
             {/* Legend indicators */}
-            <div className="mt-6 space-y-2 border-t border-slate-100 pt-4 text-xs font-medium text-slate-500">
+            <div className="mt-6 space-y-2 border-t border-[#ECECEC] pt-4 text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]/70">
               <div className="flex items-center gap-2">
-                <span className="w-3.5 h-3.5 rounded bg-indigo-600 border border-indigo-600"></span>
-                <span className="text-slate-800">Current Question</span>
+                <span className="w-3 h-3 rounded-full bg-white border border-[#4F6F52]"></span>
+                <span>Current Question</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3.5 h-3.5 rounded bg-emerald-50 border border-emerald-200"></span>
-                <span className="text-slate-800">Answered</span>
+                <span className="w-3 h-3 rounded-full bg-[#E7EFE9] border border-[#ECECEC]"></span>
+                <span>Answered</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3.5 h-3.5 rounded bg-slate-50 border border-slate-205"></span>
-                <span className="text-slate-500">Unanswered</span>
+                <span className="w-3 h-3 rounded-full bg-[#FAF9F6] border border-[#ECECEC]"></span>
+                <span>Unanswered</span>
               </div>
             </div>
           </div>
 
           <button
             onClick={() => handleSubmitTest(false)}
-            className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl transition duration-150 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-3 bg-[#4F6F52] hover:bg-[#4F6F52]/90 text-white font-bold rounded-md transition-colors duration-150 flex items-center justify-center gap-1.5 cursor-pointer text-xs outline-none"
           >
-            Submit Test
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+            <span>Submit Test</span>
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </button>
@@ -1222,25 +1154,25 @@ export default function TestPage() {
           <div className="fixed inset-0 z-50 md:hidden animate-fade-in animate-duration-200">
             {/* Backdrop overlay */}
             <div 
-              className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs"
+              className="absolute inset-0 bg-slate-900/10 backdrop-blur-xs"
               onClick={() => setIsSidebarOpen(false)}
             ></div>
             
             {/* Drawer sheet content */}
-            <div className="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-2xl p-6 flex flex-col justify-between z-10 animate-slide-in-right animate-duration-200">
+            <div className="absolute right-0 top-0 bottom-0 w-72 bg-[#F4F2EC] p-6 flex flex-col justify-between z-10 animate-slide-in-right animate-duration-200 border-l border-[#ECECEC]">
               <div>
-                <div className="flex items-center justify-between mb-6 pb-2 border-b border-slate-100">
-                  <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                    <svg className="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <div className="flex items-center justify-between mb-6 pb-2 border-b border-[#ECECEC]">
+                  <h4 className="text-xs font-bold text-[#6B6B6B] uppercase tracking-wider flex items-center gap-1.5">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                     </svg>
-                    Question Grid
-                  </h2>
+                    Navigator
+                  </h4>
                   <button 
                     onClick={() => setIsSidebarOpen(false)}
-                    className="p-1 rounded-md text-slate-400 hover:bg-slate-105 hover:text-slate-605 cursor-pointer"
+                    className="p-1 rounded text-slate-450 hover:bg-[#ECECEC] cursor-pointer outline-none"
                   >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -1258,12 +1190,12 @@ export default function TestPage() {
                           setCurrentIndex(idx);
                           setIsSidebarOpen(false);
                         }}
-                        className={`h-9 w-9 flex items-center justify-center rounded-lg text-xs font-bold transition duration-150 border cursor-pointer ${
+                        className={`h-8 w-8 flex items-center justify-center rounded-full text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
                           isSelected
-                            ? 'bg-indigo-600 border-indigo-600 text-white ring-2 ring-indigo-500/30'
+                            ? 'bg-white border-[#4F6F52] text-[#4F6F52] font-bold'
                             : isAnswered
-                            ? 'bg-emerald-50 border-emerald-200 text-emerald-700 font-semibold'
-                            : 'bg-slate-50 border-slate-205 text-slate-500 hover:border-slate-300'
+                            ? 'bg-[#E7EFE9] border-[#ECECEC] text-[#4F6F52]'
+                            : 'bg-[#FAF9F6] border-[#ECECEC] text-[#6B6B6B]/60 hover:border-[#6B6B6B]'
                         }`}
                       >
                         {idx + 1}
@@ -1273,18 +1205,18 @@ export default function TestPage() {
                 </div>
 
                 {/* Legend indicators */}
-                <div className="mt-6 space-y-2 border-t border-slate-100 pt-4 text-xs font-medium text-slate-500">
+                <div className="mt-6 space-y-2 border-t border-[#ECECEC] pt-4 text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]/70">
                   <div className="flex items-center gap-2">
-                    <span className="w-3.5 h-3.5 rounded bg-indigo-600 border border-indigo-600"></span>
-                    <span className="text-slate-800">Current Question</span>
+                    <span className="w-3 h-3 rounded-full bg-white border border-[#4F6F52]"></span>
+                    <span>Current Question</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-3.5 h-3.5 rounded bg-emerald-50 border border-emerald-200"></span>
-                    <span className="text-slate-805">Answered</span>
+                    <span className="w-3 h-3 rounded-full bg-[#E7EFE9] border border-[#ECECEC]"></span>
+                    <span>Answered</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-3.5 h-3.5 rounded bg-slate-50 border border-slate-205"></span>
-                    <span className="text-slate-500">Unanswered</span>
+                    <span className="w-3 h-3 rounded-full bg-[#FAF9F6] border border-[#ECECEC]"></span>
+                    <span>Unanswered</span>
                   </div>
                 </div>
               </div>
@@ -1294,10 +1226,10 @@ export default function TestPage() {
                   setIsSidebarOpen(false);
                   handleSubmitTest(false);
                 }}
-                className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl transition duration-150 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 bg-[#4F6F52] hover:bg-[#4F6F52]/90 text-white font-bold rounded-md transition-colors duration-150 flex items-center justify-center gap-1.5 cursor-pointer text-xs outline-none"
               >
-                Submit Test
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <span>Submit Test</span>
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </button>

@@ -23,61 +23,45 @@ export default function QuestionCard({ question, selectedAnswer, onSelectAnswer 
   };
 
   return (
-    <div className="bg-white border border-slate-100 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col gap-6">
+    <div className="bg-[#F4F2EC] border border-[#ECECEC] rounded-lg p-6 sm:p-8 flex flex-col gap-6 font-source">
       <div>
         {/* Question Header */}
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
-          <span className="text-xs font-extrabold uppercase tracking-widest text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">
+        <div className="mb-4">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B6B6B]">
             English Mock Test
           </span>
         </div>
 
         {/* Question Stem */}
-        <h3 className="text-lg sm:text-xl font-bold text-slate-800 leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: question.Question }} />
+        <h3 className="text-lg sm:text-xl font-normal text-slate-800 leading-relaxed font-lora" dangerouslySetInnerHTML={{ __html: question.Question }} />
       </div>
 
       {/* Selectable Options */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {options.map(({ key, val }) => {
-          // Compare as strings to prevent strict type mismatch issues (e.g. number vs string)
           const isSelected = selectedAnswer !== undefined && String(selectedAnswer) === String(key);
 
           return (
             <button
               key={key}
               onClick={() => onSelectAnswer(key)}
-              className={`w-full text-left p-4 rounded-xl border transition-all duration-150 flex items-center justify-between group outline-hidden cursor-pointer ${
+              className={`w-full text-left p-4 rounded-lg border transition-colors duration-150 flex items-center gap-3.5 group outline-none cursor-pointer ${
                 isSelected
-                  ? 'border-indigo-600 bg-indigo-50/50 text-indigo-900 ring-2 ring-indigo-500/25 font-semibold'
-                  : 'border-slate-200 hover:border-indigo-300 hover:bg-slate-50 text-slate-700'
+                  ? 'border-[#4F6F52] bg-[#E7EFE9] text-slate-800 font-medium'
+                  : 'border-[#ECECEC] bg-[#FAF9F6] hover:border-[#4F6F52] hover:bg-[#E7EFE9]/40 text-[#6B6B6B]'
               }`}
             >
-              <div className="flex items-center gap-4 pr-4">
-                {/* Visual Circle Counter A, B, C, D */}
-                <span
-                  className={`w-7 h-7 flex items-center justify-center rounded-lg text-xs font-extrabold border transition-all duration-150 uppercase shrink-0 ${
-                    isSelected
-                      ? 'bg-indigo-600 border-indigo-600 text-white shadow-xs'
-                      : 'bg-white border-slate-200 text-slate-400 group-hover:border-indigo-400 group-hover:text-indigo-600'
-                  }`}
-                >
-                  {getOptionLetter(key)}
-                </span>
-                <span className="text-sm sm:text-base leading-snug" dangerouslySetInnerHTML={{ __html: val }} />
-              </div>
-
-              {/* Radio Indicator */}
-              <div
-                className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-all duration-150 ${
+              {/* Option Letter */}
+              <span
+                className={`text-xs px-2 py-0.5 border rounded-md uppercase font-semibold transition-colors duration-150 shrink-0 ${
                   isSelected
-                    ? 'border-indigo-600 bg-indigo-600'
-                    : 'border-slate-300 group-hover:border-indigo-400'
+                    ? 'bg-white border-[#4F6F52] text-[#4F6F52]'
+                    : 'bg-white border-[#ECECEC] text-[#6B6B6B] group-hover:border-[#4F6F52] group-hover:text-[#4F6F52]'
                 }`}
               >
-                {isSelected && (
-                  <div className="w-2 h-2 rounded-full bg-white animate-scale-up" />
-                )}
-              </div>
+                {getOptionLetter(key)}
+              </span>
+              <span className="text-sm sm:text-base leading-snug" dangerouslySetInnerHTML={{ __html: val }} />
             </button>
           );
         })}

@@ -1,14 +1,45 @@
 @import "tailwindcss";
 
-/* Modern, smooth animations and transitions by default */
+@theme {
+  --color-brand-bg: #FAF9F6;
+  --color-brand-primary: #4F6F52;
+  --color-brand-secondary: #E7EFE9;
+  --color-brand-text: #6B6B6B;
+  --color-brand-border: #ECECEC;
+  --color-brand-card: #F4F2EC;
+
+  --font-inter: "Inter", sans-serif;
+  --font-lora: "Lora", serif;
+  --font-source: "Source Sans 3", sans-serif;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #FAF9F6;
+    color: #6B6B6B;
+  }
+  
+  body {
+    background-color: #FAF9F6;
+    color: #6B6B6B;
+    font-family: "Source Sans 3", system-ui, -apple-system, sans-serif;
+  }
+
+  /* Global removal of outlines and shadows to fit minimal organic style */
+  *:focus, button:focus, input:focus, select:focus, textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Plain focus indicators if needed for accessibility, otherwise kept completely clean */
+  *:focus-visible {
+    outline: 1px solid #4F6F52 !important;
+    outline-offset: 2px;
   }
 }
 
-/* Custom premium scrollbar for sidebar navigation */
+/* Custom premium scrollbar for sidebar navigation using organic colors */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -19,18 +50,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #ECECEC;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #475569;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+  background: #E7EFE9;
 }
