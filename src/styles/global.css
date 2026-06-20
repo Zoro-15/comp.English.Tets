@@ -27,11 +27,11 @@
 }
 
 :root[data-theme="light"] {
-  --color-brand-bg: #aeb1b8;
+  --color-brand-bg: #c6cbd6;
   /* Medium slate grey light background */
-  --color-brand-card: #8f98a7;
+  --color-brand-card: #c1cee4;
   /* Pure white card containers */
-  --color-brand-border: #7b819e;
+  --color-brand-border: #9ea3bb;
   /* Soft grey borders */
   --color-brand-primary: #1c3a4f;
   /* Navy blue primary action */
@@ -48,7 +48,7 @@
   /* Brick red custom */
   --color-brand-neutral: #314868;
   /* Slate-400 neutral */
-  --color-brand-tile: #9fa4b1a4;
+  --color-brand-tile: #b6bdcfa4;
   /* Slate-100 inner background */
 }
 
