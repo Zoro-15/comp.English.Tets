@@ -4,12 +4,20 @@ interface LoginScreenProps {
   onLogin: (studentCode: string) => Promise<void>;
   isLoading: boolean;
   errorMsg: string | null;
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
 }
 
-export default function LoginScreen({ onLogin, isLoading, errorMsg }: LoginScreenProps) {
+export default function LoginScreen({
+  onLogin,
+  isLoading,
+  errorMsg,
+  theme,
+  toggleTheme
+}: LoginScreenProps) {
   const [digits, setDigits] = useState<string[]>(['', '', '', '']);
   const [localError, setLocalError] = useState<string | null>(null);
-  
+
   const inputRefs = [
     useRef<HTMLInputElement>(null),
     useRef<HTMLInputElement>(null),
@@ -55,7 +63,7 @@ export default function LoginScreen({ onLogin, isLoading, errorMsg }: LoginScree
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData('text').trim();
-    
+
     if (/^\d{4}$/.test(pastedData)) {
       const charArray = pastedData.split('');
       setDigits(charArray);
@@ -71,16 +79,36 @@ export default function LoginScreen({ onLogin, isLoading, errorMsg }: LoginScree
       setLocalError('Please enter a 4-digit student code.');
       return;
     }
-    
+
     onLogin(code);
   };
 
   const displayError = localError || errorMsg;
 
   return (
-    <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-center p-6 select-none font-source text-brand-text">
+    <div className="min-h-screen bg-brand-bg flex flex-col items-center justify-center p-6 select-none font-source text-brand-text relative">
+      {/* Theme Toggle Button absolute at top-right */}
+      <div className="absolute top-4 right-4 z-50">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="p-2 border border-brand-border rounded-md bg-brand-card hover:bg-brand-bg text-brand-title transition-colors cursor-pointer flex items-center justify-center outline-none"
+          title="Toggle Theme"
+        >
+          {theme === 'dark' ? (
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          )}
+        </button>
+      </div>
+
       <div className="w-full max-w-sm bg-brand-card border border-brand-border p-8 rounded-lg space-y-8">
-        
+
         {/* Branding header */}
         <div className="text-center space-y-2">
           <h2 className="text-2xl font-normal text-brand-title font-lora tracking-tight">

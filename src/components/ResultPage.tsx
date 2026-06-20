@@ -154,6 +154,61 @@ export default function ResultPage({
         </div>
       </div>
 
+      {/* Question Review Grid */}
+      <div className="bg-brand-card border border-brand-border rounded-lg p-5 mb-8">
+        <h4 className="text-xs font-bold text-brand-text uppercase tracking-wider mb-4 flex items-center gap-1.5 font-lora">
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          Question Review Grid
+        </h4>
+        
+        <div className="grid grid-cols-5 sm:grid-cols-10 gap-2 pr-1 max-w-xl">
+          {questions.map((q, idx) => {
+            const selected = selectedAnswers[q.Question_ID];
+            const isCorrect = selected !== undefined && String(selected).trim() === String(q.Correct_Answer_Index).trim();
+            const wasSkipped = selected === undefined || selected === null;
+
+            let btnStyle = "";
+            if (wasSkipped) {
+              btnStyle = "bg-amber-950/20 border-amber-900/30 text-amber-400 hover:border-amber-400";
+            } else if (isCorrect) {
+              btnStyle = "bg-emerald-950/20 border-emerald-800/40 text-emerald-400 hover:border-emerald-400";
+            } else {
+              btnStyle = "bg-rose-950/25 border-rose-900/40 text-rose-300 hover:border-rose-300";
+            }
+
+            return (
+              <button
+                key={q.Question_ID}
+                onClick={() => {
+                  document.getElementById(`review-q-${idx}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }}
+                className={`h-9 w-9 flex flex-col items-center justify-center rounded-md text-xs font-bold transition duration-150 border cursor-pointer outline-none ${btnStyle}`}
+              >
+                <span>{idx + 1}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Legend */}
+        <div className="mt-4 pt-3 border-t border-brand-border/60 flex flex-wrap gap-4 text-[10px] font-bold uppercase tracking-wider text-brand-text/80">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-sm bg-emerald-950/20 border border-emerald-800/40" />
+            <span>Correct</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-sm bg-rose-950/25 border border-rose-900/40" />
+            <span>Incorrect</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-sm bg-amber-950/20 border border-amber-900/30" />
+            <span>Skipped</span>
+          </div>
+        </div>
+      </div>
+
       {/* Action Progression Panel */}
       <div className="bg-brand-card border border-brand-border rounded-lg p-5 mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
         <div className="text-center sm:text-left">
@@ -253,7 +308,8 @@ export default function ResultPage({
               return (
                 <div
                   key={q.Question_ID}
-                  className="bg-brand-card rounded-lg p-5 transition-colors border-none"
+                  id={`review-q-${originalIndex}`}
+                  className="bg-brand-card rounded-lg p-5 transition-colors border-none scroll-mt-24"
                 >
                   {/* Badge Header */}
                   <div className="flex items-center justify-between mb-3 text-xs">

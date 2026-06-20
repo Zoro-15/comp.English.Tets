@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+:root {
   --color-brand-bg: #0A0E17;
   --color-brand-card: #131A26;
   --color-brand-border: #1F293D;
@@ -8,6 +8,26 @@
   --color-brand-secondary: #16253B;
   --color-brand-text: #94A3B8;
   --color-brand-title: #E2E8F0;
+}
+
+:root[data-theme="light"] {
+  --color-brand-bg: #FAF9F6;
+  --color-brand-card: #FFFFFF;
+  --color-brand-border: #E2E8F0;
+  --color-brand-primary: #3A8DDE;
+  --color-brand-secondary: #EBF5FF;
+  --color-brand-text: #4A5568;
+  --color-brand-title: #1A202C;
+}
+
+@theme {
+  --color-brand-bg: var(--color-brand-bg);
+  --color-brand-card: var(--color-brand-card);
+  --color-brand-border: var(--color-brand-border);
+  --color-brand-primary: var(--color-brand-primary);
+  --color-brand-secondary: var(--color-brand-secondary);
+  --color-brand-text: var(--color-brand-text);
+  --color-brand-title: var(--color-brand-title);
 
   --font-inter: "Inter", sans-serif;
   --font-lora: "Lora", serif;
@@ -20,7 +40,7 @@
     background-color: var(--color-brand-bg);
     color: var(--color-brand-text);
   }
-  
+
   body {
     background-color: var(--color-brand-bg);
     color: var(--color-brand-text);
@@ -28,11 +48,15 @@
   }
 
   /* Global removal of outlines and shadows to fit minimal organic style */
-  *:focus, button:focus, input:focus, select:focus, textarea:focus {
+  *:focus,
+  button:focus,
+  input:focus,
+  select:focus,
+  textarea:focus {
     outline: none !important;
     box-shadow: none !important;
   }
-  
+
   /* Plain focus indicators if needed for accessibility, otherwise kept completely clean */
   *:focus-visible {
     outline: 1px solid #4F6F52 !important;

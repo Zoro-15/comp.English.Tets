@@ -345,6 +345,22 @@ export default function TestPage() {
   const [timeLeft, setTimeLeft] = useState(1200);
   const timerRef = useRef<any>(null);
 
+  // Theme state
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme as 'light' | 'dark');
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    localStorage.setItem('theme', nextTheme);
+    document.documentElement.setAttribute('data-theme', nextTheme);
+  };
+
   // 1. Initial Load: Check cached login
   useEffect(() => {
     const cachedCode = localStorage.getItem('english_mock_student_code');
@@ -707,6 +723,8 @@ export default function TestPage() {
         onLogin={handleLogin}
         isLoading={isLoggingIn}
         errorMsg={loginError}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
     );
   }
@@ -762,7 +780,7 @@ export default function TestPage() {
     return (
       <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-source text-brand-text">
         {/* Header */}
-        <header className="bg-brand-bg/85 backdrop-blur-md border-b border-brand-border px-6 py-4 sticky top-0 z-20">
+        <header className="bg-brand-bg border-b border-brand-border px-6 py-4 sticky top-0 z-20">
           <div className="max-w-[1100px] mx-auto flex items-center justify-between">
             <h1 className="text-base font-normal text-brand-title font-lora">
               English Mock Tests
@@ -773,6 +791,21 @@ export default function TestPage() {
               <span className="text-brand-text">
                 Student Code: <strong className="font-semibold text-brand-title">{studentCode}</strong>
               </span>
+              <button
+                onClick={toggleTheme}
+                className="text-brand-text hover:text-brand-primary cursor-pointer transition-colors p-1.5 rounded-md border border-brand-border bg-brand-card hover:bg-brand-bg flex items-center justify-center outline-none"
+                title="Toggle Theme"
+              >
+                {theme === 'dark' ? (
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                  </svg>
+                ) : (
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                )}
+              </button>
               <button
                 onClick={handleLogout}
                 className="text-brand-text hover:text-rose-455 cursor-pointer transition-colors"
@@ -807,7 +840,7 @@ export default function TestPage() {
     return (
       <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-source text-brand-text animate-fade-in animate-duration-200">
         {/* Header */}
-        <header className="bg-brand-bg/85 backdrop-blur-md border-b border-brand-border px-6 py-4 sticky top-0 z-20">
+        <header className="bg-brand-bg border-b border-brand-border px-6 py-4 sticky top-0 z-20">
           <div className="max-w-[1100px] mx-auto flex items-center justify-between">
             <h1 className="text-base font-normal text-brand-title font-lora">
               English Mock Tests
@@ -818,6 +851,21 @@ export default function TestPage() {
               <span className="text-brand-text">
                 Student Code: <strong className="font-semibold text-brand-title">{studentCode}</strong>
               </span>
+              <button
+                onClick={toggleTheme}
+                className="text-brand-text hover:text-brand-primary cursor-pointer transition-colors p-1.5 rounded-md border border-brand-border bg-brand-card hover:bg-brand-bg flex items-center justify-center outline-none"
+                title="Toggle Theme"
+              >
+                {theme === 'dark' ? (
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                  </svg>
+                ) : (
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                )}
+              </button>
               <button
                 onClick={handleLogout}
                 className="text-brand-text hover:text-rose-455 cursor-pointer transition-colors"
@@ -1038,7 +1086,7 @@ export default function TestPage() {
   return (
     <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-source text-brand-text animate-fade-in animate-duration-200">
       {/* Header Banner */}
-      <header className="sticky top-0 z-30 bg-brand-bg/85 backdrop-blur-md border-b border-brand-border px-6 py-4">
+      <header className="sticky top-0 z-30 bg-brand-bg border-b border-brand-border px-6 py-4">
         <div className="max-w-[1100px] mx-auto flex items-center justify-between">
           <h1 className="text-base font-normal text-brand-title font-lora">
             English Mock Tests
@@ -1050,7 +1098,7 @@ export default function TestPage() {
             </span>
 
             {/* Countdown Timer */}
-            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md border font-mono font-bold text-xs transition-colors ${
+            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none border font-mono font-bold text-xs transition-colors ${
               timeLeft < 180 
                 ? 'bg-rose-950/20 border-rose-900/40 text-rose-300' 
                 : 'bg-brand-card border-brand-border text-brand-text'
@@ -1060,6 +1108,23 @@ export default function TestPage() {
               </svg>
               <span>{formatTime(timeLeft)}</span>
             </div>
+
+            {/* Theme Toggle Button next to Countdown Timer */}
+            <button
+              onClick={toggleTheme}
+              className="text-brand-text hover:text-brand-primary cursor-pointer transition-colors p-1.5 rounded-none border border-brand-border bg-brand-card hover:bg-brand-bg flex items-center justify-center outline-none"
+              title="Toggle Theme"
+            >
+              {theme === 'dark' ? (
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                </svg>
+              ) : (
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
 
             {/* Quit Button */}
             <button
@@ -1127,7 +1192,7 @@ export default function TestPage() {
                   <button
                     key={q.Question_ID}
                     onClick={() => setCurrentIndex(idx)}
-                    className={`h-8 w-8 flex items-center justify-center rounded-full text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
+                    className={`h-8 w-8 flex items-center justify-center rounded-md text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
                       isSelected
                         ? 'bg-brand-bg border-brand-primary text-brand-primary font-bold ring-1 ring-brand-primary/50'
                         : isAnswered
@@ -1144,15 +1209,15 @@ export default function TestPage() {
             {/* Legend indicators */}
             <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text/70">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-brand-bg border border-brand-primary"></span>
+                <span className="w-3 h-3 rounded-sm bg-brand-bg border border-brand-primary"></span>
                 <span>Current Question</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-brand-secondary border border-brand-border"></span>
+                <span className="w-3 h-3 rounded-sm bg-brand-secondary border border-brand-border"></span>
                 <span>Answered</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-brand-bg border border-brand-border"></span>
+                <span className="w-3 h-3 rounded-sm bg-brand-bg border border-brand-border"></span>
                 <span>Unanswered</span>
               </div>
             </div>
@@ -1174,7 +1239,7 @@ export default function TestPage() {
           <div className="fixed inset-0 z-50 md:hidden animate-fade-in animate-duration-200">
             {/* Backdrop overlay */}
             <div 
-              className="absolute inset-0 bg-slate-950/45 backdrop-blur-xs"
+              className="absolute inset-0 bg-slate-950/45"
               onClick={() => setIsSidebarOpen(false)}
             ></div>
             
@@ -1210,7 +1275,7 @@ export default function TestPage() {
                           setCurrentIndex(idx);
                           setIsSidebarOpen(false);
                         }}
-                        className={`h-8 w-8 flex items-center justify-center rounded-full text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
+                        className={`h-8 w-8 flex items-center justify-center rounded-md text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
                           isSelected
                             ? 'bg-brand-bg border-brand-primary text-brand-primary font-bold ring-1 ring-brand-primary/50'
                             : isAnswered
@@ -1227,15 +1292,15 @@ export default function TestPage() {
                 {/* Legend indicators */}
                 <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text/70">
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-brand-bg border border-brand-primary"></span>
+                    <span className="w-3 h-3 rounded-sm bg-brand-bg border border-brand-primary"></span>
                     <span>Current Question</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-brand-secondary border border-brand-border"></span>
+                    <span className="w-3 h-3 rounded-sm bg-brand-secondary border border-brand-border"></span>
                     <span>Answered</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-brand-bg border border-brand-border"></span>
+                    <span className="w-3 h-3 rounded-sm bg-brand-bg border border-brand-border"></span>
                     <span>Unanswered</span>
                   </div>
                 </div>
