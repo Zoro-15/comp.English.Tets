@@ -7,7 +7,7 @@
   /* Slate card containers */
   --color-brand-border: #b3c8e7;
   /* Slate borders */
-  --color-brand-primary: #28509b;
+  --color-brand-primary: #3b75e0;
   /* Navy blue primary action */
   --color-brand-secondary: #FFFFFF;
   /* White overlay text/badge background */
@@ -20,7 +20,7 @@
   /* Forest green custom */
   --color-brand-error: #9E3B36;
   /* Brick red custom */
-  --color-brand-neutral: #4a525c;
+  --color-brand-neutral: #1f67d4;
   /* Medium slate grey */
   --color-brand-tile: #212222;
   /* Nested inner background */
@@ -33,7 +33,7 @@
   /* Pure white card containers */
   --color-brand-border: #9ea3bb;
   /* Soft grey borders */
-  --color-brand-primary: #2e4657;
+  --color-brand-primary: #2e5f81;
   /* Navy blue primary action */
   --color-brand-secondary: #ffffff;
   /* White overlay text/badge background */
@@ -42,11 +42,11 @@
   --color-brand-title: #100f1d;
   /* Rich midnight indigo headings */
 
-  --color-brand-success: #1e6119;
+  --color-brand-success: #388332;
   /* Forest green custom */
-  --color-brand-error: #ce271ec2;
+  --color-brand-error: #df190ecc;
   /* Brick red custom */
-  --color-brand-neutral: #3c4046;
+  --color-brand-neutral: #3b424dd7;
   /* Slate-400 neutral */
   --color-brand-tile: #b6bdcfa4;
   /* Slate-100 inner background */
