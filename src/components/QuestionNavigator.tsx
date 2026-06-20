@@ -18,17 +18,17 @@ export default function QuestionNavigator({
   const percentComplete = totalQuestions > 0 ? Math.round(((currentIndex + 1) / totalQuestions) * 100) : 0;
 
   return (
-    <div className="bg-brand-bg border-t border-brand-border p-4 sm:p-5 font-source text-brand-text">
-      <div className="max-w-[1100px] mx-auto flex flex-col gap-4">
+    <div className="bg-brand-bg border-t border-brand-border p-4 sm:p-5 font-inter text-brand-text">
+      <div className="max-w-[1024px] mx-auto flex flex-col gap-4">
         {/* Progress Bar */}
-        <div className="w-full">
-          <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-wider mb-1.5">
+        <div className="w-full font-inter">
+          <div className="flex justify-between items-center text-[10px] font-extrabold uppercase tracking-widest mb-1.5 text-black">
             <span>Progress: {percentComplete}% completed</span>
             <span>{answeredCount} of {totalQuestions} Answered</span>
           </div>
-          <div className="w-full bg-brand-border rounded-full h-1 overflow-hidden">
+          <div className="w-full bg-brand-border rounded-none h-1 overflow-hidden">
             <div
-              className="bg-brand-primary h-full rounded-full transition-all duration-300 ease-out"
+              className="bg-black h-full rounded-none transition-all duration-300 ease-out"
               style={{ width: `${percentComplete}%` }}
             ></div>
           </div>
@@ -40,10 +40,10 @@ export default function QuestionNavigator({
           <button
             onClick={onPrev}
             disabled={currentIndex === 0}
-            className={`px-4 py-2 rounded-md text-xs font-semibold border transition-colors duration-150 flex items-center gap-1 cursor-pointer outline-none ${
+            className={`px-4 py-2 rounded-none text-xs font-bold uppercase tracking-wider border transition-none flex items-center gap-1 cursor-pointer outline-none ${
               currentIndex === 0
-                ? 'opacity-30 border-brand-border text-brand-text bg-brand-bg cursor-not-allowed'
-                : 'bg-brand-bg hover:bg-brand-border/40 text-brand-text border-brand-border active:bg-brand-border/50'
+                ? 'opacity-25 border-brand-border text-brand-text bg-brand-bg cursor-not-allowed'
+                : 'bg-brand-bg hover:border-black hover:text-black text-brand-text border-brand-border'
             }`}
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -53,15 +53,15 @@ export default function QuestionNavigator({
           </button>
 
           {/* Question Counter Label */}
-          <span className="text-xs font-semibold text-brand-title bg-brand-card px-3 py-1.5 rounded-md border border-brand-border">
-            Question <span className="font-bold text-brand-primary">{currentIndex + 1}</span> of <span className="text-brand-text">{totalQuestions}</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-black bg-brand-bg px-3 py-1.5 rounded-none border border-brand-border">
+            Question <span className="font-extrabold text-black">{currentIndex + 1}</span> of <span className="text-brand-text">{totalQuestions}</span>
           </span>
 
           {/* Next or Submit Button */}
           {currentIndex === totalQuestions - 1 ? (
             <button
               onClick={onSubmit}
-              className="px-5 py-2.5 bg-brand-primary hover:bg-brand-primary/95 text-brand-bg font-bold rounded-md text-xs transition-colors duration-150 border border-transparent flex items-center gap-1 cursor-pointer outline-none"
+              className="px-5 py-2.5 bg-black text-white hover:bg-black/90 font-bold uppercase tracking-wider rounded-none text-xs transition-none flex items-center gap-1 cursor-pointer outline-none"
             >
               <span>Submit Test</span>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -71,7 +71,7 @@ export default function QuestionNavigator({
           ) : (
             <button
               onClick={onNext}
-              className="px-4 py-2 border border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-bg bg-transparent font-semibold rounded-md text-xs transition-colors duration-150 flex items-center gap-1 cursor-pointer outline-none"
+              className="px-4 py-2 bg-black text-white hover:bg-black/90 font-bold uppercase tracking-wider rounded-none text-xs transition-none flex items-center gap-1 cursor-pointer outline-none"
             >
               <span>Next</span>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">

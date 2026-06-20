@@ -778,42 +778,25 @@ export default function TestPage() {
   if (testSubmitted) {
     const finalSpentTime = 1200 - timeLeft;
     return (
-      <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-source text-brand-text">
+      <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-inter text-brand-text">
         {/* Header */}
-        <header className="bg-brand-bg border-b border-brand-border px-6 py-4 sticky top-0 z-20">
-          <div className="max-w-[1100px] mx-auto flex items-center justify-between">
-            <h1 className="text-base font-normal text-brand-title font-lora">
-              English Mock Tests
-            </h1>
+        <header className="bg-brand-bg border-b border-brand-border px-8 h-16 flex items-center justify-between sticky top-0 z-20">
+          <h1 className="text-base font-extrabold text-black uppercase tracking-tight font-inter">
+            ENGLISH MOCK TESTS
+          </h1>
 
-            {/* Profile info / logout */}
-            <div className="flex items-center gap-4 text-xs">
-              <span className="text-brand-text">
-                Student Code: <strong className="font-semibold text-brand-title">{studentCode}</strong>
-              </span>
-              <button
-                onClick={toggleTheme}
-                className="text-brand-text hover:text-brand-primary cursor-pointer transition-colors p-1.5 rounded-md border border-brand-border bg-brand-card hover:bg-brand-bg flex items-center justify-center outline-none"
-                title="Toggle Theme"
-              >
-                {theme === 'dark' ? (
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-                  </svg>
-                ) : (
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                  </svg>
-                )}
-              </button>
-              <button
-                onClick={handleLogout}
-                className="text-brand-text hover:text-rose-455 cursor-pointer transition-colors"
-                title="Switch Student Code"
-              >
-                Logout
-              </button>
-            </div>
+          {/* Profile info / logout */}
+          <div className="flex items-center gap-4 text-sm font-inter">
+            <span className="text-brand-text">
+              Student Code: <span className="font-black text-black">{studentCode}</span>
+            </span>
+            <span className="text-brand-border">|</span>
+            <button
+              onClick={handleLogout}
+              className="text-brand-text hover:text-black cursor-pointer uppercase font-bold text-[11px] tracking-wider transition-none outline-none"
+            >
+              Logout
+            </button>
           </div>
         </header>
 
@@ -839,49 +822,32 @@ export default function TestPage() {
     const nextRecommendedId = getNextUncompletedTestId();
 
     return (
-      <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-source text-brand-text animate-fade-in animate-duration-200">
+      <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-inter text-brand-text animate-fade-in animate-duration-200">
         {/* Header */}
-        <header className="bg-brand-bg border-b border-brand-border px-6 py-4 sticky top-0 z-20">
-          <div className="max-w-[1100px] mx-auto flex items-center justify-between">
-            <h1 className="text-base font-normal text-brand-title font-lora">
-              English Mock Tests
-            </h1>
+        <header className="bg-brand-bg border-b border-brand-border px-8 h-16 flex items-center justify-between sticky top-0 z-20">
+          <h1 className="text-base font-extrabold text-black uppercase tracking-tight font-inter">
+            ENGLISH MOCK TESTS
+          </h1>
 
-            {/* Profile info / logout */}
-            <div className="flex items-center gap-4 text-xs">
-              <span className="text-brand-text">
-                Student Code: <strong className="font-semibold text-brand-title">{studentCode}</strong>
-              </span>
-              <button
-                onClick={toggleTheme}
-                className="text-brand-text hover:text-brand-primary cursor-pointer transition-colors p-1.5 rounded-md border border-brand-border bg-brand-card hover:bg-brand-bg flex items-center justify-center outline-none"
-                title="Toggle Theme"
-              >
-                {theme === 'dark' ? (
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-                  </svg>
-                ) : (
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                  </svg>
-                )}
-              </button>
-              <button
-                onClick={handleLogout}
-                className="text-brand-text hover:text-rose-455 cursor-pointer transition-colors"
-                title="Switch Student Code"
-              >
-                Logout
-              </button>
-            </div>
+          {/* Profile info / logout */}
+          <div className="flex items-center gap-4 text-sm font-inter">
+            <span className="text-brand-text">
+              Student Code: <span className="font-black text-black">{studentCode}</span>
+            </span>
+            <span className="text-brand-border">|</span>
+            <button
+              onClick={handleLogout}
+              className="text-brand-text hover:text-black cursor-pointer uppercase font-bold text-[11px] tracking-wider transition-none outline-none"
+            >
+              Logout
+            </button>
           </div>
         </header>
 
         {/* Demo Warning Banner */}
         {isDemoMode && (
-          <div className="bg-brand-card border-b border-brand-border text-brand-text px-6 py-2.5 text-xs text-center flex items-center justify-center gap-1.5 font-medium">
-            <svg className="w-3.5 h-3.5 shrink-0 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <div className="border-b border-brand-border text-black px-6 py-2.5 text-xs text-center flex items-center justify-center gap-1.5 font-bold uppercase tracking-wider font-inter">
+            <svg className="w-3.5 h-3.5 shrink-0 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <span>Running in offline preview mode (using local storage mock data). Test is fully functional.</span>
@@ -889,119 +855,84 @@ export default function TestPage() {
         )}
 
         {/* Home Main Content */}
-        <main className="flex-1 max-w-[1100px] mx-auto w-full px-6 py-12 space-y-10">
+        <main className="flex-1 max-w-[1024px] mx-auto w-full px-6 py-12 space-y-12">
           
-          {/* Welcome Area */}
-          <div className="text-center py-6 space-y-4 max-w-xl mx-auto">
-            <h2 className="text-3xl font-normal text-brand-title font-lora">
+          {/* Welcome Area (Component B) */}
+          <div className="text-center py-6 space-y-4 max-w-xl mx-auto font-inter">
+            <h2 className="text-5xl sm:text-[56px] font-black text-black uppercase tracking-tight leading-[1.1] mb-4">
               Welcome back.
             </h2>
-            <p className="text-sm text-brand-text leading-relaxed">
+            <p className="text-[15px] text-brand-text leading-[1.6] font-normal mb-8">
               Continue your preparation with today's mock tests. Timed simulations with detailed reviews will help you refine grammar and structure rules.
             </p>
             <div className="pt-2">
               <button
                 onClick={() => handleSelectTestNum(nextRecommendedId)}
-                className="inline-flex py-3 px-6 border border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-brand-bg font-semibold rounded-md transition-colors duration-150 text-sm cursor-pointer bg-transparent"
+                className="inline-flex items-center justify-center bg-black text-white font-semibold text-xs tracking-[0.05em] uppercase px-7 py-3.5 rounded-full border-none transition-none cursor-pointer"
               >
                 Start Mock Test {nextRecommendedId} →
               </button>
             </div>
           </div>
 
-          {/* Student Statistics */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-brand-card border border-brand-border rounded-lg p-5 flex items-center gap-4">
-              <div className="text-brand-primary shrink-0">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <div>
-                <span className="block text-[10px] uppercase tracking-wider text-brand-text font-semibold">Tests Taken</span>
-                <span className="text-lg font-bold text-brand-title font-lora">{totalTests}</span>
-              </div>
+          {/* Student Statistics (Component C) */}
+          <div className="w-full bg-brand-bg border border-brand-border rounded-none my-12 font-inter">
+            <div className="flex justify-between items-center py-5 px-6 border-b border-brand-border">
+              <span className="font-extrabold text-base uppercase text-black tracking-tight">TESTS TAKEN: {totalTests}</span>
+              <span className="font-extrabold text-base uppercase text-black tracking-tight">AVG. ACCURACY: {avgAccuracy}%</span>
             </div>
-            
-            <div className="bg-brand-card border border-brand-border rounded-lg p-5 flex items-center gap-4">
-              <div className="text-brand-primary shrink-0">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <div>
-                <span className="block text-[10px] uppercase tracking-wider text-brand-text font-semibold">Avg Accuracy</span>
-                <span className="text-lg font-bold text-brand-title font-lora">{avgAccuracy}%</span>
-              </div>
+            <div className="flex justify-between items-center py-5 px-6 border-b border-brand-border">
+              <span className="font-extrabold text-base uppercase text-black tracking-tight">
+                BEST SCORE: {bestScore % 1 === 0 ? bestScore.toFixed(0) : bestScore.toFixed(1)} / 80
+              </span>
+              <span></span>
             </div>
-
-            <div className="bg-brand-card border border-brand-border rounded-lg p-5 flex items-center gap-4">
-              <div className="text-brand-primary shrink-0">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                </svg>
-              </div>
-              <div>
-                <span className="block text-[10px] uppercase tracking-wider text-brand-text font-semibold">Best Score</span>
-                <span className="text-lg font-bold text-brand-title font-lora">
-                  {bestScore % 1 === 0 ? bestScore.toFixed(0) : bestScore.toFixed(1)} / 80
-                </span>
-              </div>
-            </div>
-
-            <div className="bg-brand-card border border-brand-border rounded-lg p-5 flex items-center gap-4">
-              <div className="text-brand-primary shrink-0">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                </svg>
-              </div>
-              <div>
-                <span className="block text-[10px] uppercase tracking-wider text-brand-text font-semibold">Streak</span>
-                <span className="text-lg font-bold text-brand-title font-lora">{streak.currentStreak} {streak.currentStreak === 1 ? 'Day' : 'Days'}</span>
-              </div>
+            <div className="flex justify-between items-center py-5 px-6">
+              <span className="font-extrabold text-base uppercase text-black tracking-tight">
+                STREAK: {streak.currentStreak} {streak.currentStreak === 1 ? 'DAY' : 'DAYS'}
+              </span>
+              <span></span>
             </div>
           </div>
 
-          {/* Available practice tests */}
-          <div className="space-y-4">
-            <h3 className="text-base font-normal text-brand-title font-lora border-b border-brand-border pb-2">
+          {/* Available Mock Tests Linear Directory (Component D) */}
+          <div className="space-y-6">
+            <h3 className="text-[22px] font-extrabold text-black uppercase tracking-tight text-left font-inter mb-6">
               Available Mock Tests
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="flex flex-col border-t border-brand-border">
               {[1, 2, 3, 4, 5].map((num) => {
                 const testAttempts = attempts.filter((a) => a.test_id === num);
                 const isCompleted = testAttempts.length > 0;
-                const maxScore = isCompleted ? Math.max(...testAttempts.map((a) => a.score)) : 0;
 
                 return (
-                  <div key={num} className="border border-brand-border rounded-lg p-5 bg-brand-card flex flex-col justify-between gap-4">
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-brand-text">Test {num}</span>
-                        <span className={`text-[10px] font-semibold uppercase tracking-wider ${isCompleted ? 'text-brand-primary' : 'text-slate-500'}`}>
-                          {isCompleted ? 'Completed' : 'Not Started'}
-                        </span>
-                      </div>
-                      <h4 className="text-sm font-semibold text-brand-title">English Grammar MCQ</h4>
-                      <p className="text-[11px] text-brand-text mt-0.5">20 Questions &bull; 20 Mins</p>
+                  <div key={num} className="flex justify-between items-center h-[72px] px-2 border-b border-brand-border font-inter">
+                    {/* Left Group */}
+                    <div className="flex flex-col">
+                      <span className="font-extrabold text-sm sm:text-base text-black uppercase tracking-tight">
+                        TEST {num}: ENGLISH GRAMMAR MCQ
+                      </span>
+                      <span className="text-[13px] text-brand-text font-normal mt-1">
+                        20 Questions &bull; 20 Mins
+                      </span>
                     </div>
 
-                    {isCompleted && (
-                      <div className="text-[11px] text-brand-text">
-                        Best Score: <strong className="text-brand-title font-semibold">
-                          {maxScore % 1 === 0 ? maxScore.toFixed(0) : maxScore.toFixed(1)} / 80
-                        </strong>
-                      </div>
-                    )}
+                    {/* Center Tag (Conditional) */}
+                    <div className="hidden sm:block">
+                      {isCompleted && (
+                        <span className="font-bold text-xs uppercase tracking-widest text-black">
+                          COMPLETED
+                        </span>
+                      )}
+                    </div>
 
-                    <div className="pt-1">
+                    {/* Right Action */}
+                    <div>
                       <button
                         onClick={() => handleSelectTestNum(num)}
-                        className={`text-xs font-semibold hover:underline flex items-center gap-1 cursor-pointer transition-colors bg-transparent border-none p-0 ${
-                          isCompleted ? 'text-slate-400' : 'text-brand-primary font-bold'
-                        }`}
+                        className="bg-black text-white hover:bg-black/90 font-bold text-xs uppercase px-5 py-2.5 rounded-full border-none transition-none cursor-pointer inline-flex items-center justify-center"
                       >
-                        {isCompleted ? 'View Report →' : 'Start Test →'}
+                        {isCompleted ? 'VIEW REPORT' : 'START TEST'}
                       </button>
                     </div>
                   </div>
@@ -1011,40 +942,40 @@ export default function TestPage() {
           </div>
 
           {/* Attempts History */}
-          <div className="space-y-4">
+          <div className="space-y-6 pt-4 font-inter">
             <div className="flex items-center justify-between border-b border-brand-border pb-2">
-              <h3 className="text-base font-normal text-brand-title font-lora">
+              <h3 className="text-[22px] font-extrabold text-black uppercase tracking-tight font-inter">
                 Attempts History
               </h3>
-              <span className="text-[10px] font-semibold text-brand-text uppercase tracking-wider">{studentCode}'s Progress</span>
+              <span className="text-[11px] font-bold text-brand-text uppercase tracking-widest">{studentCode}'s Progress</span>
             </div>
 
             {isDashboardLoading ? (
               <div className="space-y-4">
-                <div className="h-6 bg-brand-card rounded-md w-full animate-pulse"></div>
-                <div className="h-6 bg-brand-card rounded-md w-5/6 animate-pulse"></div>
-                <div className="h-6 bg-brand-card rounded-md w-4/6 animate-pulse"></div>
+                <div className="h-6 border border-brand-border w-full animate-pulse"></div>
+                <div className="h-6 border border-brand-border w-5/6 animate-pulse"></div>
+                <div className="h-6 border border-brand-border w-4/6 animate-pulse"></div>
               </div>
             ) : attempts.length === 0 ? (
-              <div className="text-center py-10 border border-dashed border-brand-border rounded-lg bg-brand-card/30">
-                <p className="text-xs text-brand-text">No test attempts logged yet.</p>
+              <div className="text-center py-10 border border-dashed border-brand-border rounded-none">
+                <p className="text-xs text-brand-text uppercase font-semibold tracking-wider">No test attempts logged yet.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs font-source border-collapse" style={{ borderCollapse: 'collapse' }}>
+                <table className="w-full text-left text-xs font-inter border-collapse" style={{ borderCollapse: 'collapse' }}>
                   <thead>
-                    <tr className="border-b border-brand-border text-brand-text font-bold uppercase tracking-wider">
-                      <th className="py-3 px-4 font-semibold">Date</th>
-                      <th className="py-3 px-4 font-semibold text-center">Test ID</th>
-                      <th className="py-3 px-4 font-semibold text-center">Score</th>
-                      <th className="py-3 px-4 font-semibold text-center">Accuracy</th>
-                      <th className="py-3 px-4 font-semibold text-center">Time</th>
+                    <tr className="border-b border-brand-border text-black font-extrabold uppercase tracking-wider">
+                      <th className="py-3 px-4 font-extrabold">Date</th>
+                      <th className="py-3 px-4 font-extrabold text-center">Test ID</th>
+                      <th className="py-3 px-4 font-extrabold text-center">Score</th>
+                      <th className="py-3 px-4 font-extrabold text-center">Accuracy</th>
+                      <th className="py-3 px-4 font-extrabold text-center">Time</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-brand-border text-brand-text">
+                  <tbody className="divide-y divide-brand-border text-brand-text font-normal">
                     {attempts.map((attempt) => (
-                      <tr key={attempt.id} className="hover:bg-brand-card/20 transition-colors">
-                        <td className="py-3 px-4 text-brand-text">
+                      <tr key={attempt.id} className="hover:bg-brand-border/10 transition-none">
+                        <td className="py-3 px-4 text-black font-medium">
                           {new Date(attempt.completed_at).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
@@ -1053,14 +984,14 @@ export default function TestPage() {
                             minute: '2-digit'
                           })}
                         </td>
-                        <td className="py-3 px-4 text-center">
-                          <span className="text-brand-text">Test {attempt.test_id}</span>
+                        <td className="py-3 px-4 text-center text-black font-medium">
+                          <span>TEST {attempt.test_id}</span>
                         </td>
-                        <td className="py-3 px-4 text-center font-semibold text-brand-title">
+                        <td className="py-3 px-4 text-center font-bold text-black">
                           {attempt.score % 1 === 0 ? attempt.score.toFixed(0) : attempt.score.toFixed(1)} / 80
                         </td>
                         <td className="py-3 px-4 text-center">
-                          <span className={attempt.accuracy >= 70 ? 'text-brand-primary font-semibold' : 'text-brand-text'}>
+                          <span className={attempt.accuracy >= 70 ? 'text-black font-bold' : ''}>
                             {attempt.accuracy}%
                           </span>
                         </td>
@@ -1075,7 +1006,7 @@ export default function TestPage() {
         </main>
 
         {/* Footer */}
-        <footer className="py-6 border-t border-brand-border text-center text-[10px] text-brand-text/70">
+        <footer className="py-6 border-t border-brand-border text-center text-[10px] text-brand-text/70 uppercase tracking-widest font-bold">
           English Mock Tests &copy; {new Date().getFullYear()} &bull; Academic Practice Journal
         </footer>
       </div>
@@ -1085,78 +1016,52 @@ export default function TestPage() {
   const answeredCount = Object.keys(selectedAnswers).length;
 
   return (
-    <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-source text-brand-text animate-fade-in animate-duration-200">
+    <div className="min-h-screen bg-brand-bg flex flex-col justify-between select-none font-inter text-brand-text animate-fade-in animate-duration-200">
       {/* Header Banner */}
-      <header className="sticky top-0 z-30 bg-brand-bg border-b border-brand-border px-6 py-4">
-        <div className="max-w-[1100px] mx-auto flex items-center justify-between">
-          <h1 className="text-base font-normal text-brand-title font-lora">
-            English Mock Tests
-          </h1>
+      <header className="sticky top-0 z-30 bg-brand-bg border-b border-brand-border px-8 h-16 flex items-center justify-between">
+        <h1 className="text-base font-extrabold text-black uppercase tracking-tight font-inter">
+          ENGLISH MOCK TESTS
+        </h1>
 
-          <div className="flex items-center gap-4 text-xs">
-            <span className="text-brand-text hidden sm:inline">
-              Student Code: <strong className="font-semibold text-brand-title">{studentCode}</strong> &bull; Test {testId}
-            </span>
+        <div className="flex items-center gap-4 text-xs font-inter">
+          <span className="text-brand-text hidden sm:inline">
+            Student Code: <span className="font-black text-black">{studentCode}</span> &bull; TEST {testId}
+          </span>
 
-            {/* Countdown Timer */}
-            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none border font-mono font-bold text-xs transition-colors ${
-              timeLeft < 180 
-                ? 'bg-rose-950/20 border-rose-900/40 text-rose-300' 
-                : 'bg-brand-card border-brand-border text-brand-text'
-            }`}>
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{formatTime(timeLeft)}</span>
-            </div>
-
-            {/* Theme Toggle Button next to Countdown Timer */}
-            <button
-              onClick={toggleTheme}
-              className="text-brand-text hover:text-brand-primary cursor-pointer transition-colors p-1.5 rounded-none border border-brand-border bg-brand-card hover:bg-brand-bg flex items-center justify-center outline-none"
-              title="Toggle Theme"
-            >
-              {theme === 'dark' ? (
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-                </svg>
-              ) : (
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-              )}
-            </button>
-
-            {/* Quit Button */}
-            <button
-              onClick={handleQuitTest}
-              className="text-xs font-semibold text-brand-text border border-brand-border bg-brand-card hover:bg-brand-bg hover:border-brand-text hover:text-brand-title transition-colors rounded-md px-2.5 py-1.5 flex items-center gap-1.5 cursor-pointer outline-none"
-              title="Quit Test & Discard Progress"
-            >
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-              <span>Quit</span>
-            </button>
-
-            {/* Mobile Sidebar Toggle Button */}
-            <button
-              onClick={() => setIsSidebarOpen(true)}
-              className="md:hidden p-2 rounded-md bg-brand-card border border-brand-border hover:bg-brand-bg text-brand-text cursor-pointer"
-              title="Open Navigation"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
+          {/* Countdown Timer */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 border border-brand-border font-mono font-bold text-xs bg-brand-bg text-black rounded-none">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>{formatTime(timeLeft)}</span>
           </div>
+
+          {/* Quit Button */}
+          <button
+            onClick={handleQuitTest}
+            className="text-xs font-bold uppercase tracking-wider text-black border border-black hover:bg-black hover:text-white transition-none px-3 py-1.5 flex items-center gap-1.5 cursor-pointer outline-none rounded-none"
+            title="Quit Test & Discard Progress"
+          >
+            <span>Quit</span>
+          </button>
+
+          {/* Mobile Sidebar Toggle Button */}
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="md:hidden p-2 bg-brand-card border border-brand-border text-brand-text cursor-pointer rounded-none"
+            title="Open Navigation"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
         </div>
       </header>
 
       {/* Demo Warning Header Banner */}
       {isDemoMode && (
-        <div className="bg-brand-card border-b border-brand-border text-brand-text px-6 py-2 text-xs text-center flex items-center justify-center gap-1.5 font-medium">
-          <svg className="w-3.5 h-3.5 shrink-0 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <div className="border-b border-brand-border text-black px-6 py-2 text-xs text-center flex items-center justify-center gap-1.5 font-bold uppercase tracking-wider">
+          <svg className="w-3.5 h-3.5 shrink-0 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
           <span>Running in offline preview mode (mock database).</span>
@@ -1164,7 +1069,7 @@ export default function TestPage() {
       )}
 
       {/* Main Body Layout */}
-      <main className="flex-1 max-w-[1100px] mx-auto w-full px-6 py-8 flex flex-col md:flex-row gap-6 items-stretch md:items-start animate-fade-in animate-duration-200">
+      <main className="flex-1 max-w-[1024px] mx-auto w-full px-6 py-8 flex flex-col md:flex-row gap-6 items-stretch md:items-start animate-fade-in animate-duration-200">
         {/* Left Side: Question area displaying a single card */}
         <div className="flex-1 flex flex-col">
           <QuestionCard
@@ -1176,12 +1081,9 @@ export default function TestPage() {
         </div>
 
         {/* Right Side / Sidebar: Desktop layout (visible md+) */}
-        <aside className="hidden md:flex md:w-72 flex-col bg-brand-card border border-brand-border rounded-lg p-5 gap-6">
+        <aside className="hidden md:flex md:w-72 flex-col bg-brand-card border border-brand-border rounded-none p-5 gap-6">
           <div>
-            <h4 className="text-xs font-bold text-brand-text uppercase tracking-wider mb-4 flex items-center gap-1.5">
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-              </svg>
+            <h4 className="text-xs font-extrabold text-black uppercase tracking-wider mb-4 flex items-center gap-1.5">
               Navigator
             </h4>
             <div className="grid grid-cols-5 gap-2 pr-1">
@@ -1193,12 +1095,12 @@ export default function TestPage() {
                   <button
                     key={q.Question_ID}
                     onClick={() => setCurrentIndex(idx)}
-                    className={`h-8 w-8 flex items-center justify-center rounded-md text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
+                    className={`h-8 w-8 flex items-center justify-center rounded-none text-xs font-bold transition-none border cursor-pointer outline-none ${
                       isSelected
-                        ? 'bg-brand-bg border-brand-primary text-brand-primary font-bold ring-1 ring-brand-primary/50'
+                        ? 'bg-black border-black text-white font-bold'
                         : isAnswered
-                        ? 'bg-brand-secondary border-brand-border text-brand-primary font-medium'
-                        : 'bg-brand-bg border-brand-border text-brand-text/60 hover:border-brand-text hover:text-brand-title'
+                        ? 'bg-brand-bg border-black text-black font-bold'
+                        : 'bg-brand-bg border-brand-border text-brand-text hover:border-black hover:text-black'
                     }`}
                   >
                     {idx + 1}
@@ -1208,17 +1110,17 @@ export default function TestPage() {
             </div>
 
             {/* Legend indicators */}
-            <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text/70">
+            <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-sm bg-brand-bg border border-brand-primary"></span>
+                <span className="w-3 h-3 rounded-none bg-black border border-black"></span>
                 <span>Current Question</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-sm bg-brand-secondary border border-brand-border"></span>
+                <span className="w-3 h-3 rounded-none bg-brand-bg border border-black"></span>
                 <span>Answered</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-sm bg-brand-bg border border-brand-border"></span>
+                <span className="w-3 h-3 rounded-none bg-brand-bg border border-brand-border"></span>
                 <span>Unanswered</span>
               </div>
             </div>
@@ -1226,7 +1128,7 @@ export default function TestPage() {
 
           <button
             onClick={() => handleSubmitTest(false)}
-            className="w-full py-3 bg-brand-primary hover:bg-brand-primary/95 text-brand-bg font-bold rounded-md transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer text-xs outline-none shadow-sm hover:shadow-brand-primary/20"
+            className="w-full py-3 bg-black text-white font-bold rounded-none transition-none flex items-center justify-center gap-1.5 cursor-pointer text-xs uppercase border-none"
           >
             <span>Submit Test</span>
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -1245,18 +1147,15 @@ export default function TestPage() {
             ></div>
             
             {/* Drawer sheet content */}
-            <div className="absolute right-0 top-0 bottom-0 w-72 bg-brand-card p-6 flex flex-col justify-between z-10 animate-slide-in-right animate-duration-200 border-l border-brand-border">
+            <div className="absolute right-0 top-0 bottom-0 w-72 bg-brand-card p-6 flex flex-col justify-between z-10 animate-slide-in-right animate-duration-200 border-l border-brand-border rounded-none">
               <div>
                 <div className="flex items-center justify-between mb-6 pb-2 border-b border-brand-border">
                   <h4 className="text-xs font-bold text-brand-text uppercase tracking-wider flex items-center gap-1.5">
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
                     Navigator
                   </h4>
                   <button 
                     onClick={() => setIsSidebarOpen(false)}
-                    className="p-1 rounded text-slate-400 hover:bg-brand-border cursor-pointer outline-none bg-transparent border-none"
+                    className="p-1 text-slate-400 hover:bg-brand-border cursor-pointer outline-none bg-transparent border-none"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -1276,12 +1175,12 @@ export default function TestPage() {
                           setCurrentIndex(idx);
                           setIsSidebarOpen(false);
                         }}
-                        className={`h-8 w-8 flex items-center justify-center rounded-md text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
+                        className={`h-8 w-8 flex items-center justify-center rounded-none text-xs font-bold transition-none border cursor-pointer outline-none ${
                           isSelected
-                            ? 'bg-brand-bg border-brand-primary text-brand-primary font-bold ring-1 ring-brand-primary/50'
+                            ? 'bg-black border-black text-white font-bold'
                             : isAnswered
-                            ? 'bg-brand-secondary border-brand-border text-brand-primary font-medium'
-                            : 'bg-brand-bg border-brand-border text-brand-text/60 hover:border-brand-text hover:text-brand-title'
+                            ? 'bg-brand-bg border-black text-black font-bold'
+                            : 'bg-brand-bg border-brand-border text-brand-text hover:border-black hover:text-black'
                         }`}
                       >
                         {idx + 1}
@@ -1291,17 +1190,17 @@ export default function TestPage() {
                 </div>
 
                 {/* Legend indicators */}
-                <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text/70">
+                <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text">
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-sm bg-brand-bg border border-brand-primary"></span>
+                    <span className="w-3 h-3 rounded-none bg-black border border-black"></span>
                     <span>Current Question</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-sm bg-brand-secondary border border-brand-border"></span>
+                    <span className="w-3 h-3 rounded-none bg-brand-bg border border-black"></span>
                     <span>Answered</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-sm bg-brand-bg border border-brand-border"></span>
+                    <span className="w-3 h-3 rounded-none bg-brand-bg border border-brand-border"></span>
                     <span>Unanswered</span>
                   </div>
                 </div>
@@ -1312,7 +1211,7 @@ export default function TestPage() {
                   setIsSidebarOpen(false);
                   handleSubmitTest(false);
                 }}
-                className="w-full py-3.5 bg-brand-primary hover:bg-brand-primary/95 text-brand-bg font-bold rounded-md transition-all duration-150 flex items-center justify-center gap-1.5 cursor-pointer text-xs outline-none shadow-sm hover:shadow-brand-primary/20"
+                className="w-full py-3.5 bg-black text-white font-bold rounded-none transition-none flex items-center justify-center gap-1.5 cursor-pointer text-xs uppercase border-none"
               >
                 <span>Submit Test</span>
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
