@@ -474,37 +474,7 @@ export default function TestPage() {
     };
   }, [loading, testSubmitted, view, questions]);
 
-  // 5. Scroll-spy tracking of active question
-  useEffect(() => {
-    if (view !== 'testing' || loading || testSubmitted || questions.length === 0) return;
 
-    const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -60% 0px', // targets the focus area in the viewport
-      threshold: 0
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const idStr = entry.target.id;
-          const idx = parseInt(idStr.replace('q-card-', ''), 10);
-          if (!isNaN(idx)) {
-            setCurrentIndex(idx);
-          }
-        }
-      });
-    }, observerOptions);
-
-    questions.forEach((_, idx) => {
-      const el = document.getElementById(`q-card-${idx}`);
-      if (el) observer.observe(el);
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [view, loading, testSubmitted, questions]);
 
   // Login handler
   const handleLogin = async (code: string) => {
@@ -1068,17 +1038,7 @@ export default function TestPage() {
               Student Code: <strong className="font-semibold text-brand-title">{studentCode}</strong> &bull; Test {testId}
             </span>
 
-            {/* Countdown Timer */}
-            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md border font-mono font-bold text-xs transition-colors ${
-              timeLeft < 180 
-                ? 'bg-rose-950/20 border-rose-900/40 text-rose-300' 
-                : 'bg-brand-card border-brand-border text-brand-text'
-            }`}>
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{formatTime(timeLeft)}</span>
-            </div>
+
 
             {/* Quit Button */}
             <button
@@ -1120,6 +1080,16 @@ export default function TestPage() {
       <main className="flex-1 max-w-[1100px] mx-auto w-full px-6 py-8 flex flex-col md:flex-row gap-6 items-stretch md:items-start animate-fade-in">
         {/* Left Side: Question area stacked vertically */}
         <div className="flex-1 flex flex-col gap-6">
+          {/* Sticky Timer Banner from Mockers Site */}
+          <div className="sticky top-[73px] z-20 bg-brand-bg/90 backdrop-blur-xs pb-4 pt-1">
+            <div className="bg-brand-card border border-brand-border rounded-lg py-3 px-4 flex items-center justify-center gap-2 text-rose-455 font-bold text-sm tracking-wider font-mono">
+              <svg className="w-4 h-4 animate-pulse text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>TIME LEFT - {formatTime(timeLeft)} MIN</span>
+            </div>
+          </div>
+
           {questions.map((q, idx) => (
             <div key={q.Question_ID} id={`q-card-${idx}`} className="scroll-mt-24">
               <QuestionCard
@@ -1127,7 +1097,6 @@ export default function TestPage() {
                 selectedAnswer={selectedAnswers[q.Question_ID]}
                 onSelectAnswer={(key) => handleSelectAnswerForQuestion(q.Question_ID, key)}
                 index={idx}
-                totalQuestions={questions.length}
               />
             </div>
           ))}
@@ -1144,7 +1113,6 @@ export default function TestPage() {
             </h4>
             <div className="grid grid-cols-5 gap-2 pr-1">
               {questions.map((q, idx) => {
-                const isSelected = currentIndex === idx;
                 const isAnswered = selectedAnswers[q.Question_ID] !== undefined;
 
                 return (
@@ -1158,10 +1126,8 @@ export default function TestPage() {
                       }
                     }}
                     className={`h-8 w-8 flex items-center justify-center rounded-full text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
-                      isSelected
-                        ? 'bg-brand-bg border-brand-primary text-brand-primary font-bold ring-1 ring-brand-primary/50'
-                        : isAnswered
-                        ? 'bg-brand-secondary border-brand-border text-brand-primary font-medium'
+                      isAnswered
+                        ? 'bg-brand-secondary border-brand-primary/30 text-brand-primary font-medium'
                         : 'bg-brand-bg border-brand-border text-brand-text/60 hover:border-brand-text hover:text-brand-title'
                     }`}
                   >
@@ -1173,10 +1139,6 @@ export default function TestPage() {
 
             {/* Legend indicators */}
             <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text/70">
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-brand-bg border border-brand-primary"></span>
-                <span>Current Question</span>
-              </div>
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-brand-secondary border border-brand-border"></span>
                 <span>Answered</span>
@@ -1230,7 +1192,6 @@ export default function TestPage() {
 
                 <div className="grid grid-cols-5 gap-2 max-h-[60vh] overflow-y-auto">
                   {questions.map((q, idx) => {
-                    const isSelected = currentIndex === idx;
                     const isAnswered = selectedAnswers[q.Question_ID] !== undefined;
 
                     return (
@@ -1245,9 +1206,7 @@ export default function TestPage() {
                           }
                         }}
                         className={`h-8 w-8 flex items-center justify-center rounded-full text-xs font-semibold transition duration-150 border cursor-pointer outline-none ${
-                          isSelected
-                            ? 'bg-brand-bg border-brand-primary text-brand-primary font-bold ring-1 ring-brand-primary/50'
-                            : isAnswered
+                          isAnswered
                             ? 'bg-brand-secondary border-brand-border text-brand-primary font-medium'
                             : 'bg-brand-bg border-brand-border text-brand-text/60 hover:border-brand-text hover:text-brand-title'
                         }`}
@@ -1260,10 +1219,6 @@ export default function TestPage() {
 
                 {/* Legend indicators */}
                 <div className="mt-6 space-y-2 border-t border-brand-border pt-4 text-[10px] font-bold uppercase tracking-wider text-brand-text/70">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-brand-bg border border-brand-primary"></span>
-                    <span>Current Question</span>
-                  </div>
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-brand-secondary border border-brand-border"></span>
                     <span>Answered</span>

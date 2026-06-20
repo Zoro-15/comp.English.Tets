@@ -99,7 +99,7 @@ export default function ResultPage({
           </div>
           <div className="pt-2 sm:pt-0">
             <span className="block text-[10px] uppercase tracking-wider text-brand-text font-semibold mb-0.5">Correct</span>
-            <span className="text-lg font-bold text-brand-primary">{correctCount}</span>
+            <span className="text-lg font-bold text-emerald-450">{correctCount}</span>
           </div>
           <div className="pt-2 sm:pt-0">
             <span className="block text-[10px] uppercase tracking-wider text-brand-text font-semibold mb-0.5">Incorrect</span>
@@ -264,7 +264,7 @@ export default function ResultPage({
                     {wasSkipped ? (
                       <span className="text-amber-500 font-semibold">Skipped</span>
                     ) : isCorrect ? (
-                      <span className="text-brand-primary font-semibold">Correct</span>
+                      <span className="text-emerald-400 font-semibold">Correct</span>
                     ) : (
                       <span className="text-rose-455 font-semibold">Incorrect</span>
                     )}
@@ -287,7 +287,7 @@ export default function ResultPage({
                       let optionStyle = "border-brand-border bg-brand-bg text-brand-text";
                       
                       if (isKeyCorrect) {
-                        optionStyle = "border-brand-primary bg-brand-secondary text-brand-title font-medium";
+                        optionStyle = "border-emerald-800/65 bg-emerald-950/20 text-emerald-300 font-medium";
                       } else if (isKeySelected && !isCorrect) {
                         optionStyle = "border-rose-900/60 bg-rose-950/25 text-rose-300";
                       }
