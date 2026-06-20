@@ -1,33 +1,55 @@
 @import "tailwindcss";
 
 :root {
-  --color-brand-bg: #0F172A;       /* Deep slate night canvas */
-  --color-brand-card: #1E293B;     /* Slate card containers */
-  --color-brand-border: #334155;   /* Slate borders */
-  --color-brand-primary: #818CF8;  /* Radiant indigo primary action */
-  --color-brand-secondary: #0F172A;/* Slate night secondary background contrast */
-  --color-brand-text: #94A3B8;     /* Muted slate-400 body copy */
-  --color-brand-title: #F8FAFC;    /* Off-white headings */
-  
-  --color-brand-success: #32802D;  /* Forest green custom */
-  --color-brand-error: #9E3B36;    /* Brick red custom */
-  --color-brand-neutral: #475569;  /* Medium slate grey */
-  --color-brand-tile: #0F172A;     /* Nested inner background */
+  --color-brand-bg: #272729;
+  /* Medium slate grey dark background */
+  --color-brand-card: #2f343a;
+  /* Slate card containers */
+  --color-brand-border: #b3c8e7;
+  /* Slate borders */
+  --color-brand-primary: #2a6340;
+  /* Navy blue primary action */
+  --color-brand-secondary: #FFFFFF;
+  /* White overlay text/badge background */
+  --color-brand-text: #cdd2d8;
+  /* Muted slate-400 body copy */
+  --color-brand-title: #c2d4e6;
+  /* Off-white headings */
+
+  --color-brand-success: #448b3d;
+  /* Forest green custom */
+  --color-brand-error: #9E3B36;
+  /* Brick red custom */
+  --color-brand-neutral: #3b4c64;
+  /* Medium slate grey */
+  --color-brand-tile: #393f46;
+  /* Nested inner background */
 }
 
 :root[data-theme="light"] {
-  --color-brand-bg: #F0F2F9;       /* Soft lavendar-grey canvas */
-  --color-brand-card: #FFFFFF;     /* Pure white card containers */
-  --color-brand-border: #E2E5F2;   /* Soft grey borders */
-  --color-brand-primary: #4F46E5;  /* Deep indigo primary action */
-  --color-brand-secondary: #FFFFFF;/* White secondary background contrast */
-  --color-brand-text: #475569;     /* Slate-600 body copy */
-  --color-brand-title: #1E1B4B;    /* Rich midnight indigo headings */
+  --color-brand-bg: #8f99b1;
+  /* Medium slate grey light background */
+  --color-brand-card: #8693aa;
+  /* Pure white card containers */
+  --color-brand-border: #7b819e;
+  /* Soft grey borders */
+  --color-brand-primary: #1c3a4f;
+  /* Navy blue primary action */
+  --color-brand-secondary: #ffffff;
+  /* White overlay text/badge background */
+  --color-brand-text: #14161a;
+  /* Slate-600 body copy */
+  --color-brand-title: #100f1d;
+  /* Rich midnight indigo headings */
 
-  --color-brand-success: #32802D;  /* Forest green custom */
-  --color-brand-error: #9E3B36;    /* Brick red custom */
-  --color-brand-neutral: #94A3B8;  /* Slate-400 neutral */
-  --color-brand-tile: #F1F5F9;     /* Slate-100 inner background */
+  --color-brand-success: #1e6119;
+  /* Forest green custom */
+  --color-brand-error: #ce271ec2;
+  /* Brick red custom */
+  --color-brand-neutral: #314868;
+  /* Slate-400 neutral */
+  --color-brand-tile: #9fa4b1a4;
+  /* Slate-100 inner background */
 }
 
 @theme {
